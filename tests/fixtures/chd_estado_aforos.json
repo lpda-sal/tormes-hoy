@@ -1,0 +1,16 @@
+[
+ {
+  "codigo": "EA140",
+  "nombre": "Salida del embalse de Santa Teresa",
+  "fecha": "2026-10-05 16:45",
+  "nivel": "1,04",
+  "caudal": "16,02"
+ },
+ {
+  "codigo": "EA087",
+  "nombre": "Salamanca",
+  "fecha": "2026-10-05 16:30",
+  "nivel": "1,34",
+  "caudal": "7,31"
+ }
+]

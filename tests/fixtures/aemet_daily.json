@@ -1,0 +1,55 @@
+[
+ {
+  "nombre": "Salamanca",
+  "prediccion": {
+   "dia": [
+    {
+     "fecha": "2026-10-05T00:00:00",
+     "probPrecipitacion": [
+      {
+       "value": 5,
+       "periodo": "00-24"
+      },
+      {
+       "value": 0,
+       "periodo": "00-12"
+      }
+     ],
+     "estadoCielo": [
+      {
+       "value": "12",
+       "periodo": "00-24",
+       "descripcion": "Poco nuboso"
+      }
+     ],
+     "temperatura": {
+      "maxima": 22,
+      "minima": 8
+     },
+     "uvMax": 5
+    },
+    {
+     "fecha": "2026-10-06T00:00:00",
+     "probPrecipitacion": [
+      {
+       "value": 45,
+       "periodo": "00-24"
+      }
+     ],
+     "estadoCielo": [
+      {
+       "value": "15",
+       "periodo": "00-24",
+       "descripcion": "Muy nuboso"
+      }
+     ],
+     "temperatura": {
+      "maxima": 19,
+      "minima": 10
+     },
+     "uvMax": 3
+    }
+   ]
+  }
+ }
+]

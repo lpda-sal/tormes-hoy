@@ -1,0 +1,172 @@
+[
+ {
+  "origen": {
+   "productor": "Agencia Estatal de Meteorología - AEMET. Gobierno de España"
+  },
+  "elaborado": "2026-10-05T12:00:00",
+  "nombre": "Salamanca",
+  "provincia": "Salamanca",
+  "prediccion": {
+   "dia": [
+    {
+     "fecha": "2026-10-05T00:00:00",
+     "estadoCielo": [
+      {
+       "value": "12",
+       "periodo": "18",
+       "descripcion": "Poco nuboso"
+      },
+      {
+       "value": "12",
+       "periodo": "19",
+       "descripcion": "Poco nuboso"
+      },
+      {
+       "value": "12",
+       "periodo": "20",
+       "descripcion": "Poco nuboso"
+      },
+      {
+       "value": "12",
+       "periodo": "21",
+       "descripcion": "Poco nuboso"
+      },
+      {
+       "value": "12",
+       "periodo": "22",
+       "descripcion": "Poco nuboso"
+      },
+      {
+       "value": "12",
+       "periodo": "23",
+       "descripcion": "Poco nuboso"
+      }
+     ],
+     "precipitacion": [
+      {
+       "value": "0",
+       "periodo": "18"
+      },
+      {
+       "value": "0",
+       "periodo": "19"
+      },
+      {
+       "value": "0",
+       "periodo": "20"
+      },
+      {
+       "value": "0",
+       "periodo": "21"
+      },
+      {
+       "value": "0",
+       "periodo": "22"
+      },
+      {
+       "value": "0",
+       "periodo": "23"
+      }
+     ],
+     "probPrecipitacion": [
+      {
+       "value": "0",
+       "periodo": "0814"
+      },
+      {
+       "value": "10",
+       "periodo": "1420"
+      },
+      {
+       "value": "20",
+       "periodo": "2002"
+      }
+     ],
+     "temperatura": [
+      {
+       "value": "20",
+       "periodo": "18"
+      },
+      {
+       "value": "19",
+       "periodo": "19"
+      },
+      {
+       "value": "18",
+       "periodo": "20"
+      },
+      {
+       "value": "17",
+       "periodo": "21"
+      },
+      {
+       "value": "16",
+       "periodo": "22"
+      },
+      {
+       "value": "15",
+       "periodo": "23"
+      }
+     ],
+     "vientoAndRachaMax": [
+      {
+       "direccion": [
+        "O"
+       ],
+       "velocidad": [
+        "10"
+       ],
+       "periodo": "18"
+      },
+      {
+       "direccion": [
+        "O"
+       ],
+       "velocidad": [
+        "10"
+       ],
+       "periodo": "19"
+      },
+      {
+       "direccion": [
+        "O"
+       ],
+       "velocidad": [
+        "10"
+       ],
+       "periodo": "20"
+      },
+      {
+       "direccion": [
+        "O"
+       ],
+       "velocidad": [
+        "10"
+       ],
+       "periodo": "21"
+      },
+      {
+       "direccion": [
+        "O"
+       ],
+       "velocidad": [
+        "10"
+       ],
+       "periodo": "22"
+      },
+      {
+       "direccion": [
+        "O"
+       ],
+       "velocidad": [
+        "10"
+       ],
+       "periodo": "23"
+      }
+     ]
+    }
+   ]
+  },
+  "id": "37274"
+ }
+]

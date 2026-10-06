@@ -1,0 +1,24 @@
+[
+ {
+  "idema": "2867",
+  "ubi": "SALAMANCA AEROPUERTO",
+  "fint": "2026-10-05T14:00:00",
+  "ta": 19.6,
+  "hr": 45,
+  "vv": 3.0,
+  "dv": 260,
+  "prec": 0.0,
+  "pres": 918.2
+ },
+ {
+  "idema": "2867",
+  "ubi": "SALAMANCA AEROPUERTO",
+  "fint": "2026-10-05T15:00:00",
+  "ta": 20.7,
+  "hr": 42,
+  "vv": 3.5,
+  "dv": 250,
+  "prec": 0.0,
+  "pres": 917.9
+ }
+]

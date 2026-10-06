@@ -1,0 +1,64 @@
+# Hourly: collect data, commit it and deploy the site in ONE short job.
+# Designed to use as little GitHub Actions time as possible:
+# - standard-library collector -> no dependency installation;
+# - system Python of the runner -> no setup-python;
+# - shallow checkout, 5-minute timeout, single job.
+name: update-data
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["web/**", "tormes_hoy/**"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04 # ships Python 3.12
+    timeout-minutes: 5
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Collect data
+        run: python3 -m tormes_hoy
+        env:
+          AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
+          METEOBLUE_API_KEY: ${{ secrets.METEOBLUE_API_KEY }}
+
+      # Committing data keeps the history and also counts as repository
+      # activity, so GitHub does not disable the schedule after 60 days.
+      - name: Commit data
+        run: |
+          git config user.name "tormes-hoy-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(data): update [skip ci]"
+            # If main moved meanwhile, skip: the next hourly run commits.
+            git push origin HEAD:main || echo "::warning::push skipped"
+          fi
+
+      - name: Build site
+        run: python3 -m tormes_hoy.site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

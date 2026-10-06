@@ -1,0 +1,53 @@
+# Single source of stable configuration. Secrets go in environment variables.
+# Items marked VERIFY must be confirmed (see docs/review.md).
+
+[app]
+name = "Tormes Hoy"
+short_name = "Tormes Hoy"
+
+[location]
+id = "salamanca"
+name = "Salamanca"
+lat = 40.965     # city centre (public repository: never a private address)
+lon = -5.664
+timezone = "Europe/Madrid"
+
+[openmeteo]
+base_url = "https://api.open-meteo.com/v1/forecast"
+forecast_days = 7
+
+[aemet]
+base_url = "https://opendata.aemet.es/opendata/api"
+station_idema = "2867"          # VERIFY: Salamanca Aeropuerto (Matacán)
+municipality_code = "37274"     # VERIFY: Salamanca (INE code)
+stale_after_hours = 3
+
+[meteoblue]
+base_url = "https://my.meteoblue.com/packages/basic-1h_basic-day"
+refresh_every_hours = 6         # credit budget: see docs/sources.md
+stale_after_hours = 12
+
+[river]
+station = "EA087"               # CHD gauging station, Tormes at Salamanca
+current_url = ""                # VERIFY: CHD open data "Estado Aforos" JSON
+station_field = "codigo"        # VERIFY: field names in that JSON
+level_field = "nivel"
+flow_field = "caudal"
+time_field = "fecha"
+observed_days = 30
+daily_years = 2                 # daily history: current + previous year
+stale_after_hours = 3
+trend_window_hours = 3
+trend_flow_ratio = 0.03         # >3 % change in the window = rising/falling
+trend_level_m = 0.01            # >1 cm change in the window = rising/falling
+
+[yearbook]
+years = 10
+smoothing_window_days = 7       # +/- days around each day of year
+level_shift_threshold_m = 0.15  # yearly median jump flagged as datum shift
+
+[uv]
+protection_threshold = 3
+
+[output]
+data_dir = "data"
