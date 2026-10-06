@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-06T19:31:08+02:00",
+ "generated_at": "2026-10-06T20:36:38+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -31,15 +31,15 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-06T19:30",
-   "temperature": 17.3,
-   "apparent_temperature": 16.5,
-   "humidity": 70,
-   "weather_code": 3,
-   "wind_speed": 9.4,
-   "wind_direction": 266,
-   "precipitation": 0.0,
-   "uv": 0.25
+   "time": "2026-10-06T20:30",
+   "temperature": 15.8,
+   "apparent_temperature": 16.1,
+   "humidity": 86,
+   "weather_code": 95,
+   "wind_speed": 4.9,
+   "wind_direction": 287,
+   "precipitation": 0.2,
+   "uv": 0.0
   }
  },
  "today": {
@@ -51,53 +51,43 @@
   },
   "data": [
    {
-    "time": "2026-10-06T19:00",
-    "temperature": 17.8,
-    "apparent_temperature": 16.7,
-    "precipitation_probability": 20,
-    "precipitation": 0.0,
-    "weather_code": 3,
-    "wind_speed": 11.3,
-    "uv": 1.0
-   },
-   {
     "time": "2026-10-06T20:00",
-    "temperature": 16.8,
-    "apparent_temperature": 16.3,
+    "temperature": 16.3,
+    "apparent_temperature": 16.5,
     "precipitation_probability": 15,
     "precipitation": 0.0,
     "weather_code": 3,
-    "wind_speed": 7.6,
-    "uv": 0.2
+    "wind_speed": 4.5,
+    "uv": 0.15
    },
    {
     "time": "2026-10-06T21:00",
-    "temperature": 15.5,
-    "apparent_temperature": 15.7,
+    "temperature": 15.2,
+    "apparent_temperature": 15.6,
     "precipitation_probability": 25,
-    "precipitation": 0.2,
-    "weather_code": 80,
-    "wind_speed": 4.2,
+    "precipitation": 0.8,
+    "weather_code": 95,
+    "wind_speed": 5.4,
     "uv": 0.0
    },
    {
     "time": "2026-10-06T22:00",
-    "temperature": 14.8,
-    "apparent_temperature": 15.1,
+    "temperature": 14.6,
+    "apparent_temperature": 15.0,
     "precipitation_probability": 28,
-    "precipitation": 0.1,
-    "weather_code": 3,
-    "wind_speed": 3.9,
+    "precipitation": 0.6,
+    "weather_code": 80,
+    "wind_speed": 4.1,
     "uv": 0.0
    },
    {
     "time": "2026-10-06T23:00",
-    "temperature": 13.9,
-    "apparent_temperature": 14.0,
+    "temperature": 14.1,
+    "apparent_temperature": 14.3,
     "precipitation_probability": 8,
-    "precipitation": 0.2,
-    "weather_code": 80,
-    "wind_speed": 4.6,
+    "precipitation": 0.0,
+    "weather_code": 3,
+    "wind_speed": 5.1,
     "uv": 0.0
    }
   ]
@@ -112,7 +102,7 @@
   "data": {
    "date": "2026-10-06",
    "threshold": 3,
-   "now": 1.0,
+   "now": 0.15,
    "now_level": "low",
    "max": 5.1,
    "max_time": "14:00",
@@ -145,11 +135,11 @@
   "data": [
    {
     "date": "2026-10-06",
-    "weather_code": 80,
+    "weather_code": 95,
     "temperature_max": 20.6,
     "temperature_min": 13.8,
     "precipitation_probability": 70,
-    "precipitation": 2.5,
+    "precipitation": 4.4,
     "uv_max": 5.1,
     "sunrise": "2026-10-06T08:24",
     "sunset": "2026-10-06T19:56"
@@ -157,11 +147,11 @@
    {
     "date": "2026-10-07",
     "weather_code": 80,
-    "temperature_max": 18.6,
-    "temperature_min": 12.3,
+    "temperature_max": 18.7,
+    "temperature_min": 12.1,
     "precipitation_probability": 48,
-    "precipitation": 2.3,
-    "uv_max": 5.15,
+    "precipitation": 1.0,
+    "uv_max": 5.05,
     "sunrise": "2026-10-07T08:25",
     "sunset": "2026-10-07T19:55"
    },
@@ -205,7 +195,7 @@
     "temperature_min": 7.7,
     "precipitation_probability": 0,
     "precipitation": 0.0,
-    "uv_max": 4.75,
+    "uv_max": 4.95,
     "sunrise": "2026-10-11T08:29",
     "sunset": "2026-10-11T19:48"
    },
