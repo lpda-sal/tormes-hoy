@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-06T19:08:43+02:00",
+ "generated_at": "2026-10-06T19:31:08+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -42,19 +42,19 @@
     "label": "Open-Meteo",
     "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
    },
-   "fetched_at": "2026-10-06T19:08:43+02:00",
+   "fetched_at": "2026-10-06T19:31:08+02:00",
    "error": null,
    "data": {
     "current": {
-     "time": "2026-10-06T19:00",
-     "temperature": 17.8,
-     "apparent_temperature": 16.7,
-     "humidity": 68,
+     "time": "2026-10-06T19:30",
+     "temperature": 17.3,
+     "apparent_temperature": 16.5,
+     "humidity": 70,
      "weather_code": 3,
-     "wind_speed": 11.3,
-     "wind_direction": 261,
+     "wind_speed": 9.4,
+     "wind_direction": 266,
      "precipitation": 0.0,
-     "uv": 0.65
+     "uv": 0.25
     },
     "hourly": [
      {
