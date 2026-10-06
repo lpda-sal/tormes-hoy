@@ -7,11 +7,13 @@ from tormes_hoy.sources import meteoblue
 
 from .conftest import TZ, load_fixture
 
+EXPECTED_DAILY_PRECIPITATION_MM = 2.4
+
 
 def test_parse() -> None:
     data = meteoblue.parse(load_fixture("meteoblue_basic.json"))
     assert data["hourly"][0]["time"] == "2026-10-05T00:00"
-    assert data["daily"][1]["precipitation"] == 2.4
+    assert data["daily"][1]["precipitation"] == EXPECTED_DAILY_PRECIPITATION_MM
 
 
 def test_should_refresh_every_six_hours() -> None:

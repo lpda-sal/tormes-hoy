@@ -10,13 +10,20 @@ from tormes_hoy.sources import aemet
 
 from .conftest import TZ, load_fixture
 
+EXPECTED_TEMPERATURE_C = 20.7
+EXPECTED_OBSERVATION_WIND_SPEED_KMH = 12.6
+EXPECTED_PRECIPITATION_PROBABILITIES = (10, 20)
+EXPECTED_HOURLY_WIND_SPEED_KMH = 10
+EXPECTED_DAILY_PRECIPITATION_PROBABILITY = 5
+EXPECTED_DAILY_MAX_TEMPERATURE_C = 22
+
 
 def test_observation_takes_latest_and_converts_units() -> None:
     obs = aemet.parse_observation(load_fixture("aemet_observation.json"), TZ)
     # 15:00 UTC is 17:00 in Madrid (CEST).
     assert obs["time"] == "2026-10-05T17:00:00+02:00"
-    assert obs["temperature"] == 20.7
-    assert obs["wind_speed"] == 12.6
+    assert obs["temperature"] == EXPECTED_TEMPERATURE_C
+    assert obs["wind_speed"] == EXPECTED_OBSERVATION_WIND_SPEED_KMH
 
 
 def test_observation_without_records_fails() -> None:
@@ -27,17 +34,29 @@ def test_observation_without_records_fails() -> None:
 def test_hourly_forecast_maps_probability_blocks() -> None:
     data = aemet.parse_hourly_forecast(load_fixture("aemet_hourly.json"), TZ)
     rows = {r["time"]: r for r in data["hourly"]}
-    assert rows["2026-10-05T18:00"]["precipitation_probability"] == 10
-    assert rows["2026-10-05T21:00"]["precipitation_probability"] == 20
+    assert (
+        rows["2026-10-05T18:00"]["precipitation_probability"]
+        == EXPECTED_PRECIPITATION_PROBABILITIES[0]
+    )
+    assert (
+        rows["2026-10-05T21:00"]["precipitation_probability"]
+        == EXPECTED_PRECIPITATION_PROBABILITIES[1]
+    )
     assert rows["2026-10-05T18:00"]["sky"] == "Poco nuboso"
-    assert rows["2026-10-05T18:00"]["wind_speed"] == 10
+    assert (
+        rows["2026-10-05T18:00"]["wind_speed"]
+        == EXPECTED_HOURLY_WIND_SPEED_KMH
+    )
 
 
 def test_daily_forecast_uses_whole_day_values() -> None:
     data = aemet.parse_daily_forecast(load_fixture("aemet_daily.json"))
     first = data["daily"][0]
-    assert first["precipitation_probability"] == 5
-    assert first["temperature_max"] == 22
+    assert (
+        first["precipitation_probability"]
+        == EXPECTED_DAILY_PRECIPITATION_PROBABILITY
+    )
+    assert first["temperature_max"] == EXPECTED_DAILY_MAX_TEMPERATURE_C
     assert first["sky"] == "Poco nuboso"
 
 

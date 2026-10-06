@@ -108,7 +108,8 @@ def trend(
 
     Flow is preferred; level is used when flow is missing.
     """
-    if len(readings) < 2:
+    minimum_readings = 2
+    if len(readings) < minimum_readings:
         return None
     last = readings[-1]
     last_time = parse_local(last["time"], tz_name)

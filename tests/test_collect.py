@@ -9,6 +9,10 @@ from tormes_hoy.sources import aemet, chd, meteoblue, openmeteo
 from .conftest import TZ, load_fixture
 
 ENV = {"AEMET_API_KEY": "a", "METEOBLUE_API_KEY": "m"}
+EXPECTED_FLOW_M3S = 7.31
+EXPECTED_OPENMETEO_CALLS = 4
+EXPECTED_METEOBLUE_CALLS_BEFORE_REFRESH = 1
+EXPECTED_METEOBLUE_CALLS_AFTER_REFRESH = 2
 
 
 def _fetchers(
@@ -66,7 +70,7 @@ def test_full_run_produces_all_files(config: Config, now: datetime) -> None:
     assert summary["schema_version"] == 1
     assert summary["location"]["name"] == "Salamanca"
     assert summary["weather_now"]["status"] == "ok"
-    assert summary["river"]["data"]["flow_m3s"] == 7.31
+    assert summary["river"]["data"]["flow_m3s"] == EXPECTED_FLOW_M3S
     assert all(
         r["time"] >= "2026-10-05T17:00" for r in summary["today"]["data"]
     )
@@ -120,11 +124,11 @@ def test_meteoblue_is_not_called_every_hour(
         collect.write_files(
             config.data_dir, collect.run(config, later, ENV, _fetchers(calls))
         )
-    assert calls["meteoblue"] == 1
-    assert calls["openmeteo"] == 4
+    assert calls["meteoblue"] == EXPECTED_METEOBLUE_CALLS_BEFORE_REFRESH
+    assert calls["openmeteo"] == EXPECTED_OPENMETEO_CALLS
     later = now + timedelta(hours=6)
     collect.run(config, later, ENV, _fetchers(calls))
-    assert calls["meteoblue"] == 2
+    assert calls["meteoblue"] == EXPECTED_METEOBLUE_CALLS_AFTER_REFRESH
 
 
 def test_river_history_accumulates(config: Config, now: datetime) -> None:

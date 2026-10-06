@@ -1,8 +1,8 @@
-__pycache__/
-*.egg-info/
+.mypy_cache/
 .pytest_cache/
 .ruff_cache/
-.mypy_cache/
-.env
-_site/
+*.egg-info/
+__pycache__/
 _demo/
+_site/
+.env

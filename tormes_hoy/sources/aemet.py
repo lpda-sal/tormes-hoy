@@ -67,10 +67,11 @@ def parse_observation(records: list[JsonDict], tz_name: str) -> JsonDict:
 
 def _hourly_values(day: JsonDict, key: str) -> dict[int, Any]:
     """Map hour -> value (e.g. ``{"value": "12", "periodo": "07"}``)."""
+    hour_period_length = 2
     out: dict[int, Any] = {}
     for item in day.get(key) or []:
         periodo = str(item.get("periodo", ""))
-        if len(periodo) == 2 and periodo.isdigit():
+        if len(periodo) == hour_period_length and periodo.isdigit():
             out[int(periodo)] = item.get("value")
     return out
 
@@ -84,9 +85,10 @@ def _to_float(value: Any) -> float | None:
 
 def _prob_for_hour(day: JsonDict, hour: int) -> float | None:
     """Precipitation probability is given per 6-hour block (``"0814"``)."""
+    block_period_length = 4
     for item in day.get("probPrecipitacion") or []:
         periodo = str(item.get("periodo", ""))
-        if len(periodo) == 4 and periodo.isdigit():
+        if len(periodo) == block_period_length and periodo.isdigit():
             start, end = int(periodo[:2]), int(periodo[2:])
             inside = (
                 start <= hour < end

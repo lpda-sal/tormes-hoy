@@ -28,6 +28,9 @@ DEMO = {"demo": True}
 
 
 def _hourly(start: datetime, hours: int, offset: float) -> list[JsonDict]:
+    dry_forecast_hours = 30
+    daylight_start_hour = 8
+    daylight_end_hour = 19
     rows = []
     for i in range(hours):
         t = start + timedelta(hours=i)
@@ -39,9 +42,13 @@ def _hourly(start: datetime, hours: int, offset: float) -> list[JsonDict]:
                 "time": t.strftime("%Y-%m-%dT%H:%M"),
                 "temperature": round(temp, 1),
                 "apparent_temperature": round(temp - 1, 1),
-                "precipitation_probability": 10 if i < 30 else 45,
-                "precipitation": 0.0 if i < 30 else 0.6,
-                "weather_code": 1 if 8 <= h <= 19 else 0,
+                "precipitation_probability": (
+                    10 if i < dry_forecast_hours else 45
+                ),
+                "precipitation": 0.0 if i < dry_forecast_hours else 0.6,
+                "weather_code": (
+                    1 if daylight_start_hour <= h <= daylight_end_hour else 0
+                ),
                 "wind_speed": 11.0,
                 "uv": round(uv, 1),
             }
@@ -131,12 +138,13 @@ def main() -> int:
     current = SourceResult(
         "chd", "ok", raw[-1], iso(now), meta={**chd.META, **DEMO}
     )
-    files = build_files(config, now, weather, current, raw, daily)
+    files = build_files(config, now, weather, (current, raw, daily))
 
     # Yearbook statistics from a synthetic 10-year series.
     series: yearbook.DailySeries = {}
     day = datetime(2015, 1, 1).date()
-    while day.year < 2025:
+    yearbook_end_year = 2025
+    while day.year < yearbook_end_year:
         doy = day.timetuple().tm_yday
         base = 8 + 30 * max(0, math.cos(2 * math.pi * (doy - 40) / 365))
         flow = base * math.exp(rng.gauss(0, 0.35))

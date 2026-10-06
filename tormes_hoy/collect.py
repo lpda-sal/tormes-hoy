@@ -228,11 +228,10 @@ def build_files(
     config: Config,
     now: datetime,
     weather: dict[str, SourceResult],
-    river_current: SourceResult,
-    readings: list[JsonDict],
-    daily: list[JsonDict],
+    river_data: tuple[SourceResult, list[JsonDict], list[JsonDict]],
 ) -> dict[str, JsonDict]:
     """Assemble every output file from the collected results."""
+    river_current, readings, daily = river_data
     om = weather["openmeteo"]
     om_data: JsonDict = om.data or {}
     hourly: list[JsonDict] = om_data.get("hourly") or []
@@ -315,8 +314,8 @@ def run(
     fetchers = fetchers or Fetchers()
     previous = load_previous(config.data_dir)
     weather = collect_weather(config, now, env, fetchers, previous)
-    current, readings, daily = collect_river(config, now, fetchers, previous)
-    return build_files(config, now, weather, current, readings, daily)
+    river_data = collect_river(config, now, fetchers, previous)
+    return build_files(config, now, weather, river_data)
 
 
 def write_files(data_dir: Path, files: dict[str, Any]) -> None:

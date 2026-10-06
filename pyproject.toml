@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tormes-hoy"
 version = "0.1.0"
-description = "Data collector for the Tormes Hoy dashboard (weather, UV, river)."
+description = "Data collector for the Tormes Hoy dashboard."
 readme = "README.md"
 requires-python = ">=3.12"
 # Runtime uses the standard library only: the hourly GitHub Actions job
@@ -27,15 +27,11 @@ target-version = "py312"
 extend-exclude = ["_site"]
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "UP", "B", "SIM", "PTH", "BLE"]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["E501"]
+select = ["B", "BLE", "C90", "E", "F", "I", "PL", "PTH", "SIM", "UP", "W"]
 
 [tool.mypy]
 python_version = "3.12"
 strict = true
-exclude = ["_site/"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

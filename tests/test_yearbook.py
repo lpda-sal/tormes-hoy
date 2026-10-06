@@ -5,6 +5,8 @@ from pathlib import Path
 from tormes_hoy import yearbook
 from tormes_hoy.config import Config
 
+EXPECTED_DAYS_IN_LEAP_YEAR = 366
+
 
 def _write_csv(path: Path, years: range, level_jump_year: int | None) -> None:
     lines = ["date,flow_m3s,level_m"]
@@ -29,7 +31,7 @@ def test_stats_use_last_ten_complete_years(
     flow = payload["variables"]["flow_m3s"]
     assert flow["years"] == list(range(2015, 2025))
     assert flow["period"] == "2015-2024"
-    assert len(flow["stats"]) == 366
+    assert len(flow["stats"]) == EXPECTED_DAYS_IN_LEAP_YEAR
     first = flow["stats"][0]
     assert first["p25"] <= first["p50"] <= first["p75"]
     assert payload["source"]["kind"] == "validated"

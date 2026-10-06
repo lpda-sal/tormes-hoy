@@ -108,7 +108,8 @@ def day_of_year_stats(
         pool: list[float] = []
         for offset in range(-window, window + 1):
             pool.extend(slots.get((index + offset) % 366, []))
-        if len(pool) < 2:
+        minimum_samples = 2
+        if len(pool) < minimum_samples:
             out.append({"md": ref.strftime("%m-%d"), "n": len(pool)})
             continue
         q1, q2, q3 = quantiles(pool, n=4, method="inclusive")

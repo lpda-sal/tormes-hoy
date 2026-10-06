@@ -6,6 +6,9 @@ from tormes_hoy import river
 from .conftest import TZ
 
 NOW = datetime(2026, 10, 5, 17, 0, tzinfo=ZoneInfo(TZ))
+EXPECTED_DAILY_READING_COUNT = 2
+PARTIAL_DAY_FLOW_MEAN = 99
+CURRENT_DAY_FLOW_MEAN = 7.0
 
 
 def _reading(
@@ -25,7 +28,7 @@ def test_daily_aggregation() -> None:
     readings = [_reading(3, 7.0, 1.30), _reading(2, 9.0, 1.40)]
     (day,) = river.daily_from_readings(readings)
     assert day["flow_m3s"] == {"min": 7.0, "mean": 8.0, "max": 9.0}
-    assert day["n"] == 2
+    assert day["n"] == EXPECTED_DAILY_READING_COUNT
 
 
 def test_merge_daily_keeps_old_days_and_skips_partial_oldest() -> None:
@@ -37,8 +40,10 @@ def test_merge_daily_keeps_old_days_and_skips_partial_oldest() -> None:
     daily = river.merge_daily(previous, readings, NOW, 2)
     by_date = {d["date"]: d for d in daily}
     assert by_date["2025-12-01"]["flow_m3s"]["mean"] == 1
-    assert by_date["2026-10-04"]["flow_m3s"]["mean"] == 99  # partial skipped
-    assert by_date["2026-10-05"]["flow_m3s"]["mean"] == 7.0
+    assert (
+        by_date["2026-10-04"]["flow_m3s"]["mean"] == PARTIAL_DAY_FLOW_MEAN
+    )  # partial skipped
+    assert by_date["2026-10-05"]["flow_m3s"]["mean"] == CURRENT_DAY_FLOW_MEAN
 
 
 def test_merge_daily_keeps_previous_and_current_calendar_year() -> None:

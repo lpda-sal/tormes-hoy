@@ -6,6 +6,8 @@ from tormes_hoy.sources import openmeteo
 
 from .conftest import TZ, load_fixture
 
+HOURS_PER_DAY = 24
+
 
 def test_risk_levels() -> None:
     assert uv.risk_level(None) is None
@@ -31,7 +33,7 @@ def test_summarize_today() -> None:
     hourly = openmeteo.parse(load_fixture("openmeteo_forecast.json"))["hourly"]
     now = datetime(2026, 10, 5, 13, 30, tzinfo=ZoneInfo(TZ))
     block = uv.summarize(hourly, now, 3)
-    assert len(block["hourly"]) == 24
+    assert len(block["hourly"]) == HOURS_PER_DAY
     assert block["now"] == hourly[13]["uv"]
-    assert block["max"] == max(r["uv"] for r in hourly[:24])
+    assert block["max"] == max(r["uv"] for r in hourly[:HOURS_PER_DAY])
     assert block["protection"] is not None
