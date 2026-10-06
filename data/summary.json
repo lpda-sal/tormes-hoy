@@ -1,0 +1,225 @@
+{
+ "schema_version": 1,
+ "generated_at": "2026-10-06T19:08:43+02:00",
+ "app": {
+  "name": "Tormes Hoy",
+  "short_name": "Tormes Hoy"
+ },
+ "location": {
+  "id": "salamanca",
+  "name": "Salamanca",
+  "lat": 40.965,
+  "lon": -5.664,
+  "timezone": "Europe/Madrid"
+ },
+ "weather_now": {
+  "status": "error",
+  "source": {
+   "name": "aemet",
+   "label": "AEMET",
+   "attribution": "© AEMET. Información elaborada por AEMET"
+  },
+  "fetched_at": null,
+  "error": "AEMET_API_KEY not set",
+  "data": null
+ },
+ "weather_now_model": {
+  "status": "ok",
+  "source": {
+   "name": "openmeteo",
+   "label": "Open-Meteo",
+   "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+  },
+  "data": {
+   "time": "2026-10-06T19:00",
+   "temperature": 17.8,
+   "apparent_temperature": 16.7,
+   "humidity": 68,
+   "weather_code": 3,
+   "wind_speed": 11.3,
+   "wind_direction": 261,
+   "precipitation": 0.0,
+   "uv": 0.65
+  }
+ },
+ "today": {
+  "status": "ok",
+  "source": {
+   "name": "openmeteo",
+   "label": "Open-Meteo",
+   "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+  },
+  "data": [
+   {
+    "time": "2026-10-06T19:00",
+    "temperature": 17.8,
+    "apparent_temperature": 16.7,
+    "precipitation_probability": 20,
+    "precipitation": 0.0,
+    "weather_code": 3,
+    "wind_speed": 11.3,
+    "uv": 1.0
+   },
+   {
+    "time": "2026-10-06T20:00",
+    "temperature": 16.8,
+    "apparent_temperature": 16.3,
+    "precipitation_probability": 15,
+    "precipitation": 0.0,
+    "weather_code": 3,
+    "wind_speed": 7.6,
+    "uv": 0.2
+   },
+   {
+    "time": "2026-10-06T21:00",
+    "temperature": 15.5,
+    "apparent_temperature": 15.7,
+    "precipitation_probability": 25,
+    "precipitation": 0.2,
+    "weather_code": 80,
+    "wind_speed": 4.2,
+    "uv": 0.0
+   },
+   {
+    "time": "2026-10-06T22:00",
+    "temperature": 14.8,
+    "apparent_temperature": 15.1,
+    "precipitation_probability": 28,
+    "precipitation": 0.1,
+    "weather_code": 3,
+    "wind_speed": 3.9,
+    "uv": 0.0
+   },
+   {
+    "time": "2026-10-06T23:00",
+    "temperature": 13.9,
+    "apparent_temperature": 14.0,
+    "precipitation_probability": 8,
+    "precipitation": 0.2,
+    "weather_code": 80,
+    "wind_speed": 4.6,
+    "uv": 0.0
+   }
+  ]
+ },
+ "uv": {
+  "status": "ok",
+  "source": {
+   "name": "openmeteo",
+   "label": "Open-Meteo",
+   "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+  },
+  "data": {
+   "date": "2026-10-06",
+   "threshold": 3,
+   "now": 1.0,
+   "now_level": "low",
+   "max": 5.1,
+   "max_time": "14:00",
+   "max_level": "moderate",
+   "protection": {
+    "from": "13:00",
+    "to": "17:00"
+   }
+  }
+ },
+ "river": {
+  "status": "error",
+  "source": {
+   "name": "chd",
+   "label": "CHD (SAIH Duero)",
+   "attribution": "Confederación Hidrográfica del Duero",
+   "kind": "provisional",
+   "station": "EA087"
+  },
+  "error": "river.current_url not configured (pending review)",
+  "data": null
+ },
+ "next_days": {
+  "status": "ok",
+  "source": {
+   "name": "openmeteo",
+   "label": "Open-Meteo",
+   "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+  },
+  "data": [
+   {
+    "date": "2026-10-06",
+    "weather_code": 80,
+    "temperature_max": 20.6,
+    "temperature_min": 13.8,
+    "precipitation_probability": 70,
+    "precipitation": 2.5,
+    "uv_max": 5.1,
+    "sunrise": "2026-10-06T08:24",
+    "sunset": "2026-10-06T19:56"
+   },
+   {
+    "date": "2026-10-07",
+    "weather_code": 80,
+    "temperature_max": 18.6,
+    "temperature_min": 12.3,
+    "precipitation_probability": 48,
+    "precipitation": 2.3,
+    "uv_max": 5.15,
+    "sunrise": "2026-10-07T08:25",
+    "sunset": "2026-10-07T19:55"
+   },
+   {
+    "date": "2026-10-08",
+    "weather_code": 2,
+    "temperature_max": 17.9,
+    "temperature_min": 9.3,
+    "precipitation_probability": 5,
+    "precipitation": 0.0,
+    "uv_max": 5.15,
+    "sunrise": "2026-10-08T08:26",
+    "sunset": "2026-10-08T19:53"
+   },
+   {
+    "date": "2026-10-09",
+    "weather_code": 2,
+    "temperature_max": 18.2,
+    "temperature_min": 4.6,
+    "precipitation_probability": 0,
+    "precipitation": 0.0,
+    "uv_max": 5.2,
+    "sunrise": "2026-10-09T08:27",
+    "sunset": "2026-10-09T19:51"
+   },
+   {
+    "date": "2026-10-10",
+    "weather_code": 3,
+    "temperature_max": 20.5,
+    "temperature_min": 5.7,
+    "precipitation_probability": 0,
+    "precipitation": 0.0,
+    "uv_max": 5.1,
+    "sunrise": "2026-10-10T08:28",
+    "sunset": "2026-10-10T19:50"
+   },
+   {
+    "date": "2026-10-11",
+    "weather_code": 45,
+    "temperature_max": 23.0,
+    "temperature_min": 7.7,
+    "precipitation_probability": 0,
+    "precipitation": 0.0,
+    "uv_max": 4.75,
+    "sunrise": "2026-10-11T08:29",
+    "sunset": "2026-10-11T19:48"
+   },
+   {
+    "date": "2026-10-12",
+    "weather_code": 2,
+    "temperature_max": 24.8,
+    "temperature_min": 7.7,
+    "precipitation_probability": 0,
+    "precipitation": 0.0,
+    "uv_max": 4.75,
+    "sunrise": "2026-10-12T08:30",
+    "sunset": "2026-10-12T19:47"
+   }
+  ]
+ }
+}

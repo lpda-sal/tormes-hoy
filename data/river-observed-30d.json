@@ -1,0 +1,34 @@
+{
+ "schema_version": 1,
+ "generated_at": "2026-10-06T19:08:43+02:00",
+ "app": {
+  "name": "Tormes Hoy",
+  "short_name": "Tormes Hoy"
+ },
+ "location": {
+  "id": "salamanca",
+  "name": "Salamanca",
+  "lat": 40.965,
+  "lon": -5.664,
+  "timezone": "Europe/Madrid"
+ },
+ "source": {
+  "label": "CHD (SAIH Duero)",
+  "attribution": "Confederación Hidrográfica del Duero",
+  "kind": "provisional",
+  "station": "EA087"
+ },
+ "current": {
+  "status": "error",
+  "source": {
+   "name": "chd",
+   "label": "CHD (SAIH Duero)",
+   "attribution": "Confederación Hidrográfica del Duero",
+   "kind": "provisional"
+  },
+  "fetched_at": null,
+  "error": "river.current_url not configured (pending review)",
+  "data": null
+ },
+ "readings": []
+}
