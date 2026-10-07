@@ -4,22 +4,24 @@ import json
 import urllib.request
 from typing import Any
 
-USER_AGENT = "tormes-hoy/0.1 (+https://github.com/)"
-DEFAULT_TIMEOUT_S = 20
+from tormes_hoy import __version__
+
+_USER_AGENT = f"tormes-hoy/{__version__} (+https://github.com/)"
+_DEFAULT_TIMEOUT_S = 20
 
 
 class HttpError(RuntimeError):
     """Raised when a request fails or returns an unusable body."""
 
 
-def get_bytes(
+def _get_bytes(
     url: str,
     headers: dict[str, str] | None = None,
-    timeout: float = DEFAULT_TIMEOUT_S,
+    timeout: float = _DEFAULT_TIMEOUT_S,
 ) -> tuple[bytes, str | None]:
     """Fetch ``url`` and return its body and declared charset."""
     request = urllib.request.Request(
-        url, headers={"User-Agent": USER_AGENT, **(headers or {})}
+        url, headers={"User-Agent": _USER_AGENT, **(headers or {})}
     )
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
@@ -32,14 +34,14 @@ def get_bytes(
 def get_json(
     url: str,
     headers: dict[str, str] | None = None,
-    timeout: float = DEFAULT_TIMEOUT_S,
+    timeout: float = _DEFAULT_TIMEOUT_S,
 ) -> Any:
     """Fetch ``url`` and decode it as JSON.
 
     AEMET serves some payloads as ISO-8859-15 without always declaring it,
     so UTF-8 is tried first and Latin-9 is used as a fallback.
     """
-    body, charset = get_bytes(url, headers, timeout)
+    body, charset = _get_bytes(url, headers, timeout)
     for encoding in (charset, "utf-8", "iso-8859-15"):
         if not encoding:
             continue
@@ -48,6 +50,23 @@ def get_json(
         except (UnicodeDecodeError, json.JSONDecodeError):
             continue
     raise HttpError(f"GET {_redact(url)} returned invalid JSON")
+
+
+def get_text(
+    url: str,
+    headers: dict[str, str] | None = None,
+    timeout: float = _DEFAULT_TIMEOUT_S,
+) -> str:
+    """Fetch ``url`` and decode its body using the declared charset."""
+    body, charset = _get_bytes(url, headers, timeout)
+    for encoding in (charset, "utf-8", "iso-8859-15"):
+        if not encoding:
+            continue
+        try:
+            return body.decode(encoding)
+        except (LookupError, UnicodeDecodeError):
+            continue
+    raise HttpError(f"GET {_redact(url)} returned invalid text")
 
 
 def _redact(url: str) -> str:

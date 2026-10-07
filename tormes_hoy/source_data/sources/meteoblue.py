@@ -9,16 +9,16 @@ from datetime import datetime
 from typing import Any
 from urllib.parse import urlencode
 
-from tormes_hoy.config import Config
-from tormes_hoy.models import JsonDict
-from tormes_hoy.net import get_json
-from tormes_hoy.timeutil import is_older_than, parse_local
+from tormes_hoy.source_data.network_client import get_json
+from tormes_hoy.utils.config import Config
+from tormes_hoy.utils.models import JsonDict
+from tormes_hoy.utils.timeutil import is_older_than, parse_local
 
 NAME = "meteoblue"
 META: JsonDict = {"label": "Meteoblue", "attribution": "© meteoblue"}
 
 
-def build_url(config: Config, api_key: str) -> str:
+def _build_url(config: Config, api_key: str) -> str:
     """Return the package URL for the configured location."""
     params = {
         "lat": config.location.lat,
@@ -54,7 +54,7 @@ def _local_minute(value: str) -> str:
     return value.strip().replace(" ", "T")[:16]
 
 
-def parse(payload: JsonDict) -> JsonDict:
+def _parse(payload: JsonDict) -> JsonDict:
     """Normalise a ``basic-1h_basic-day`` response.
 
     Raises:
@@ -107,4 +107,4 @@ def fetch(
     config: Config, api_key: str, get: Callable[[str], Any] = get_json
 ) -> JsonDict:
     """Download and normalise the forecast (spends credits)."""
-    return parse(get(build_url(config, api_key)))
+    return _parse(get(_build_url(config, api_key)))

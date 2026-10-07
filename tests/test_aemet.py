@@ -4,9 +4,9 @@ from zoneinfo import ZoneInfo
 
 import pytest
 
-from tormes_hoy.config import Config
-from tormes_hoy.net import HttpError
-from tormes_hoy.sources import aemet
+from tormes_hoy.source_data.network_client import HttpError
+from tormes_hoy.source_data.sources import aemet
+from tormes_hoy.utils.config import Config
 
 from .conftest import TZ, load_fixture
 
@@ -19,7 +19,7 @@ EXPECTED_DAILY_MAX_TEMPERATURE_C = 22
 
 
 def test_observation_takes_latest_and_converts_units() -> None:
-    obs = aemet.parse_observation(load_fixture("aemet_observation.json"), TZ)
+    obs = aemet._parse_observation(load_fixture("aemet_observation.json"), TZ)
     # 15:00 UTC is 17:00 in Madrid (CEST).
     assert obs["time"] == "2026-10-05T17:00:00+02:00"
     assert obs["temperature"] == EXPECTED_TEMPERATURE_C
@@ -28,11 +28,11 @@ def test_observation_takes_latest_and_converts_units() -> None:
 
 def test_observation_without_records_fails() -> None:
     with pytest.raises(ValueError):
-        aemet.parse_observation([], TZ)
+        aemet._parse_observation([], TZ)
 
 
 def test_hourly_forecast_maps_probability_blocks() -> None:
-    data = aemet.parse_hourly_forecast(load_fixture("aemet_hourly.json"), TZ)
+    data = aemet._parse_hourly_forecast(load_fixture("aemet_hourly.json"), TZ)
     rows = {r["time"]: r for r in data["hourly"]}
     assert (
         rows["2026-10-05T18:00"]["precipitation_probability"]
@@ -50,7 +50,7 @@ def test_hourly_forecast_maps_probability_blocks() -> None:
 
 
 def test_daily_forecast_uses_whole_day_values() -> None:
-    data = aemet.parse_daily_forecast(load_fixture("aemet_daily.json"))
+    data = aemet._parse_daily_forecast(load_fixture("aemet_daily.json"))
     first = data["daily"][0]
     assert (
         first["precipitation_probability"]
@@ -70,13 +70,13 @@ def test_resolve_follows_datos_url() -> None:
             return {"estado": 200, "datos": "https://x/data"}
         return [{"ok": True}]
 
-    assert aemet.resolve("https://x/first", "k", fake_get) == [{"ok": True}]
+    assert aemet._resolve("https://x/first", "k", fake_get) == [{"ok": True}]
     assert calls == ["https://x/first", "https://x/data"]
 
 
 def test_resolve_raises_on_api_error() -> None:
     with pytest.raises(HttpError):
-        aemet.resolve("u", "k", lambda url, h: {"estado": 401})
+        aemet._resolve("u", "k", lambda url, h: {"estado": 401})
 
 
 def test_fetch_observation_builds_station_url(config: Config) -> None:

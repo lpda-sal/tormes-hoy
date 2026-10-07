@@ -7,23 +7,27 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any
 
-from tormes_hoy import river, uv
-from tormes_hoy.config import Config
-from tormes_hoy.models import (
+from tormes_hoy.source_data import observed_river as river
+from tormes_hoy.source_data.data_files import build_files, write_files
+from tormes_hoy.source_data.sources import aemet, chd, meteoblue, openmeteo
+from tormes_hoy.utils.config import Config, load_config
+from tormes_hoy.utils.models import (
     JsonDict,
     SourceResult,
-    envelope,
     previous_block,
     reuse_or_error,
 )
-from tormes_hoy.sources import aemet, chd, meteoblue, openmeteo
-from tormes_hoy.timeutil import is_older_than, iso, now_in, parse_local
+from tormes_hoy.utils.timeutil import (
+    is_older_than,
+    iso,
+    now_in,
+    parse_local,
+)
 
 log = logging.getLogger(__name__)
 
-FILES = (
+_FILES = (
     "summary.json",
     "weather.json",
     "uv.json",
@@ -33,7 +37,7 @@ FILES = (
 
 
 @dataclass(frozen=True)
-class Fetchers:
+class _Fetchers:
     """Injectable I/O functions (replaced by fakes in tests)."""
 
     openmeteo: Callable[[Config], JsonDict] = openmeteo.fetch
@@ -45,10 +49,10 @@ class Fetchers:
     chd: Callable[[Config], JsonDict] = chd.fetch
 
 
-def load_previous(data_dir: Path) -> dict[str, JsonDict | None]:
+def _load_previous(data_dir: Path) -> dict[str, JsonDict | None]:
     """Load previously generated files (missing or broken -> None)."""
     previous: dict[str, JsonDict | None] = {}
-    for name in FILES:
+    for name in _FILES:
         path = data_dir / name
         try:
             content = json.loads(path.read_text(encoding="utf-8"))
@@ -78,11 +82,11 @@ def _missing_key(name: str, meta: JsonDict, var: str) -> SourceResult:
     return SourceResult(name, "error", error=f"{var} not set", meta=meta)
 
 
-def collect_weather(
+def _collect_weather(
     config: Config,
     now: datetime,
     env: Mapping[str, str],
-    fetchers: Fetchers,
+    fetchers: _Fetchers,
     previous: dict[str, JsonDict | None],
 ) -> dict[str, SourceResult]:
     """Query weather sources (observation and three forecasts)."""
@@ -141,7 +145,7 @@ def _collect_meteoblue(
     config: Config,
     now: datetime,
     env: Mapping[str, str],
-    fetchers: Fetchers,
+    fetchers: _Fetchers,
     prev: JsonDict | None,
 ) -> SourceResult:
     """Meteoblue is only queried every ``refresh_every_hours`` (credits)."""
@@ -179,10 +183,10 @@ def _collect_meteoblue(
     )
 
 
-def collect_river(
+def _collect_river(
     config: Config,
     now: datetime,
-    fetchers: Fetchers,
+    fetchers: _Fetchers,
     previous: dict[str, JsonDict | None],
 ) -> tuple[SourceResult, list[JsonDict], list[JsonDict]]:
     """Query the current reading and update the observed history."""
@@ -214,115 +218,33 @@ def collect_river(
     return current, readings, daily
 
 
-def _rest_of_day(hourly: list[JsonDict], now: datetime) -> list[JsonDict]:
-    start = now.strftime("%Y-%m-%dT%H:00")
-    today = now.strftime("%Y-%m-%d")
-    return [
-        r
-        for r in hourly
-        if str(r["time"]) >= start and str(r["time"]).startswith(today)
-    ]
-
-
-def build_files(
-    config: Config,
-    now: datetime,
-    weather: dict[str, SourceResult],
-    river_data: tuple[SourceResult, list[JsonDict], list[JsonDict]],
-) -> dict[str, JsonDict]:
-    """Assemble every output file from the collected results."""
-    river_current, readings, daily = river_data
-    om = weather["openmeteo"]
-    om_data: JsonDict = om.data or {}
-    hourly: list[JsonDict] = om_data.get("hourly") or []
-    uv_block = uv.summarize(hourly, now, config.uv.protection_threshold)
-    trend = river.trend(
-        readings,
-        config.river.trend_window_hours,
-        config.river.trend_flow_ratio,
-        config.river.trend_level_m,
-        config.location.timezone,
-    )
-    river_meta = {**chd.META, "station": config.river.station}
-
-    summary: JsonDict = {
-        "weather_now": weather["observation"].to_dict(),
-        "weather_now_model": {
-            "status": om.status,
-            "source": {"name": om.name, **om.meta},
-            "data": om_data.get("current"),
-        },
-        "today": {
-            "status": om.status,
-            "source": {"name": om.name, **om.meta},
-            "data": _rest_of_day(hourly, now),
-        },
-        "uv": {
-            "status": om.status,
-            "source": {"name": om.name, **om.meta},
-            "data": {k: v for k, v in uv_block.items() if k != "hourly"},
-        },
-        "river": {
-            "status": river_current.status,
-            "source": {"name": chd.NAME, **river_meta},
-            "error": river_current.error,
-            "data": (
-                {**river_current.data, "trend": trend}
-                if river_current.data
-                else None
-            ),
-        },
-        "next_days": {
-            "status": om.status,
-            "source": {"name": om.name, **om.meta},
-            "data": om_data.get("daily") or [],
-        },
-    }
-    files: dict[str, JsonDict] = {
-        "summary.json": summary,
-        "weather.json": {
-            "observation": weather["observation"].to_dict(),
-            "forecasts": {
-                key: weather[key].to_dict()
-                for key in ("aemet", "openmeteo", "meteoblue")
-            },
-        },
-        "uv.json": {
-            "status": om.status,
-            "source": {"name": om.name, **om.meta},
-            "data": uv_block,
-        },
-        "river-observed-30d.json": {
-            "source": river_meta,
-            "current": river_current.to_dict(),
-            "readings": readings,
-        },
-        "river-observed-daily.json": {"source": river_meta, "daily": daily},
-    }
-    return {name: envelope(config, now, body) for name, body in files.items()}
-
-
-def run(
+def _run(
     config: Config,
     now: datetime | None = None,
     env: Mapping[str, str] | None = None,
-    fetchers: Fetchers | None = None,
+    fetchers: _Fetchers | None = None,
 ) -> dict[str, JsonDict]:
     """Collect everything and return ``{file_name: content}``."""
     now = now or now_in(config.location.timezone)
     env = os.environ if env is None else env
-    fetchers = fetchers or Fetchers()
-    previous = load_previous(config.data_dir)
-    weather = collect_weather(config, now, env, fetchers, previous)
-    river_data = collect_river(config, now, fetchers, previous)
+    fetchers = fetchers or _Fetchers()
+    previous = _load_previous(config.data_dir)
+    weather = _collect_weather(config, now, env, fetchers, previous)
+    river_data = _collect_river(config, now, fetchers, previous)
     return build_files(config, now, weather, river_data)
 
 
-def write_files(data_dir: Path, files: dict[str, Any]) -> None:
-    """Write JSON files (compact indentation keeps git diffs readable)."""
-    data_dir.mkdir(parents=True, exist_ok=True)
-    for name, content in files.items():
-        (data_dir / name).write_text(
-            json.dumps(content, ensure_ascii=False, indent=1) + "\n",
-            encoding="utf-8",
-        )
+def main() -> int:
+    """Collect data, write ``data/*.json`` and print source statuses.
+
+    Always returns 0: a failing source is reported in the data, not by
+    failing the scheduled job.
+    """
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    config = load_config()
+    files = _run(config)
+    write_files(config.data_dir, files)
+    summary = files["summary.json"]
+    for key in ("weather_now", "today", "uv", "river", "next_days"):
+        print(f"{key}: {summary[key]['status']}")
+    return 0

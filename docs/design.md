@@ -5,18 +5,18 @@
 - Glanceable summary on a phone/tablet; detail views on tap.
 - Free, no ads, no servers to maintain, minimal GitHub Actions time.
 - Location-independent code: everything location-specific is in
-  `tormes_hoy/config.toml`.
+  `tormes_hoy/config/config.toml`.
 
 ## Architecture
 
 ```text
 ┌──────────── GitHub Actions: update-data.yml (cron 17 * * * *) ────────────┐
-│ python3 -m tormes_hoy                                                      │
+│ python3 -m tormes_hoy.collect_data                                          │
 │   sources/openmeteo  sources/aemet  sources/meteoblue(6 h)  sources/chd    │
-│        └──────────── collect.py (isolation, stale reuse) ────────────┘     │
-│   writes data/*.json ─► git commit ─► tormes_hoy.site ─► deploy Pages      │
+│        └── source_data/collector.py (isolation, stale reuse) ──────────┘   │
+│   writes data/*.json ─► git commit ─► tormes_hoy.build_site ─► deploy Pages│
 └────────────────────────────────────────────────────────────────────────────┘
-Locally, once a year: python -m tormes_hoy.yearbook daily.csv
+Locally, once a year: tormes-hoy-build-yearbook daily.csv
                       ─► data/river-yearbook-stats.json (commit by hand)
 ```
 

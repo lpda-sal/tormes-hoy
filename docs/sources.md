@@ -1,19 +1,20 @@
 # Data sources
 
-| Source | Used for | Auth | Module |
+| Source | Used for | Auth | Module (relative to `tormes_hoy/`) |
 |---|---|---|---|
-| AEMET OpenData – conventional observation (`/observacion/convencional/datos/estacion/{idema}`) | Weather now | `AEMET_API_KEY` (free) | `sources/aemet.py` |
-| AEMET OpenData – municipality forecast (`/prediccion/especifica/municipio/{horaria,diaria}/{code}`) | Forecast comparison | same | `sources/aemet.py` |
-| Open-Meteo `/v1/forecast` | Summary forecast, UV, comparison | none | `sources/openmeteo.py` |
-| Meteoblue `basic-1h_basic-day` | Forecast comparison | `METEOBLUE_API_KEY` (1-year free trial) | `sources/meteoblue.py` |
-| CHD open data "Estado Aforos" | River now | none | `sources/chd.py` |
-| CHD yearbooks (anuarios de aforos) | River statistics | none | `tormes_hoy/yearbook.py` |
+| AEMET OpenData – conventional observation (`/observacion/convencional/datos/estacion/{idema}`) | Weather now | `AEMET_API_KEY` (free) | `source_data/sources/aemet.py` |
+| AEMET OpenData – municipality forecast (`/prediccion/especifica/municipio/{horaria,diaria}/{code}`) | Forecast comparison | same | `source_data/sources/aemet.py` |
+| Open-Meteo `/v1/forecast` | Summary forecast, UV, comparison | none | `source_data/sources/openmeteo.py` |
+| Meteoblue `basic-1h_basic-day` | Forecast comparison | `METEOBLUE_API_KEY` (1-year free trial) | `source_data/sources/meteoblue.py` |
+| SAIH Duero station EA087 | River now | none | `source_data/sources/chd.py` |
+| CHD yearbooks (anuarios de aforos) | River statistics | none | `yearbook/builder.py` |
 
 ## AEMET
 
 Two-step API: the first call returns `{"estado": 200, "datos": url}`; the
 data is downloaded from `datos`. Payloads may be ISO-8859-15 (handled in
-`net.get_json`). Observation `fint` is assumed UTC; wind `vv` m/s → km/h.
+`source_data/network_client.get_json`). Observation `fint` is assumed UTC;
+wind `vv` m/s → km/h.
 
 ## Meteoblue budget
 
@@ -25,22 +26,23 @@ after the trial, the source reports `error` and the rest keeps working.
 
 ## CHD current readings
 
-Endpoint and field names are configurable (`[river]` in `config.toml`)
-until verified. The parser accepts a list of records or common wrappers
-(`data`, `datos`, `features[].properties`…), decimal commas, and
-`YYYY-MM-DD HH:MM` local times.
+The collector reads the official station page at
+`https://www.saihduero.es/risr/EA087`. Its `Nivel` and `Caudal` table uses
+decimal commas and local `DD/MM/YYYY HH:MM` timestamps. These readings are
+provisional and may be revised by SAIH Duero.
 
 ## Yearbook import (once a year, locally)
 
 1. Download the yearbook data of the Salamanca station (check its code in
    the yearbooks; it may differ from `EA087`).
-2. Build a CSV, one row per day:
+2. Build a normalised CSV, one row per day (the CLI expects CSV, not
+   `data/river-observed-daily.json`):
    ```csv
    date,flow_m3s,level_m
    2015-01-01,12.4,0.98
    ```
    Empty cells are allowed. Years with < 300 values are ignored.
-3. Run `python -m tormes_hoy.yearbook path/to/daily.csv` and commit
+3. Run `tormes-hoy-build-yearbook path/to/daily.csv` and commit
    `data/river-yearbook-stats.json`.
 
 The statistics use the last 10 complete years **available in the

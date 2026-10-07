@@ -4,9 +4,9 @@ from collections.abc import Callable
 from typing import Any
 from urllib.parse import urlencode
 
-from tormes_hoy.config import Config
-from tormes_hoy.models import JsonDict
-from tormes_hoy.net import get_json
+from tormes_hoy.source_data.network_client import get_json
+from tormes_hoy.utils.config import Config
+from tormes_hoy.utils.models import JsonDict
 
 NAME = "openmeteo"
 META: JsonDict = {
@@ -14,7 +14,7 @@ META: JsonDict = {
     "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)",
 }
 
-HOURLY_VARS = (
+_HOURLY_VARS = (
     "temperature_2m",
     "apparent_temperature",
     "precipitation_probability",
@@ -23,7 +23,7 @@ HOURLY_VARS = (
     "wind_speed_10m",
     "uv_index",
 )
-DAILY_VARS = (
+_DAILY_VARS = (
     "weather_code",
     "temperature_2m_max",
     "temperature_2m_min",
@@ -33,7 +33,7 @@ DAILY_VARS = (
     "sunrise",
     "sunset",
 )
-CURRENT_VARS = (
+_CURRENT_VARS = (
     "temperature_2m",
     "apparent_temperature",
     "relative_humidity_2m",
@@ -45,7 +45,7 @@ CURRENT_VARS = (
 )
 
 
-def build_url(config: Config) -> str:
+def _build_url(config: Config) -> str:
     """Return the forecast URL for the configured location."""
     params = {
         "latitude": config.location.lat,
@@ -53,9 +53,9 @@ def build_url(config: Config) -> str:
         "timezone": config.location.timezone,
         "forecast_days": config.openmeteo.forecast_days,
         "wind_speed_unit": "kmh",
-        "current": ",".join(CURRENT_VARS),
-        "hourly": ",".join(HOURLY_VARS),
-        "daily": ",".join(DAILY_VARS),
+        "current": ",".join(_CURRENT_VARS),
+        "hourly": ",".join(_HOURLY_VARS),
+        "daily": ",".join(_DAILY_VARS),
     }
     return f"{config.openmeteo.base_url}?{urlencode(params)}"
 
@@ -65,7 +65,7 @@ def _column(block: JsonDict, name: str, length: int) -> list[Any]:
     return list(values) if isinstance(values, list) else [None] * length
 
 
-def parse(payload: JsonDict) -> JsonDict:
+def _parse(payload: JsonDict) -> JsonDict:
     """Normalise an Open-Meteo response.
 
     Times are local (the request sets ``timezone``) and kept as
@@ -81,7 +81,7 @@ def parse(payload: JsonDict) -> JsonDict:
 
     times = hourly.get("time") or []
     n = len(times)
-    cols = {v: _column(hourly, v, n) for v in HOURLY_VARS}
+    cols = {v: _column(hourly, v, n) for v in _HOURLY_VARS}
     hourly_rows = [
         {
             "time": times[i],
@@ -98,7 +98,7 @@ def parse(payload: JsonDict) -> JsonDict:
 
     days = daily.get("time") or []
     m = len(days)
-    dcols = {v: _column(daily, v, m) for v in DAILY_VARS}
+    dcols = {v: _column(daily, v, m) for v in _DAILY_VARS}
     daily_rows = [
         {
             "date": days[i],
@@ -135,4 +135,4 @@ def parse(payload: JsonDict) -> JsonDict:
 
 def fetch(config: Config, get: Callable[[str], Any] = get_json) -> JsonDict:
     """Download and normalise the forecast."""
-    return parse(get(build_url(config)))
+    return _parse(get(_build_url(config)))

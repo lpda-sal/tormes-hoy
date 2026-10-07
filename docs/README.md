@@ -2,7 +2,7 @@ It runs without servers:
 
 ```text
 GitHub Actions (hourly, ~30 s)          GitHub Pages
-python -m tormes_hoy  ──► data/*.json ──► web/ (PWA) ──► phone / tablet
+python -m tormes_hoy.collect_data  ──► data/*.json ──► web/ (PWA) ──► phone / tablet
 ```
 
 ## Screens
@@ -21,23 +21,20 @@ mamba env create -f environment.yaml
 mamba activate tormes-hoy
 pytest
 
-# Preview with synthetic data (no API keys needed)
-python scripts/demo_data.py --out _demo
-python -m tormes_hoy.site --data _demo
-python -m http.server -d _site 8000      # http://localhost:8000
-
-# Real collection
+# Collect current data (requires API keys)
 export AEMET_API_KEY=...  METEOBLUE_API_KEY=...
-python -m tormes_hoy                     # writes data/*.json
+tormes-hoy-collect-data                   # writes data/*.json
+tormes-hoy-build-site
+python -m http.server -d _site 8000      # http://localhost:8000
 ```
 
 ## Documentation
 
-- [`design.md`](ddesign.md) — architecture and decisions
+- [`design.md`](design.md) — architecture and decisions
 - [`data-contract.md`](data-contract.md) — JSON files
 - [`sources.md`](sources.md) — data sources and yearbook import
 - [`operations.md`](operations.md) — GitHub setup and Actions budget
-- [`docs/review.md`](docs/review.md) — **items to verify before going live**
+- [`review.md`](review.md) — **items to verify before going live**
 - [`../AGENTS.md`](../AGENTS.md) — rules for AI coding agents
 
 Charts use [Chart.js](https://www.chartjs.org) 3.9.1 (MIT), vendored in

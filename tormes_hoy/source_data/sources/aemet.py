@@ -10,10 +10,15 @@ from collections.abc import Callable
 from datetime import datetime
 from typing import Any
 
-from tormes_hoy.config import Config
-from tormes_hoy.models import JsonDict
-from tormes_hoy.net import HttpError, get_json
-from tormes_hoy.timeutil import is_older_than, iso, parse_local, parse_utc
+from tormes_hoy.source_data.network_client import HttpError, get_json
+from tormes_hoy.utils.config import Config
+from tormes_hoy.utils.models import JsonDict
+from tormes_hoy.utils.timeutil import (
+    is_older_than,
+    iso,
+    parse_local,
+    parse_utc,
+)
 
 NAME = "aemet"
 META: JsonDict = {
@@ -21,14 +26,14 @@ META: JsonDict = {
     "attribution": "© AEMET. Información elaborada por AEMET",
 }
 
-Getter = Callable[[str, dict[str, str]], Any]
+_Getter = Callable[[str, dict[str, str]], Any]
 
 
 def _get_with_key(url: str, headers: dict[str, str]) -> Any:
     return get_json(url, headers=headers)
 
 
-def resolve(url: str, api_key: str, get: Getter = _get_with_key) -> Any:
+def _resolve(url: str, api_key: str, get: _Getter = _get_with_key) -> Any:
     """Perform AEMET's two-step request and return the final data."""
     headers = {"api_key": api_key, "Accept": "application/json"}
     first = get(url, headers)
@@ -38,7 +43,7 @@ def resolve(url: str, api_key: str, get: Getter = _get_with_key) -> Any:
     return get(str(first["datos"]), {"Accept": "application/json"})
 
 
-def parse_observation(records: list[JsonDict], tz_name: str) -> JsonDict:
+def _parse_observation(records: list[JsonDict], tz_name: str) -> JsonDict:
     """Return the most recent observation of a station.
 
     ``fint`` is the end of the observation interval in UTC.
@@ -100,7 +105,7 @@ def _prob_for_hour(day: JsonDict, hour: int) -> float | None:
     return None
 
 
-def parse_hourly_forecast(payload: list[JsonDict], tz_name: str) -> JsonDict:
+def _parse_hourly_forecast(payload: list[JsonDict], tz_name: str) -> JsonDict:
     """Normalise the hourly municipality forecast."""
     days = payload[0]["prediccion"]["dia"]
     rows: list[JsonDict] = []
@@ -144,7 +149,7 @@ def _first_whole_day(items: list[JsonDict], key: str = "value") -> Any:
     return None
 
 
-def parse_daily_forecast(payload: list[JsonDict]) -> JsonDict:
+def _parse_daily_forecast(payload: list[JsonDict]) -> JsonDict:
     """Normalise the daily municipality forecast."""
     rows: list[JsonDict] = []
     for day in payload[0]["prediccion"]["dia"]:
@@ -167,30 +172,30 @@ def parse_daily_forecast(payload: list[JsonDict]) -> JsonDict:
 
 
 def fetch_observation(
-    config: Config, api_key: str, get: Getter = _get_with_key
+    config: Config, api_key: str, get: _Getter = _get_with_key
 ) -> JsonDict:
     """Download the latest observation of the configured station."""
     url = (
         f"{config.aemet.base_url}/observacion/convencional/datos/estacion/"
         f"{config.aemet.station_idema}"
     )
-    return parse_observation(
-        resolve(url, api_key, get), config.location.timezone
+    return _parse_observation(
+        _resolve(url, api_key, get), config.location.timezone
     )
 
 
 def fetch_forecast(
-    config: Config, api_key: str, get: Getter = _get_with_key
+    config: Config, api_key: str, get: _Getter = _get_with_key
 ) -> JsonDict:
     """Download hourly and daily forecasts for the configured municipality."""
     base = f"{config.aemet.base_url}/prediccion/especifica/municipio"
     code = config.aemet.municipality_code
-    hourly = parse_hourly_forecast(
-        resolve(f"{base}/horaria/{code}", api_key, get),
+    hourly = _parse_hourly_forecast(
+        _resolve(f"{base}/horaria/{code}", api_key, get),
         config.location.timezone,
     )
-    daily = parse_daily_forecast(
-        resolve(f"{base}/diaria/{code}", api_key, get)
+    daily = _parse_daily_forecast(
+        _resolve(f"{base}/diaria/{code}", api_key, get)
     )
     return {**hourly, **daily}
 

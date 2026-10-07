@@ -1,4 +1,4 @@
-from tormes_hoy.config import load_config
+from tormes_hoy.utils.config import load_config
 
 
 def test_location_is_centralized_in_config() -> None:

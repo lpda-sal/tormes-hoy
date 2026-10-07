@@ -2,9 +2,10 @@ from collections.abc import Collection
 from datetime import datetime, timedelta
 from typing import Any
 
-from tormes_hoy import collect
-from tormes_hoy.config import Config
-from tormes_hoy.sources import aemet, chd, meteoblue, openmeteo
+from tormes_hoy.source_data import collector as collect
+from tormes_hoy.source_data.data_files import write_files
+from tormes_hoy.source_data.sources import aemet, chd, meteoblue, openmeteo
+from tormes_hoy.utils.config import Config
 
 from .conftest import TZ, load_fixture
 
@@ -18,7 +19,7 @@ EXPECTED_METEOBLUE_CALLS_AFTER_REFRESH = 2
 def _fetchers(
     calls: dict[str, int] | None = None,
     fail: Collection[str] = (),
-) -> collect.Fetchers:
+) -> collect._Fetchers:
     calls = calls if calls is not None else {}
 
     def wrap(name: str, fn: Any) -> Any:
@@ -30,33 +31,39 @@ def _fetchers(
 
         return inner
 
-    return collect.Fetchers(
+    return collect._Fetchers(
         openmeteo=wrap(
             "openmeteo",
-            lambda c: openmeteo.parse(load_fixture("openmeteo_forecast.json")),
+            lambda c: openmeteo._parse(
+                load_fixture("openmeteo_forecast.json")
+            ),
         ),
         aemet_observation=wrap(
             "obs",
-            lambda c, k: aemet.parse_observation(
+            lambda c, k: aemet._parse_observation(
                 load_fixture("aemet_observation.json"), TZ
             ),
         ),
         aemet_forecast=wrap(
             "aemet",
             lambda c, k: {
-                **aemet.parse_hourly_forecast(
+                **aemet._parse_hourly_forecast(
                     load_fixture("aemet_hourly.json"), TZ
                 ),
-                **aemet.parse_daily_forecast(load_fixture("aemet_daily.json")),
+                **aemet._parse_daily_forecast(
+                    load_fixture("aemet_daily.json")
+                ),
             },
         ),
         meteoblue=wrap(
             "meteoblue",
-            lambda c, k: meteoblue.parse(load_fixture("meteoblue_basic.json")),
+            lambda c, k: meteoblue._parse(
+                load_fixture("meteoblue_basic.json")
+            ),
         ),
         chd=wrap(
             "chd",
-            lambda c: chd.parse_current(
+            lambda c: chd._parse_current(
                 load_fixture("chd_estado_aforos.json"), c.river, TZ
             ),
         ),
@@ -64,8 +71,8 @@ def _fetchers(
 
 
 def test_full_run_produces_all_files(config: Config, now: datetime) -> None:
-    files = collect.run(config, now, ENV, _fetchers())
-    assert set(files) == set(collect.FILES)
+    files = collect._run(config, now, ENV, _fetchers())
+    assert set(files) == set(collect._FILES)
     summary = files["summary.json"]
     assert summary["schema_version"] == 1
     assert summary["location"]["name"] == "Salamanca"
@@ -83,7 +90,9 @@ def test_full_run_produces_all_files(config: Config, now: datetime) -> None:
 
 
 def test_failing_source_is_isolated(config: Config, now: datetime) -> None:
-    files = collect.run(config, now, ENV, _fetchers(fail={"openmeteo", "chd"}))
+    files = collect._run(
+        config, now, ENV, _fetchers(fail={"openmeteo", "chd"})
+    )
     summary = files["summary.json"]
     assert summary["today"]["status"] == "error"
     assert summary["river"]["status"] == "error"
@@ -91,7 +100,7 @@ def test_failing_source_is_isolated(config: Config, now: datetime) -> None:
 
 
 def test_missing_keys_report_error(config: Config, now: datetime) -> None:
-    files = collect.run(config, now, {}, _fetchers())
+    files = collect._run(config, now, {}, _fetchers())
     forecasts = files["weather.json"]["forecasts"]
     assert forecasts["aemet"]["status"] == "error"
     assert forecasts["meteoblue"]["error"] == "METEOBLUE_API_KEY not set"
@@ -101,11 +110,9 @@ def test_missing_keys_report_error(config: Config, now: datetime) -> None:
 def test_previous_data_is_reused_as_stale(
     config: Config, now: datetime
 ) -> None:
-    collect.write_files(
-        config.data_dir, collect.run(config, now, ENV, _fetchers())
-    )
+    write_files(config.data_dir, collect._run(config, now, ENV, _fetchers()))
     later = now + timedelta(hours=1)
-    files = collect.run(config, later, ENV, _fetchers(fail={"openmeteo"}))
+    files = collect._run(config, later, ENV, _fetchers(fail={"openmeteo"}))
     om = files["weather.json"]["forecasts"]["openmeteo"]
     assert om["status"] == "stale"
     assert om["data"]["hourly"]
@@ -116,26 +123,24 @@ def test_meteoblue_is_not_called_every_hour(
     config: Config, now: datetime
 ) -> None:
     calls: dict[str, int] = {}
-    collect.write_files(
-        config.data_dir, collect.run(config, now, ENV, _fetchers(calls))
+    write_files(
+        config.data_dir, collect._run(config, now, ENV, _fetchers(calls))
     )
     for hours in (1, 2, 3):
         later = now + timedelta(hours=hours)
-        collect.write_files(
-            config.data_dir, collect.run(config, later, ENV, _fetchers(calls))
+        write_files(
+            config.data_dir, collect._run(config, later, ENV, _fetchers(calls))
         )
     assert calls["meteoblue"] == EXPECTED_METEOBLUE_CALLS_BEFORE_REFRESH
     assert calls["openmeteo"] == EXPECTED_OPENMETEO_CALLS
     later = now + timedelta(hours=6)
-    collect.run(config, later, ENV, _fetchers(calls))
+    collect._run(config, later, ENV, _fetchers(calls))
     assert calls["meteoblue"] == EXPECTED_METEOBLUE_CALLS_AFTER_REFRESH
 
 
 def test_river_history_accumulates(config: Config, now: datetime) -> None:
-    collect.write_files(
-        config.data_dir, collect.run(config, now, ENV, _fetchers())
-    )
-    files = collect.run(config, now + timedelta(hours=1), ENV, _fetchers())
+    write_files(config.data_dir, collect._run(config, now, ENV, _fetchers()))
+    files = collect._run(config, now + timedelta(hours=1), ENV, _fetchers())
     readings = files["river-observed-30d.json"]["readings"]
     assert len(readings) == 1  # same CHD timestamp is deduplicated
     assert (

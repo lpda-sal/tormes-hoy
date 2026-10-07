@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from tormes_hoy import river
+from tormes_hoy.source_data import observed_river as river
 
 from .conftest import TZ
 
@@ -26,7 +26,7 @@ def test_merge_dedupes_sorts_and_trims() -> None:
 
 def test_daily_aggregation() -> None:
     readings = [_reading(3, 7.0, 1.30), _reading(2, 9.0, 1.40)]
-    (day,) = river.daily_from_readings(readings)
+    (day,) = river._daily_from_readings(readings)
     assert day["flow_m3s"] == {"min": 7.0, "mean": 8.0, "max": 9.0}
     assert day["n"] == EXPECTED_DAILY_READING_COUNT
 

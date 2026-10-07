@@ -8,10 +8,10 @@ from datetime import datetime, timedelta
 from statistics import fmean
 from typing import Any
 
-from tormes_hoy.models import JsonDict
-from tormes_hoy.timeutil import parse_local
+from tormes_hoy.utils.models import JsonDict
+from tormes_hoy.utils.timeutil import parse_local
 
-VARIABLES = ("level_m", "flow_m3s")
+_VARIABLES = ("level_m", "flow_m3s")
 
 
 def merge_readings(
@@ -50,14 +50,14 @@ def _stats(values: list[float]) -> JsonDict | None:
     }
 
 
-def daily_from_readings(readings: list[JsonDict]) -> list[JsonDict]:
+def _daily_from_readings(readings: list[JsonDict]) -> list[JsonDict]:
     """Aggregate raw readings into daily min/mean/max per variable."""
     grouped: dict[str, dict[str, list[float]]] = defaultdict(
-        lambda: {v: [] for v in VARIABLES}
+        lambda: {v: [] for v in _VARIABLES}
     )
     for reading in readings:
         date = str(reading["time"])[:10]
-        for var in VARIABLES:
+        for var in _VARIABLES:
             value = reading.get(var)
             if value is not None:
                 grouped[date][var].append(float(value))
@@ -88,7 +88,7 @@ def merge_daily(
     never overwrites an already stored daily value.
     """
     by_date = {str(d["date"]): d for d in previous if d.get("date")}
-    recent = daily_from_readings(readings)
+    recent = _daily_from_readings(readings)
     for index, day in enumerate(recent):
         if index == 0 and day["date"] in by_date:
             continue

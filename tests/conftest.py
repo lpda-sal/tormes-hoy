@@ -7,7 +7,7 @@ from zoneinfo import ZoneInfo
 
 import pytest
 
-from tormes_hoy.config import Config, load_config
+from tormes_hoy.utils.config import Config, load_config
 
 FIXTURES = Path(__file__).parent / "fixtures"
 TZ = "Europe/Madrid"

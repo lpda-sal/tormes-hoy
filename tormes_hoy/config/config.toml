@@ -29,7 +29,7 @@ stale_after_hours = 12
 
 [river]
 station = "EA087"               # CHD gauging station, Tormes at Salamanca
-current_url = ""                # VERIFY: CHD open data "Estado Aforos" JSON
+current_url = "https://www.saihduero.es/risr/EA087" # SAIH Duero station page
 station_field = "codigo"        # VERIFY: field names in that JSON
 level_field = "nivel"
 flow_field = "caudal"

@@ -4,11 +4,11 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Literal
 
-from tormes_hoy.config import Config
+from tormes_hoy.utils.config import Config
 
 SCHEMA_VERSION = 1
 
-Status = Literal["ok", "stale", "error"]
+_Status = Literal["ok", "stale", "error"]
 JsonDict = dict[str, Any]
 
 
@@ -26,7 +26,7 @@ class SourceResult:
     """
 
     name: str
-    status: Status
+    status: _Status
     data: Any = None
     fetched_at: str | None = None
     error: str | None = None

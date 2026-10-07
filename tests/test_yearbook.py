@@ -2,8 +2,8 @@ import json
 from datetime import date, timedelta
 from pathlib import Path
 
-from tormes_hoy import yearbook
-from tormes_hoy.config import Config
+from tormes_hoy.utils.config import Config
+from tormes_hoy.yearbook import builder as yearbook
 
 EXPECTED_DAYS_IN_LEAP_YEAR = 366
 
@@ -27,7 +27,7 @@ def test_stats_use_last_ten_complete_years(
 ) -> None:
     csv_path = tmp_path / "daily.csv"
     _write_csv(csv_path, range(2010, 2025), None)
-    payload = yearbook.build(yearbook.load_csv(csv_path), config)
+    payload = yearbook._build(yearbook._load_csv(csv_path), config)
     flow = payload["variables"]["flow_m3s"]
     assert flow["years"] == list(range(2015, 2025))
     assert flow["period"] == "2015-2024"
@@ -40,7 +40,7 @@ def test_stats_use_last_ten_complete_years(
 def test_level_shift_restricts_period(tmp_path: Path, config: Config) -> None:
     csv_path = tmp_path / "daily.csv"
     _write_csv(csv_path, range(2015, 2025), level_jump_year=2020)
-    payload = yearbook.build(yearbook.load_csv(csv_path), config)
+    payload = yearbook._build(yearbook._load_csv(csv_path), config)
     level = payload["variables"]["level_m"]
     assert level["detected_shifts"] == [2020]
     assert level["years"] == list(range(2020, 2025))
@@ -52,7 +52,7 @@ def test_incomplete_years_are_ignored(tmp_path: Path) -> None:
         date(2024, 1, d): {"flow_m3s": 1.0, "level_m": None}
         for d in range(1, 30)
     }
-    assert yearbook.complete_years(series, "flow_m3s") == []
+    assert yearbook._complete_years(series, "flow_m3s") == []
 
 
 def test_cli_writes_file(tmp_path: Path) -> None:
@@ -60,6 +60,6 @@ def test_cli_writes_file(tmp_path: Path) -> None:
     _write_csv(csv_path, range(2023, 2025), None)
     out = tmp_path / "out"
     assert yearbook.main([str(csv_path), "--out-dir", str(out)]) == 0
-    content = json.loads((out / yearbook.OUTPUT_NAME).read_text())
+    content = json.loads((out / yearbook._OUTPUT_NAME).read_text())
     assert content["schema_version"] == 1
     assert content["location"]["id"] == "salamanca"

@@ -7,8 +7,7 @@ name: update-data
 
 on:
   schedule:
-#    - cron: "17 * * * *"
-    - cron: "17 0 1 * *"
+    - cron: "17 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
@@ -36,7 +35,7 @@ jobs:
           fetch-depth: 1
 
       - name: Collect data
-        run: python3 -m tormes_hoy
+        run: python3 -m tormes_hoy.collect_data
         env:
           AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
           METEOBLUE_API_KEY: ${{ secrets.METEOBLUE_API_KEY }}
@@ -55,7 +54,7 @@ jobs:
           fi
 
       - name: Build site
-        run: python3 -m tormes_hoy.site
+        run: python3 -m tormes_hoy.build_site
 
       - uses: actions/upload-pages-artifact@v3
         with:

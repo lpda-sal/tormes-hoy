@@ -5,11 +5,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-DEFAULT_CONFIG_PATH = Path(__file__).with_name("config.toml")
+_DEFAULT_CONFIG_PATH = Path(__file__).parents[1] / "config" / "config.toml"
 
 
 @dataclass(frozen=True)
-class AppInfo:
+class _AppInfo:
     """Public identity of the app."""
 
     name: str
@@ -17,7 +17,7 @@ class AppInfo:
 
 
 @dataclass(frozen=True)
-class Location:
+class _Location:
     """Location every source is queried for."""
 
     id: str
@@ -38,7 +38,7 @@ class Location:
 
 
 @dataclass(frozen=True)
-class OpenMeteoConfig:
+class _OpenMeteoConfig:
     """Open-Meteo settings."""
 
     base_url: str
@@ -46,7 +46,7 @@ class OpenMeteoConfig:
 
 
 @dataclass(frozen=True)
-class AemetConfig:
+class _AemetConfig:
     """AEMET OpenData settings."""
 
     base_url: str
@@ -56,7 +56,7 @@ class AemetConfig:
 
 
 @dataclass(frozen=True)
-class MeteoblueConfig:
+class _MeteoblueConfig:
     """Meteoblue settings."""
 
     base_url: str
@@ -83,7 +83,7 @@ class RiverConfig:
 
 
 @dataclass(frozen=True)
-class YearbookConfig:
+class _YearbookConfig:
     """Settings for the yearbook statistics."""
 
     years: int
@@ -92,7 +92,7 @@ class YearbookConfig:
 
 
 @dataclass(frozen=True)
-class UvConfig:
+class _UvConfig:
     """UV settings."""
 
     protection_threshold: float
@@ -102,18 +102,18 @@ class UvConfig:
 class Config:
     """Whole application configuration."""
 
-    app: AppInfo
-    location: Location
-    openmeteo: OpenMeteoConfig
-    aemet: AemetConfig
-    meteoblue: MeteoblueConfig
+    app: _AppInfo
+    location: _Location
+    openmeteo: _OpenMeteoConfig
+    aemet: _AemetConfig
+    meteoblue: _MeteoblueConfig
     river: RiverConfig
-    yearbook: YearbookConfig
-    uv: UvConfig
+    yearbook: _YearbookConfig
+    uv: _UvConfig
     data_dir: Path
 
 
-def load_config(path: Path = DEFAULT_CONFIG_PATH) -> Config:
+def load_config(path: Path = _DEFAULT_CONFIG_PATH) -> Config:
     """Load and validate the configuration file.
 
     Args:
@@ -128,13 +128,13 @@ def load_config(path: Path = DEFAULT_CONFIG_PATH) -> Config:
     with path.open("rb") as fh:
         raw = tomllib.load(fh)
     return Config(
-        app=AppInfo(**raw["app"]),
-        location=Location(**raw["location"]),
-        openmeteo=OpenMeteoConfig(**raw["openmeteo"]),
-        aemet=AemetConfig(**raw["aemet"]),
-        meteoblue=MeteoblueConfig(**raw["meteoblue"]),
+        app=_AppInfo(**raw["app"]),
+        location=_Location(**raw["location"]),
+        openmeteo=_OpenMeteoConfig(**raw["openmeteo"]),
+        aemet=_AemetConfig(**raw["aemet"]),
+        meteoblue=_MeteoblueConfig(**raw["meteoblue"]),
         river=RiverConfig(**raw["river"]),
-        yearbook=YearbookConfig(**raw["yearbook"]),
-        uv=UvConfig(**raw["uv"]),
+        yearbook=_YearbookConfig(**raw["yearbook"]),
+        uv=_UvConfig(**raw["uv"]),
         data_dir=Path(raw["output"]["data_dir"]),
     )

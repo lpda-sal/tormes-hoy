@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tormes-hoy"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Data collector for the Tormes Hoy dashboard."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -15,11 +15,19 @@ dependencies = []
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.5", "mypy>=1.10"]
 
+[project.scripts]
+tormes-hoy-collect-data = "tormes_hoy.collect_data:main"
+tormes-hoy-build-yearbook = "tormes_hoy.build_yearbook:main"
+tormes-hoy-build-site = "tormes_hoy.build_site:main"
+
 [tool.setuptools.packages.find]
 include = ["tormes_hoy*"]
 
+[tool.setuptools.dynamic]
+version = {attr = "tormes_hoy.__version__"}
+
 [tool.setuptools.package-data]
-tormes_hoy = ["config.toml"]
+tormes_hoy = ["config/config.toml"]
 
 [tool.ruff]
 line-length = 79

@@ -20,11 +20,9 @@ replace fixtures with real responses and tick it.
 - [ ] **Meteoblue**: confirm package URL, field names (`data_1h`,
       `data_day`, `windspeed`, `uvindex`, `pictocode`) and **credits per
       call**; adjust `refresh_every_hours`.
-- [ ] **CHD current**: find the "Estado Aforos" JSON URL on
-      datos.chduero.es; set `river.current_url` and the field names
-      (`station_field`, `level_field`, `flow_field`, `time_field`).
-      Until then the river shows "No disponible".
-- [ ] **CHD time zone**: confirm CHD timestamps are local time.
+- [ ] **CHD current**: confirm the SAIH EA087 page remains available at
+      `https://www.saihduero.es/risr/EA087` and retains its `Nivel`, `Caudal`,
+      and local date/time fields.
 - [ ] **CHD yearbooks**: format, last available year, whether level is
       included, station code; prepare the CSV and run the import.
 
@@ -52,7 +50,7 @@ replace fixtures with real responses and tick it.
 - `ruff format`, `ruff check`, `mypy --strict`: clean.
 - `pytest`: all tests pass (parsers, UV, river history, yearbook stats,
   collection isolation, Meteoblue cadence, site build).
-- Web views rendered with demo data in headless Chromium with an
+- Web views rendered with a representative dataset in headless Chromium with an
   emulated touchscreen: tapping a chart shows the tooltip with every
   value at that point; no console errors. Also checked with every source
   failing. Not yet tested on a real phone or with real data.

@@ -35,23 +35,25 @@ ruff check --fix .       # lint
 mypy .                   # type-check
 pytest                   # full test suite
 pytest -k "name" -v      # tests matching a pattern
-python -m tormes_hoy     # collect (needs AEMET_API_KEY, METEOBLUE_API_KEY)
-python scripts/demo_data.py --out _demo           # synthetic data
-python -m tormes_hoy.site --data _demo && python -m http.server -d _site 8000
-python -m tormes_hoy.yearbook daily.csv           # yearbook statistics
+tormes-hoy-collect-data  # collect (needs AEMET_API_KEY, METEOBLUE_API_KEY)
+tormes-hoy-build-yearbook daily.csv                # yearbook statistics
+tormes-hoy-build-site && python -m http.server -d _site 8000
 ```
 
 ## Project Structure
 
 ```text
 tormes-hoy/
-├── tormes_hoy/          # collector package (+ config.toml)
-│   └── sources/         # one isolated module per data source
+├── tormes_hoy/          # package and four CLI modules
+│   ├── config/          # config.toml
+│   ├── utils/           # shared config, models, and time helpers
+│   ├── source_data/     # collector, outputs, observed river, UV, sources
+│   ├── site/            # static site assembly
+│   └── yearbook/        # validated yearbook statistics
 ├── web/                 # static PWA (views/, i18n/es.json, sw.js)
 ├── data/                # generated JSON, committed by the workflow
 ├── tests/               # pytest suite + fixtures/
 ├── docs/                # design, data contract, sources, operations, review
-├── scripts/             # utility scripts (demo data)
 ├── .github/workflows/   # update-data.yml (hourly), ci.yml
 ├── environment.yaml
 └── pyproject.toml
@@ -64,15 +66,16 @@ Do not move files or reorganize directories unless explicitly requested.
 - Code, identifiers, file names, routes, comments and docs: **English**.
 - UI text: **Spanish**, only in `web/i18n/es.json` (use `t("key")`).
 - Location, app name and station IDs live only in
-  `tormes_hoy/config.toml`. Never hardcode them elsewhere; the collector
-  copies them into every JSON and the web reads them from there.
-- Sources are isolated: a failure sets that source's `status` to `error`
-  (or `stale` reusing previous data) and never breaks the others.
-- Never mix CHD yearbook data (validated) with observed readings
-  (provisional), neither in storage nor in computations. Charts may show
-  both, clearly labeled.
+  `tormes_hoy/config/config.toml`.
+  Never hardcode them elsewhere; the collector copies them into every JSON and
+  the web reads them from there.
+- Sources are isolated: a failure sets that source's `status` to `error` (or
+  `stale` reusing previous data) and never breaks the others.
+- Never mix CHD yearbook data (validated) with observed readings (provisional),
+  neither in storage nor in computations. Charts may show both, clearly
+  labeled.
 - Every data file follows `docs/data-contract.md`; bump `SCHEMA_VERSION`
-  in `tormes_hoy/models.py` on breaking changes and update the web.
+  in `tormes_hoy/utils/models.py` on breaking changes and update the web.
 - Insert external text in HTML only through `esc()` (`web/format.js`).
 - Bump `CACHE_VERSION` in `web/sw.js` when shell files change.
 
@@ -90,7 +93,8 @@ The hourly job must stay short (target < 30 s):
 - Type hints on all public functions, methods, and attributes.
 - `pathlib.Path`, not `os.path`. f-strings, not `%` or `.format()`.
 - Raise specific exceptions; never a bare `except:`. The only broad
-  `except Exception` is the source-isolation boundary in `collect.py`.
+  `except Exception` is the source-isolation boundary in
+  `source_data/collector.py`.
 - Pure, small functions; parsing separated from I/O (`parse_*` vs `fetch`).
 - Public APIs require Google-style docstrings.
 - Prefer ≤79 columns; do not reformat lines only for that.
@@ -110,14 +114,15 @@ def get(url):
 
 - Prefer the standard library. Runtime dependencies are forbidden without
   approval (they slow down the hourly job). Dev dependencies need approval.
-- Web: the only third-party JS is Chart.js, vendored in `web/vendor/`
-  and used only through `web/charts.js`. No CDN, no npm.
+- Web: the only third-party JS is Chart.js, vendored in `web/vendor/` and used
+  only through `web/charts.js`. No CDN, no npm.
 
 ## Configuration
 
-- Stable settings: `tormes_hoy/config.toml` (version-controlled).
+- Stable settings: `tormes_hoy/config/config.toml` (version-controlled).
 - Secrets: environment variables / GitHub Secrets only. Document new ones
-  in `.env.example`. Never log or print them (see `net._redact`).
+  in `.env.example`. Never log or print them
+  (see `source_data.network_client._redact`).
 
 ## Ignore Files
 
@@ -147,7 +152,7 @@ Keep `.gitignore` minimal: generated, tooling-produced or temporary files.
 
 ### ✅ Always
 - Run `ruff`, `mypy`, and `pytest` before declaring a task complete.
-- Preview UI changes with demo data before finishing.
+- Preview UI changes using available site data before finishing.
 
 ### ⚠️ Ask First
 - Adding any dependency (Python or JS).
@@ -155,7 +160,7 @@ Keep `.gitignore` minimal: generated, tooling-produced or temporary files.
 - Changing workflow schedules or anything that increases Actions time.
 
 ### 🚫 Never
-- Commit secrets, tokens, private addresses or demo data in `data/`.
+- Commit no secrets, tokens, or private addresses.
 - Edit `.github/workflows/` without explicit approval.
 - Delete or weaken tests to make the build pass.
 - Mix yearbook and observed river data.
