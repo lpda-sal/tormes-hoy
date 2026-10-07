@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-08T00:18:23+02:00",
+ "generated_at": "2026-10-08T00:28:38+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -20,7 +20,7 @@
  },
  "daily": [
   {
-   "date": "2026-10-07",
+   "date": "2026-10-08",
    "level_m": {
     "min": 1.33,
     "mean": 1.33,
