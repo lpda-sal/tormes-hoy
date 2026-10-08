@@ -270,7 +270,9 @@ a.card:focus-visible {
   align-items: flex-start;
 }
 
-.weather-sources-label { margin-bottom: 0; }
+.weather-sources-label {
+  margin-bottom: 0;
+}
 
 .home-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
