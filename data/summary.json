@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-08T03:34:48+02:00",
+ "generated_at": "2026-10-08T04:32:37+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,18 +19,18 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-08T03:34:48+02:00",
+  "fetched_at": "2026-10-08T04:32:37+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-08T03:00:00+02:00",
+   "time": "2026-10-08T04:00:00+02:00",
    "station": "2867",
    "station_name": "SALAMANCA/MATACAN",
-   "temperature": 8.6,
+   "temperature": 7.7,
    "humidity": 100.0,
-   "wind_speed": 0.0,
-   "wind_direction": 0.0,
+   "wind_speed": 3.2,
+   "wind_direction": 310.0,
    "precipitation": 0.0,
-   "pressure": 930.4
+   "pressure": 930.6
   }
  },
  "weather_now_model": {
@@ -41,13 +41,13 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-08T03:30",
-   "temperature": 11.1,
-   "apparent_temperature": 10.4,
-   "humidity": 87,
-   "weather_code": 2,
-   "wind_speed": 3.0,
-   "wind_direction": 14,
+   "time": "2026-10-08T04:30",
+   "temperature": 10.6,
+   "apparent_temperature": 9.9,
+   "humidity": 90,
+   "weather_code": 3,
+   "wind_speed": 3.1,
+   "wind_direction": 21,
    "precipitation": 0.0,
    "uv": 0.0
   }
@@ -60,16 +60,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-08T03:00",
-    "temperature": 11.3,
-    "apparent_temperature": 10.7,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 1,
-    "wind_speed": 2.5,
-    "uv": 0.0
-   },
    {
     "time": "2026-10-08T04:00",
     "temperature": 10.9,
@@ -304,10 +294,10 @@
   },
   "error": null,
   "data": {
-   "time": "2026-10-08T02:00:00+02:00",
+   "time": "2026-10-08T04:00:00+02:00",
    "level_m": 1.33,
-   "flow_m3s": 7.05,
-   "trend": null
+   "flow_m3s": 6.9,
+   "trend": "falling"
   }
  },
  "next_days": {
