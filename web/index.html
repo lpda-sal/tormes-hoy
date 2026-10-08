@@ -13,11 +13,13 @@
 </head>
 <body>
   <header class="app-header">
-    <a href="#/" class="brand" id="brand">Tormes Hoy</a>
-    <span class="muted" id="place"></span>
+    <div class="header-title">
+      <a href="#/" class="brand" id="brand">Tormes Hoy</a>
+      <span class="muted" id="place"></span>
+    </div>
+    <a class="sun-times muted" id="sun-times" href="#/sun" hidden></a>
   </header>
   <main id="app" aria-live="polite"></main>
-  <footer class="app-footer muted" id="footer"></footer>
   <script src="vendor/chartjs/chart.min.js" defer></script>
   <script type="module" src="app.js"></script>
 </body>

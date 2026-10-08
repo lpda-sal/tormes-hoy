@@ -2,11 +2,12 @@
 
 import json
 from datetime import datetime
+from math import isfinite
 from pathlib import Path
 
 from tormes_hoy.source_data import observed_river, uv
 from tormes_hoy.source_data.sources import chd
-from tormes_hoy.utils.config import Config
+from tormes_hoy.utils.config import Config, RiverConfig
 from tormes_hoy.utils.models import JsonDict, SourceResult, envelope
 
 
@@ -64,6 +65,9 @@ def build_files(
         },
         "river": {
             "status": river_current.status,
+            "flow_status": _flow_status(
+                (river_current.data or {}).get("flow_m3s"), config.river
+            ),
             "source": {"name": chd.NAME, **river_meta},
             "error": river_current.error,
             "data": (
@@ -100,6 +104,16 @@ def build_files(
         "river-observed-daily.json": {"source": river_meta, "daily": daily},
     }
     return {name: envelope(config, now, body) for name, body in files.items()}
+
+
+def _flow_status(flow: float | None, config: RiverConfig) -> str | None:
+    if not isinstance(flow, (int, float)) or not isfinite(flow) or flow < 0:
+        return None
+    if flow >= config.flow_danger_m3s:
+        return "danger"
+    if flow >= config.flow_caution_m3s:
+        return "caution"
+    return "safe"
 
 
 def write_files(data_dir: Path, files: dict[str, JsonDict]) -> None:

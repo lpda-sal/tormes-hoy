@@ -36,6 +36,36 @@ precipitation, wind_speed, weather_code? (WMO), uv?, sky? (AEMET text), pictocod
 Daily row: `date, temperature_max, temperature_min, precipitation_probability,
 precipitation?, weather_code?, uv_max?, sky?`.
 
+Current weather observation and model blocks may include `wind_gust`
+(number or `null`, km/h), also passed through to `summary.weather_now.data`
+and `summary.weather_now_model.data`. It is the maximum gust for the source
+interval, not the daily maximum. This additive field keeps schema version 1;
+older files without it show an unavailable value. The home screen uses the
+gust from the selected weather source, without mixing model and observation.
+
 UV levels: `low` < 3 ≤ `moderate` < 6 ≤ `high` < 8 ≤ `very_high` < 11 ≤ `extreme`.
 River trend: `rising|falling|steady`, comparing the last reading with the one
 `trend_window_hours` earlier (flow ±3 %, else level ±1 cm).
+
+`summary.river.flow_status` is an optional, additive field:
+`safe|caution|danger|null`. It compares the current flow with the configured
+`river.flow_caution_m3s` and `river.flow_danger_m3s`; a threshold belongs to
+the higher band. Missing, negative or non-finite flow produces `null`.
+These are provisional club display bands, not official flood alerts or a
+guarantee that paddling is safe. Static site assembly fills this field when
+absent in an older summary, using the repository's configured thresholds and
+the same calculation as the collector. It changes only the generated site,
+not the source JSON, readings or timestamps, and preserves existing categories.
+Missing or invalid flow remains unclassified, never automatically green.
+Schema version remains 1.
+
+UV `protection.from` and `protection.to` retain their `HH:MM` format but now
+use linear interpolation at the first and last threshold crossings. The
+start rounds down and the end rounds up to the minute. Missing adjacent
+values are not interpolated; available above-threshold endpoints are used
+instead. Multiple intervals are conservatively combined from first to last.
+The web's upcoming-weather strip reads the full Open-Meteo forecast from
+`weather.json` through the next 04:00, inclusive; `summary.today` continues
+to mean the rest of the current day.
+The home rain chart aligns the three hourly forecast sources over that same
+time window, preserving missing probabilities as gaps.

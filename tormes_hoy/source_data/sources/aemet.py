@@ -47,7 +47,8 @@ def _parse_observation(records: list[JsonDict], tz_name: str) -> JsonDict:
     """Return the most recent observation of a station.
 
     ``fint`` is the end of the observation interval in UTC.
-    Wind speed ``vv`` is m/s and is converted to km/h.
+    Wind speed ``vv`` and maximum gust ``vmax`` are converted from m/s
+    to km/h.
 
     Raises:
         ValueError: If there are no usable records.
@@ -57,6 +58,7 @@ def _parse_observation(records: list[JsonDict], tz_name: str) -> JsonDict:
         raise ValueError("AEMET observation without records")
     latest = max(valid, key=lambda r: str(r["fint"]))
     wind = latest.get("vv")
+    gust = latest.get("vmax")
     return {
         "time": iso(parse_utc(str(latest["fint"]), tz_name)),
         "station": latest.get("idema"),
@@ -64,6 +66,7 @@ def _parse_observation(records: list[JsonDict], tz_name: str) -> JsonDict:
         "temperature": latest.get("ta"),
         "humidity": latest.get("hr"),
         "wind_speed": round(wind * 3.6, 1) if wind is not None else None,
+        "wind_gust": round(gust * 3.6, 1) if gust is not None else None,
         "wind_direction": latest.get("dv"),
         "precipitation": latest.get("prec"),
         "pressure": latest.get("pres"),

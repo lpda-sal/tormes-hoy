@@ -8,15 +8,6 @@ import { t } from "../i18n.js";
 const SOURCES = ["aemet", "openmeteo", "meteoblue"];
 const HOUR = 3600000;
 
-/** Hourly grid shared by every source (null where a source has no value). */
-function hourlyGrid(x0, x1) {
-  const start = new Date(x0);
-  start.setMinutes(0, 0, 0);
-  const xs = [];
-  for (let x = start.getTime(); x <= x1; x += HOUR) xs.push(x);
-  return xs;
-}
-
 function seriesFor(forecasts, field, xs) {
   return SOURCES.map((key) => {
     const block = forecasts[key];
@@ -87,17 +78,36 @@ function observationBlock(observation) {
 export async function render(root) {
   const weather = await loadData("weather");
   const forecasts = weather.forecasts ?? {};
-  const xs = hourlyGrid(Date.now() - HOUR, Date.now() + 48 * HOUR);
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: weather.location?.timezone,
+    year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(new Date());
+  const xs = [...new Set(SOURCES.flatMap((key) =>
+    (forecasts[key]?.data?.hourly ?? [])
+      .filter((hour) => hour.time.slice(0, 10) === today)
+      .map((hour) => new Date(hour.time).getTime()),
+  ))].sort((left, right) => left - right);
   root.innerHTML = `
     <a class="back" href="#/">${t("back")}</a>
     <h1>${t("weather.title")}</h1>
     <section class="card"><h2>${t("weather.observation")}</h2>${observationBlock(weather.observation)}</section>
     <div class="legend">${sourcesStatus(forecasts)}</div>
     <p class="chart-hint">${t("chart_hint")}</p>
-    <section class="card"><h2>${t("weather.temperature_48h")}</h2><div id="temp-chart"></div>
+    <section class="card"><h2>${t("weather.temperature_today")}</h2><div id="temp-chart"></div>
       <p class="muted">${t("weather.spread_note")}</p></section>
-    <section class="card"><h2>${t("weather.rain_48h")}</h2><div id="rain-chart"></div></section>
-    <section class="card"><h2>${t("weather.days_table")}</h2>${daysTable(forecasts)}</section>`;
+    <section class="card"><h2>${t("weather.rain_today")}</h2><div id="rain-chart"></div></section>
+    <a class="next-days-link" href="#/weather/days">${t("home.next_days")}</a>`;
   chartBlock(root.querySelector("#temp-chart"), seriesFor(forecasts, "temperature", xs), xs, " °C", 1);
   chartBlock(root.querySelector("#rain-chart"), seriesFor(forecasts, "precipitation_probability", xs), xs, " %", 0);
+}
+
+export async function renderDays(root) {
+  const weather = await loadData("weather");
+  const forecasts = weather.forecasts ?? {};
+  root.innerHTML = `
+    <a class="back" href="#/">${t("back")}</a>
+    <h1>${t("weather.days_title")}</h1>
+    <div class="legend">${sourcesStatus(forecasts)}</div>
+    <section><h2>${t("weather.days_table")}</h2>${daysTable(forecasts)}</section>
+    <a class="next-days-link" href="#/weather">${t("weather.title")}</a>`;
 }

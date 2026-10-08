@@ -8,8 +8,8 @@ short_name = "Tormes Hoy"
 [location]
 id = "salamanca"
 name = "Salamanca"
-lat = 40.965     # city centre (public repository: never a private address)
-lon = -5.664
+lat = 40.95726767218838
+lon = -5.638355587757416
 timezone = "Europe/Madrid"
 
 [openmeteo]
@@ -18,8 +18,8 @@ forecast_days = 7
 
 [aemet]
 base_url = "https://opendata.aemet.es/opendata/api"
-station_idema = "2867"          # VERIFY: Salamanca Aeropuerto (Matacán)
-municipality_code = "37274"     # VERIFY: Salamanca (INE code)
+station_idema = "2870X"
+municipality_code = "37274"
 stale_after_hours = 3
 
 [meteoblue]
@@ -28,6 +28,8 @@ refresh_every_hours = 6         # credit budget: see docs/sources.md
 stale_after_hours = 12
 
 [river]
+flow_caution_m3s = 10.0
+flow_danger_m3s = 12.0
 station = "EA087"               # CHD gauging station, Tormes at Salamanca
 current_url = "https://www.saihduero.es/risr/EA087" # SAIH Duero station page
 station_field = "codigo"        # VERIFY: field names in that JSON

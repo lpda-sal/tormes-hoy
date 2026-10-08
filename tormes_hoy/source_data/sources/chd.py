@@ -78,10 +78,7 @@ class _CurrentReadingsParser(HTMLParser):
             self._cell_parts = None
 
     def _read_row(self) -> None:
-        if (
-            self._cells is None
-            or len(self._cells) < _MIN_CURRENT_ROW_CELLS
-        ):
+        if self._cells is None or len(self._cells) < _MIN_CURRENT_ROW_CELLS:
             return
         variable = {"nivel": "level_m", "caudal": "flow_m3s"}.get(
             self._cells[0].casefold()

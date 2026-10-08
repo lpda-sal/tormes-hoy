@@ -1,5 +1,5 @@
 // Bump CACHE_VERSION whenever app-shell files change.
-const CACHE_VERSION = "tormes-hoy-v2";
+const CACHE_VERSION = "tormes-hoy-v22";
 const SHELL = [
   "./", "index.html", "styles.css", "app.js", "i18n.js", "data.js", "format.js", "charts.js", "vendor/chartjs/chart.min.js",
   "views/home.js", "views/weather.js", "views/uv.js", "views/river.js",

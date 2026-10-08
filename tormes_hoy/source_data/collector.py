@@ -91,6 +91,8 @@ def _collect_weather(
 ) -> dict[str, SourceResult]:
     """Query weather sources (observation and three forecasts)."""
     prev = previous.get("weather.json")
+    if prev and prev.get("location") != config.location.to_dict():
+        prev = None
     tz = config.location.timezone
     results: dict[str, SourceResult] = {}
 

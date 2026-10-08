@@ -1,9 +1,12 @@
 from collections.abc import Collection
+from dataclasses import replace
 from datetime import datetime, timedelta
 from typing import Any
 
+import pytest
+
 from tormes_hoy.source_data import collector as collect
-from tormes_hoy.source_data.data_files import write_files
+from tormes_hoy.source_data.data_files import _flow_status, write_files
 from tormes_hoy.source_data.sources import aemet, chd, meteoblue, openmeteo
 from tormes_hoy.utils.config import Config
 
@@ -76,8 +79,10 @@ def test_full_run_produces_all_files(config: Config, now: datetime) -> None:
     summary = files["summary.json"]
     assert summary["schema_version"] == 1
     assert summary["location"]["name"] == "Salamanca"
+    assert summary["location"] == config.location.to_dict()
     assert summary["weather_now"]["status"] == "ok"
     assert summary["river"]["data"]["flow_m3s"] == EXPECTED_FLOW_M3S
+    assert summary["river"]["flow_status"] == "safe"
     assert all(
         r["time"] >= "2026-10-05T17:00" for r in summary["today"]["data"]
     )
@@ -96,7 +101,43 @@ def test_failing_source_is_isolated(config: Config, now: datetime) -> None:
     summary = files["summary.json"]
     assert summary["today"]["status"] == "error"
     assert summary["river"]["status"] == "error"
+    assert summary["river"]["flow_status"] is None
     assert summary["weather_now"]["status"] == "ok"
+
+
+def test_location_change_refreshes_weather(
+    config: Config, now: datetime
+) -> None:
+    calls: dict[str, int] = {}
+    write_files(
+        config.data_dir, collect._run(config, now, ENV, _fetchers(calls))
+    )
+    location = replace(config.location, lon=config.location.lon + 0.01)
+    updated = replace(config, location=location)
+    files = collect._run(
+        updated, now + timedelta(hours=1), ENV, _fetchers(calls)
+    )
+    assert calls["meteoblue"] == EXPECTED_METEOBLUE_CALLS_AFTER_REFRESH
+    assert files["summary.json"]["location"] == location.to_dict()
+
+
+@pytest.mark.parametrize(
+    ("flow", "expected"),
+    [
+        (0, "safe"),
+        (9.99, "safe"),
+        (10, "caution"),
+        (11.99, "caution"),
+        (12, "danger"),
+        (None, None),
+        (float("nan"), None),
+        (-1, None),
+    ],
+)
+def test_river_flow_status(
+    config: Config, flow: float | None, expected: str | None
+) -> None:
+    assert _flow_status(flow, config.river) == expected
 
 
 def test_missing_keys_report_error(config: Config, now: datetime) -> None:

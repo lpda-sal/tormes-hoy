@@ -44,6 +44,79 @@ Locally, once a year: tormes-hoy-build-yearbook daily.csv
 | PWA | Shell cache-first, data network-first | Fast start, offline last data |
 | Languages | Code/docs English, UI Spanish (`es.json`) | Project rule |
 
+## Home screen
+
+The home grid has four rows: current weather and river; full-width upcoming
+weather hours; full-width rain probability; and a full-width UV card with its
+existing summary on the left and the daily UV chart on the right. The layout
+distributes available viewport height across the rows, keeping all cards and
+the daily forecast link visible on the checked phone and desktop sizes.
+Upcoming hours keep
+their fixed width and scroll horizontally inside the card without adding
+rows. Hours include the next 04:00 in the configured timezone (the current
+date before 04:00, otherwise the following date). Rain uses the same hours
+with a fixed 0–100% scale and night shading outside the civil twilight window.
+UV uses `uv.json` with the visible axis limited to civil dawn through civil
+dusk and the same risk-colour bands as the detail chart. Missing solar times
+leave UV's small chart unavailable rather than inventing daylight boundaries.
+Both mini charts reuse the Chart.js wrapper
+and can be inspected without following a link. Their headings or summaries
+link to the detail views. The daily forecast is a separate text link.
+Two compact solar ranges in the header, to the right of the title, show civil
+dawn to sunrise and sunset to civil dusk, fetched from Sunrise-Sunset.org
+by location and local date. Times use the configured location's timezone.
+The browser caches successful results for that location and date; failed
+requests show an unavailable state without replacing the other cards.
+The header ranges link to `#/sun`, a detail view listing sunrise, sunset and
+civil, nautical and astronomical twilight when provided by the API. Actual
+usable light depends on weather and terrain as well as the astronomical times.
+Source attribution appears on that detail view rather than the home screen.
+There is no generated-data footer.
+
+The bottom navigation places the daily forecast link on the left and CSCK
+on the right. The explicitly requested `#/csck` route is a placeholder with
+a development status and a return link. Current weather labels gusts as
+"Racha". Weather and river share an equal-height grid row sized to its
+content rather than expanded into unused space. The upcoming-hours row
+absorbs the released height, with vertically centred hourly cells and
+horizontal scrolling. Rain and UV charts keep nearly the same height.
+The home river
+card omits the flow label and highlights the value and units together using
+the UV palette's green/yellow/red; its category is plain muted text on the
+following line. Rainfall in current weather and the river reading age each
+have their own line. UV's summary stretches to the chart's height. Its title
+starts at the top left and groups with the current reading using the same
+heading spacing as current weather.
+The current UV chip has its reference hour above the category on its right.
+This is the generation timestamp's hour in the configured timezone, with
+minutes set to zero to match the collector's hourly UV selection, not the
+browser's current time. Missing values or invalid timestamps omit the label.
+Maximum and protection remain separate
+blocks with a fixed 0.75rem gap rather than stretched spacing; protection's
+time range remains on its own line. Current weather facts use equal-spaced
+rows ordered humidity, rain, wind and gust. River and UV
+categories share the same font size, weight and line height.
+The river category has a 0.25rem gap below the highlighted flow.
+River trend starts after a 0.75rem gap. Current weather and river reading
+ages are right-aligned on separate lines.
+Home secondary text and categories use 14px at the Pixel 8 reference size;
+solar times use 12.8px and compact chart ticks 11px. Headings and large
+numeric values retain their existing sizes.
+
+The home rain chart compares AEMET, Open-Meteo and Meteoblue through 04:00
+using the shared forecast-source colours from the weather detail view. It has
+no legend, retains night shading and shows all available values in tooltips.
+Missing values are gaps, not zero; unavailable sources do not hide the others.
+
+Current weather includes rain in mm for the observation/model interval,
+alongside humidity and wind. The observation station name is omitted on the
+home screen; measured readings use the same age caption as the river, while
+model fallback is labelled as an estimate. River level remains in the detail
+view only. The home flow value uses green/yellow/red bands with provisional
+club thresholds in configuration; these are not official safety alerts.
+UV protection starts and ends at linearly interpolated threshold crossings,
+rounded outwards to the minute. UV lines are straight to match that calculation.
+
 ## Failure behaviour
 
 Each source returns `ok`, `stale` or `error`. On failure the previous

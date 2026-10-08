@@ -41,15 +41,15 @@ export async function render(root) {
 
   const xRanges = uv.protection
     ? [{
-      from: new Date(`${uv.date}T${uv.protection.from}`).getTime() - HOUR / 2,
-      to: new Date(`${uv.date}T${uv.protection.to}`).getTime() + HOUR / 2,
+      from: new Date(`${uv.date}T${uv.protection.from}`).getTime(),
+      to: new Date(`${uv.date}T${uv.protection.to}`).getTime(),
       color: "#888",
     }]
     : [];
   renderChart(root.querySelector("#uv-chart"), {
     ariaLabel: t("uv.chart_label"),
     x: xs,
-    series: [{ label: t("uv.series"), color: "#333", values, width: 2.5 }],
+    series: [{ label: t("uv.series"), color: "#333", values, width: 2.5, tension: 0 }],
     yZones: UV_ZONES.map((z) => ({ from: z.from, to: z.to, color: UV_COLORS[z.level] })),
     xRanges,
     xMin: dayStart,

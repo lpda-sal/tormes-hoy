@@ -1,6 +1,7 @@
 """UV index helpers: risk levels and sun-protection window."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
+from math import isfinite
 from typing import Any
 
 from tormes_hoy.utils.models import JsonDict
@@ -37,19 +38,43 @@ def _day_curve(hourly: list[JsonDict], date: str) -> list[JsonDict]:
 def _protection_window(
     curve: list[JsonDict], threshold: float
 ) -> JsonDict | None:
-    """Return first and last hour with UV >= threshold, or None.
-
-    ``to`` is the last hourly value above the threshold, so the message
-    reads "protection needed from ``from`` to ``to``".
-    """
-    hours = [
-        str(row["time"])[11:16]
-        for row in curve
-        if row.get("uv") is not None and row["uv"] >= threshold
+    """Interpolate threshold crossings, rounding the window outwards."""
+    rows = sorted(curve, key=lambda row: str(row["time"]))
+    active = [
+        index
+        for index, row in enumerate(rows)
+        if isinstance(row.get("uv"), (int, float))
+        and isfinite(row["uv"])
+        and row["uv"] >= threshold
     ]
-    if not hours:
+    if not active:
         return None
-    return {"from": hours[0], "to": hours[-1]}
+    boundaries = []
+    for index, neighbor in (
+        (active[0], active[0] - 1),
+        (active[-1], active[-1] + 1),
+    ):
+        row = rows[index]
+        stamp = datetime.fromisoformat(str(row["time"]))
+        if 0 <= neighbor < len(rows):
+            other = rows[neighbor]
+            value = other.get("uv")
+            if (
+                isinstance(value, (int, float))
+                and isfinite(value)
+                and value < threshold
+            ):
+                other_stamp = datetime.fromisoformat(str(other["time"]))
+                ratio = (threshold - row["uv"]) / (value - row["uv"])
+                stamp += (other_stamp - stamp) * ratio
+        boundaries.append(stamp)
+    end = boundaries[1]
+    if end.second or end.microsecond:
+        end = end.replace(second=0, microsecond=0) + timedelta(minutes=1)
+    return {
+        "from": boundaries[0].strftime("%H:%M"),
+        "to": end.strftime("%H:%M"),
+    }
 
 
 def _value_at(curve: list[JsonDict], now: datetime) -> Any:

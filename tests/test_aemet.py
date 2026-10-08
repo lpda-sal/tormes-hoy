@@ -24,6 +24,20 @@ def test_observation_takes_latest_and_converts_units() -> None:
     assert obs["time"] == "2026-10-05T17:00:00+02:00"
     assert obs["temperature"] == EXPECTED_TEMPERATURE_C
     assert obs["wind_speed"] == EXPECTED_OBSERVATION_WIND_SPEED_KMH
+    assert obs["wind_gust"] is None
+
+
+@pytest.mark.parametrize(
+    ("gust", "expected"), [(None, None), (0.0, 0.0), (7.0, 25.2)]
+)
+def test_observation_gust_uses_latest_interval(
+    gust: float | None, expected: float | None
+) -> None:
+    records = load_fixture("aemet_observation.json")
+    records[0]["vmax"] = 9.0
+    records[1]["vmax"] = gust
+    obs = aemet._parse_observation(records, TZ)
+    assert obs["wind_gust"] == expected
 
 
 def test_observation_without_records_fails() -> None:
@@ -89,7 +103,7 @@ def test_fetch_observation_builds_station_url(config: Config) -> None:
         return load_fixture("aemet_observation.json")
 
     aemet.fetch_observation(config, "k", fake_get)
-    assert seen[0].endswith("/estacion/2867")
+    assert seen[0].endswith(f"/estacion/{config.aemet.station_idema}")
 
 
 def test_stale_observation() -> None:

@@ -1,6 +1,8 @@
-import { loadData } from "../data.js";
+import { loadData, loadSunTimes } from "../data.js";
+import { renderChart } from "../charts.js";
 import {
-  age, dayLabel, esc, hourLabel, num, statusBadge, uvChip, uvLevel, wmoIcon, wmoText,
+  age, esc, hourLabel, num, statusBadge, uvChip, uvLevel, wmoIcon, wmoText,
+  SOURCE_COLORS, UV_COLORS, UV_ZONES,
 } from "../format.js";
 import { t } from "../i18n.js";
 
@@ -15,30 +17,39 @@ function weatherNowCard(summary) {
   }
   const icon = useObs ? "" : wmoIcon(data.weather_code);
   const caption = useObs
-    ? t("home.observed_at", { station: esc(data.station_name ?? obs.source?.label), age: age(data.time) })
-    : t("home.model_fallback");
-  const details = [
-    data.apparent_temperature !== undefined && data.apparent_temperature !== null
-      ? t("home.feels_like", { v: t("units.temperature", { v: num(data.apparent_temperature) }) })
-      : "",
-    t("home.humidity", { v: t("units.humidity", { v: num(data.humidity) }) }),
-    t("home.wind", { v: t("units.wind", { v: num(data.wind_speed) }) }),
-  ].filter(Boolean);
+    ? t("home.river_reading", { age: age(data.time) })
+    : t("home.model_reading", { age: age(data.time) });
   return `
     <a class="card" href="#/weather">
       <h2>${t("home.weather_now")}${statusBadge(status)}</h2>
       <div class="big">${icon} ${t("units.temperature", { v: num(data.temperature, 1) })}</div>
       ${useObs ? "" : `<div>${esc(wmoText(data.weather_code))}</div>`}
-      <div class="row muted">${details.map((d) => `<span>${d}</span>`).join("")}</div>
-      <div class="muted">${caption}</div>
+      ${data.apparent_temperature !== undefined && data.apparent_temperature !== null
+        ? `<div class="muted">${t("home.feels_like", { v: t("units.temperature", { v: num(data.apparent_temperature) }) })}</div>` : ""}
+      <div class="muted weather-details">
+        <div>${t("home.humidity", { v: t("units.humidity", { v: num(data.humidity) }) })}</div>
+        <div class="muted weather-rain">${t("home.rain_amount", { v: t("units.rain", { v: num(data.precipitation, 1) }) })}</div>
+        <div>${t("home.wind", { v: t("units.wind", { v: num(data.wind_speed) }) })}</div>
+        <div>${t("home.wind_gust", { v: t("units.wind", { v: num(data.wind_gust) }) })}</div>
+      </div>
+      <div class="muted weather-reading">${caption}</div>
     </a>`;
 }
 
-function restOfDayCard(summary) {
-  const block = summary.today;
-  const nowKey = new Date();
-  nowKey.setMinutes(0, 0, 0);
-  const hours = (block?.data ?? []).filter((h) => new Date(h.time) >= nowKey);
+function upcomingHours(summary, block) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", {
+    timeZone: summary.location.timezone, year: "numeric", month: "2-digit",
+    day: "2-digit", hour: "2-digit", hourCycle: "h23",
+  }).formatToParts(new Date()).map((part) => [part.type, part.value]));
+  const date = `${parts.year}-${parts.month}-${parts.day}`;
+  const nextDate = new Date(Date.UTC(+parts.year, +parts.month - 1, +parts.day + 1))
+    .toISOString().slice(0, 10);
+  const start = `${date}T${parts.hour}:00`;
+  const end = `${+parts.hour < 4 ? date : nextDate}T04:00`;
+  return (block?.data ?? []).filter((row) => row.time >= start && row.time <= end);
+}
+
+function restOfDayCard(block, hours) {
   const content = block?.status === "error" && !hours.length
     ? ""
     : hours.length
@@ -51,7 +62,7 @@ function restOfDayCard(summary) {
         </div>`).join("")}</div>`
     : `<p class="muted">${t("home.no_more_hours")}</p>`;
   return `
-    <a class="card wide" href="#/weather">
+    <a class="card wide hours-card" href="#/weather">
       <h2>${t("home.rest_of_day")}${statusBadge(block?.status)}</h2>
       ${content}
     </a>`;
@@ -60,37 +71,124 @@ function restOfDayCard(summary) {
 function uvCard(summary) {
   const block = summary.uv;
   const uv = block?.data ?? {};
-  if (block?.status === "error" && !uv.hourly && uv.max == null) {
-    return `<a class="card" href="#/uv"><h2>${t("home.uv_now")}${statusBadge("error")}</h2></a>`;
-  }
   const protection = uv.protection
-    ? t("uv.protection_window", { from: uv.protection.from, to: uv.protection.to })
+    ? `${t("uv.protection_label")}<br>${t("uv.protection_hours", { from: uv.protection.from, to: uv.protection.to })}`
     : t("uv.protection_none");
   const level = uvLevel(uv.now);
+  const generated = new Date(summary.generated_at ?? "");
+  const time = uv.now !== null && uv.now !== undefined
+    && Number.isFinite(generated.getTime())
+    ? `${new Intl.DateTimeFormat("es-ES", {
+      timeZone: summary.location.timezone, hour: "2-digit", hourCycle: "h23",
+    }).format(generated)}:00` : "";
   return `
-    <a class="card" href="#/uv">
+    <section class="card wide uv-card">
+      <a class="uv-summary" href="#/uv">
+      <div class="uv-current">
       <h2>${t("home.uv_now")}${statusBadge(block?.status)}</h2>
-      <div class="big">${uvChip(uv.now)} <span class="muted">${level ? t(`uv.levels.${level}`) : ""}</span></div>
-      <p><strong>${protection}</strong></p>
+      ${block?.data ? `
+      <div class="big uv-reading">${uvChip(uv.now)} <span class="uv-reading-meta">
+        ${time ? `<span class="muted uv-at">${esc(t("home.uv_at", { time }))}</span>` : ""}
+        <span class="muted">${level ? t(`uv.levels.${level}`) : ""}</span>
+      </span></div>` : `<p class="muted">${t("weather.no_data")}</p>`}
+      </div>
+      ${block?.data ? `
       ${uv.max !== null && uv.max !== undefined
-        ? `<div class="muted">${t("home.uv_max", { v: num(uv.max, 1), time: uv.max_time })}</div>`
+        ? `<div class="muted uv-maximum">${t("home.uv_max", { v: num(uv.max, 1), time: uv.max_time })}</div>`
         : ""}
-    </a>`;
+      <p class="uv-protection"><strong>${protection}</strong></p>` : ""}
+      </a>
+      <div class="mini-chart" id="home-uv-chart"></div>
+    </section>`;
+}
+
+function rainCard(block) {
+  return `<section class="card wide rain-card">
+    <h2><a href="#/weather">${t("home.rain_hours")}</a>${statusBadge(block?.status)}</h2>
+    <div class="mini-chart" id="home-rain-chart"></div>
+  </section>`;
+}
+
+function forecastTime(value, timeZone) {
+  if (/(?:Z|[+-]\d{2}:\d{2})$/.test(value)) return new Date(value).getTime();
+  const offset = new Intl.DateTimeFormat("en", {
+    timeZone, timeZoneName: "longOffset",
+  }).formatToParts(new Date(`${value}Z`)).find((part) => part.type === "timeZoneName").value;
+  return new Date(`${value}${offset === "GMT" ? "Z" : offset.replace("GMT", "")}`).getTime();
+}
+
+function rainForecasts(summary, weather) {
+  const sources = Object.entries(SOURCE_COLORS).map(([key, color]) => {
+    const block = weather?.forecasts?.[key] ?? (key === "openmeteo" ? summary.today : null);
+    const data = block?.data?.hourly ?? (Array.isArray(block?.data) ? block.data : []);
+    const rows = upcomingHours(summary, { data })
+      .filter((row) => Number.isFinite(new Date(row.time).getTime()));
+    return { block, color, label: block?.source?.label ?? key, rows };
+  });
+  const rows = [...new Map(sources.flatMap((source) => source.rows)
+    .map((row) => [row.time, row])).values()]
+    .sort((left, right) => left.time.localeCompare(right.time));
+  const series = sources.map((source) => {
+    const values = new Map(source.rows.map((row) => [row.time, row.precipitation_probability]));
+    return {
+      label: source.label, color: source.color,
+      values: rows.map((row) => Number.isFinite(values.get(row.time)) ? values.get(row.time) : null),
+    };
+  }).filter((source) => source.values.some(Number.isFinite));
+  const status = !series.length ? "error"
+    : sources.some((source) => source.block?.status === "stale"
+      && source.rows.some((row) => Number.isFinite(row.precipitation_probability))) ? "stale" : "ok";
+  return { rows, series, status };
+}
+
+function miniChart(root, selector, rows, field, label, color, yMax, options = {}) {
+  const container = root.querySelector?.(selector);
+  if (!container) return;
+  const points = rows.filter((row) => (options.series || Number.isFinite(row[field]))
+    && Number.isFinite(new Date(row.time).getTime()));
+  if (!points.length || options.series?.length === 0) {
+    container.innerHTML = `<p class="muted">${t("weather.no_data")}</p>`;
+    return;
+  }
+  const xs = points.map((row) => forecastTime(row.time, options.timeZone));
+  const hour = (value) => new Intl.DateTimeFormat("es-ES", {
+    timeZone: options.timeZone, hour: "2-digit", minute: "2-digit",
+  }).format(new Date(value));
+  renderChart(container, {
+    compact: true,
+    ariaLabel: label,
+    x: xs,
+    series: [{
+      label: field === "uv" ? t("uv.series") : t("home.rain_prob"),
+      color, values: points.map((row) => row[field]),
+      tension: field === "uv" ? 0 : undefined,
+    }],
+    yMin: 0,
+    yMax,
+    xTicks: [xs[0], xs[Math.floor(xs.length / 2)], xs[xs.length - 1]]
+      .filter((value, index, ticks) => ticks.indexOf(value) === index),
+    xFormat: hour,
+    titleFormat: hour,
+    valueFormat: (value) => field === "uv" ? num(value, 1) : t("units.probability", { v: num(value) }),
+    yFormat: field === "uv" ? undefined : (value) => t("units.probability", { v: num(value) }),
+    ...options,
+  });
 }
 
 function riverCard(summary) {
   const block = summary.river;
   const data = block?.data;
+  const flowStatus = ["safe", "caution", "danger"].includes(block?.flow_status)
+    ? block.flow_status : "unknown";
+  const flowColor = {
+    safe: UV_COLORS.low, caution: UV_COLORS.moderate, danger: UV_COLORS.very_high,
+  }[flowStatus];
   const body = data
     ? `
-      <div class="row">
-        <div><div class="muted">${t("river.flow")}</div><div class="big">${num(data.flow_m3s, 2)}</div><div class="muted">m³/s</div></div>
-        <div><div class="muted">${t("river.level")}</div><div class="big">${num(data.level_m, 2)}</div><div class="muted">m</div></div>
-      </div>
-      <div class="row muted">
-        ${data.trend ? `<span>${t(`river.trend.${data.trend}`)}</span>` : ""}
-        <span>${t("home.river_reading", { age: age(data.time) })}</span>
-      </div>`
+      <div class="big"><span class="flow-chip ${flowStatus}"${flowColor ? ` style="background:${flowColor};color:#111"` : ""}>${t("units.flow", { v: num(data.flow_m3s, 2) })}</span></div>
+      ${flowStatus !== "unknown" ? `<div class="muted flow-status">${t(`river.flow_status.${flowStatus}`)}</div>` : ""}
+      ${data.trend ? `<div class="muted river-trend">${t(`river.trend.${data.trend}`)}</div>` : ""}
+      <div class="muted river-reading">${t("home.river_reading", { age: age(data.time) })}</div>`
     : "";
   return `
     <a class="card" href="#/river">
@@ -99,31 +197,115 @@ function riverCard(summary) {
     </a>`;
 }
 
-function nextDaysCard(summary) {
-  const block = summary.next_days;
-  const rows = (block?.data ?? []).map((d) => `
-    <tr class="day">
-      <td>${dayLabel(d.date)}</td>
-      <td class="icon" title="${esc(wmoText(d.weather_code))}">${wmoIcon(d.weather_code)}</td>
-      <td><strong>${num(d.temperature_max)}°</strong> / ${num(d.temperature_min)}°</td>
-      <td class="muted">${num(d.precipitation_probability)}%</td>
-      <td>${uvChip(d.uv_max)}</td>
-    </tr>`).join("");
-  return `
-    <a class="card wide" href="#/weather">
-      <h2>${t("home.next_days")}${statusBadge(block?.status)}</h2>
-      <table class="days"><tbody>${rows}</tbody></table>
-    </a>`;
+function solarDay(summary) {
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: summary.location?.timezone,
+    year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(new Date());
+  return loadSunTimes(summary.location, today);
+}
+
+function solarHour(value, summary) {
+  return value && Number.isFinite(Date.parse(value))
+    ? esc(new Intl.DateTimeFormat("es-ES", {
+      timeZone: summary.location.timezone, hour: "2-digit", minute: "2-digit",
+    }).format(new Date(value))) : t("weather.no_data");
+}
+
+function sunTimes(summary, day) {
+  if (!day) return t("home.sun_unavailable");
+  const hour = (value) => solarHour(value, summary);
+  return `<span>${t("home.sunrise")}: ${hour(day.civil_twilight_begin)} - ${hour(day.sunrise)}</span>
+    <span>${t("home.sunset")}: ${hour(day.sunset)} - ${hour(day.civil_twilight_end)}</span>`;
 }
 
 export async function render(root) {
   const summary = await loadData("summary");
+  const weather = await loadData("weather").catch(() => null);
+  const forecast = weather?.forecasts?.openmeteo;
+  const block = forecast?.data?.hourly
+    ? { status: forecast.status, data: forecast.data.hourly } : summary.today;
+  const hours = upcomingHours(summary, block);
+  const rain = rainForecasts(summary, weather);
   root.innerHTML = `
-    <div class="grid">
+    <div class="grid home-grid">
       ${weatherNowCard(summary)}
-      ${uvCard(summary)}
-      ${restOfDayCard(summary)}
       ${riverCard(summary)}
-      ${nextDaysCard(summary)}
-    </div>`;
+      ${restOfDayCard(block, hours)}
+      ${rainCard(rain)}
+      ${uvCard(summary)}
+    </div>
+    <nav class="home-links">
+      <a class="next-days-link" href="#/weather/days">${t("home.next_days")}</a>
+      <a class="next-days-link" href="#/csck">${t("home.csck")}</a>
+    </nav>`;
+  const day = await solarDay(summary).catch(() => null);
+  const civilStart = new Date(day?.civil_twilight_begin ?? NaN).getTime();
+  const civilEnd = new Date(day?.civil_twilight_end ?? NaN).getTime();
+  const xs = rain.rows.map((row) => forecastTime(row.time, summary.location.timezone));
+  const night = Number.isFinite(civilStart) && Number.isFinite(civilEnd) && xs.length
+    ? [{ from: xs[0], to: civilStart, color: "#555" },
+      { from: civilEnd, to: xs[xs.length - 1], color: "#555" }]
+    : [];
+  miniChart(root, "#home-rain-chart", rain.rows, "precipitation_probability",
+    t("home.rain_chart_label"), SOURCE_COLORS.openmeteo, 100, {
+      series: rain.series,
+      xRanges: night, timeZone: summary.location.timezone,
+    });
+  try {
+    const uvFile = await loadData("uv");
+    const daylight = Number.isFinite(civilStart) && Number.isFinite(civilEnd);
+    miniChart(root, "#home-uv-chart", daylight ? uvFile?.data?.hourly ?? [] : [], "uv",
+      t("uv.chart_label"), "#b26a00", Math.max(4, Math.ceil(uvFile?.data?.max ?? 0) + 1), {
+        xMin: civilStart, xMax: civilEnd,
+        timeZone: summary.location.timezone,
+        xTicks: [civilStart, (civilStart + civilEnd) / 2, civilEnd],
+        yZones: UV_ZONES.map((zone) => ({
+          from: zone.from, to: zone.to, color: UV_COLORS[zone.level],
+        })),
+      });
+  } catch {
+    miniChart(root, "#home-uv-chart", [], "uv", t("uv.chart_label"), "#b26a00", 4);
+  }
+  const solar = root.ownerDocument?.getElementById("sun-times");
+  if (solar && root.isConnected !== false) {
+    solar.innerHTML = sunTimes(summary, day);
+    solar.hidden = false;
+  }
+}
+
+export async function renderSun(root) {
+  const summary = await loadData("summary");
+  let day;
+  try {
+    day = await solarDay(summary);
+  } catch {
+    root.innerHTML = `<a class="back" href="#/">${t("back")}</a>
+      <h1>${t("sun.title")}</h1><p class="notice">${t("home.sun_unavailable")}</p>`;
+    return;
+  }
+  const events = [
+    ["astronomical", "astronomical_twilight_begin", "astronomical_twilight_end"],
+    ["nautical", "nautical_twilight_begin", "nautical_twilight_end"],
+    ["civil", "civil_twilight_begin", "civil_twilight_end"],
+    ["sun", "sunrise", "sunset"],
+  ].filter(([, begin, end]) => begin in day || end in day);
+  root.innerHTML = `<a class="back" href="#/">${t("back")}</a>
+    <h1>${t("sun.title")}</h1>
+    <p class="muted">${esc(day.date)} · ${esc(summary.location.timezone)}</p>
+    <table class="days sun-details">
+      <thead><tr><th>${t("sun.event")}</th><th>${t("home.sunrise")}</th><th>${t("home.sunset")}</th></tr></thead>
+      <tbody>${events.map(([label, begin, end]) => `<tr>
+        <th scope="row">${t(`sun.${label}`)}</th>
+        <td>${solarHour(day[begin], summary)}</td>
+        <td>${solarHour(day[end], summary)}</td>
+      </tr>`).join("")}</tbody>
+    </table>
+    <p class="muted">${t("sun.light_note")}</p>
+    <p><a href="https://sunrise-sunset.org/" target="_blank" rel="noopener noreferrer">${t("home.sun_source")}</a></p>`;
+}
+
+export function renderCsck(root) {
+  root.innerHTML = `<a class="back" href="#/">${t("back")}</a>
+    <h1>${t("home.csck")}</h1><p class="muted">${t("csck.pending")}</p>`;
 }

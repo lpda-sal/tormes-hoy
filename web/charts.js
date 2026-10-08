@@ -119,7 +119,7 @@ export function renderChart(container, spec) {
       label: s.label, data: points(s.values), role: s.tooltip === false ? "hidden" : "series",
       borderColor: s.color, backgroundColor: s.color, borderWidth: s.width ?? 2,
       borderDash: s.dashed ? [6, 4] : [], pointRadius: 0, pointHoverRadius: 4,
-      spanGaps: s.spanGaps ?? false, fill: false, tension: 0.15,
+      spanGaps: s.spanGaps ?? false, fill: false, tension: s.tension ?? 0.15,
     });
   }
   const muted = css("--muted", "#666");
@@ -145,6 +145,7 @@ export function renderChart(container, spec) {
           grid: { color: grid },
           ticks: {
             color: muted, maxRotation: 0, autoSkip: true, autoSkipPadding: 8,
+            font: spec.compact ? { size: 11 } : undefined,
             callback: (value) => (spec.xFormat ? spec.xFormat(value) : value),
           },
           afterBuildTicks: (scale) => {
@@ -156,7 +157,11 @@ export function renderChart(container, spec) {
           max: spec.yMax,
           grace: "5%",
           grid: { color: grid },
-          ticks: { color: muted, maxTicksLimit: 6 },
+          ticks: {
+            color: muted, maxTicksLimit: spec.compact ? 3 : 6,
+            font: spec.compact ? { size: 11 } : undefined,
+            callback: spec.yFormat,
+          },
         },
       },
       plugins: {
@@ -198,7 +203,7 @@ export function renderChart(container, spec) {
     },
   });
   instances.set(container, chart);
-  container.appendChild(legend(spec));
+  if (!spec.compact) container.appendChild(legend(spec));
   return chart;
 }
 

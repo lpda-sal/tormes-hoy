@@ -2,6 +2,7 @@
 
 import tomllib
 from dataclasses import dataclass
+from math import isfinite
 from pathlib import Path
 from typing import Any
 
@@ -69,6 +70,8 @@ class RiverConfig:
     """CHD river gauging station settings."""
 
     station: str
+    flow_caution_m3s: float
+    flow_danger_m3s: float
     current_url: str
     station_field: str
     level_field: str
@@ -124,16 +127,26 @@ def load_config(path: Path = _DEFAULT_CONFIG_PATH) -> Config:
 
     Raises:
         KeyError: If a required section or key is missing.
+        ValueError: If river flow thresholds are invalid.
     """
     with path.open("rb") as fh:
         raw = tomllib.load(fh)
+    river = RiverConfig(**raw["river"])
+    if not (
+        isfinite(river.flow_caution_m3s)
+        and isfinite(river.flow_danger_m3s)
+        and 0 < river.flow_caution_m3s < river.flow_danger_m3s
+    ):
+        raise ValueError(
+            "River flow thresholds must be positive and increasing"
+        )
     return Config(
         app=_AppInfo(**raw["app"]),
         location=_Location(**raw["location"]),
         openmeteo=_OpenMeteoConfig(**raw["openmeteo"]),
         aemet=_AemetConfig(**raw["aemet"]),
         meteoblue=_MeteoblueConfig(**raw["meteoblue"]),
-        river=RiverConfig(**raw["river"]),
+        river=river,
         yearbook=_YearbookConfig(**raw["yearbook"]),
         uv=_UvConfig(**raw["uv"]),
         data_dir=Path(raw["output"]["data_dir"]),

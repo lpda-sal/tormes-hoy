@@ -3,6 +3,7 @@ from zoneinfo import ZoneInfo
 
 from tormes_hoy.source_data import uv
 from tormes_hoy.source_data.sources import openmeteo
+from tormes_hoy.utils.models import JsonDict
 
 from .conftest import TZ, load_fixture
 
@@ -26,10 +27,20 @@ def test_protection_window() -> None:
         {"time": "2026-06-01T16:00", "uv": 2.0},
     ]
     assert uv._protection_window(curve, 3) == {
-        "from": "11:00",
-        "to": "15:00",
+        "from": "10:40",
+        "to": "15:30",
     }
     assert uv._protection_window(curve, 5) is None
+
+
+def test_protection_window_does_not_interpolate_missing_values() -> None:
+    curve: list[JsonDict] = [
+        {"time": "2026-06-01T10:00", "uv": None},
+        {"time": "2026-06-01T11:00", "uv": 3.0},
+        {"time": "2026-06-01T12:00", "uv": 4.0},
+        {"time": "2026-06-01T13:00", "uv": None},
+    ]
+    assert uv._protection_window(curve, 3) == {"from": "11:00", "to": "12:00"}
 
 
 def test_summarize_today() -> None:
@@ -42,3 +53,12 @@ def test_summarize_today() -> None:
     assert block["now"] == hourly[13]["uv"]
     assert block["max"] == max(r["uv"] for r in hourly[:HOURS_PER_DAY])
     assert block["protection"] is not None
+
+
+def test_protection_window_rounds_crossings_outwards() -> None:
+    curve = [
+        {"time": "2026-06-01T10:00", "uv": 0.0},
+        {"time": "2026-06-01T11:00", "uv": 7.0},
+        {"time": "2026-06-01T12:00", "uv": 0.0},
+    ]
+    assert uv._protection_window(curve, 3) == {"from": "10:25", "to": "11:35"}

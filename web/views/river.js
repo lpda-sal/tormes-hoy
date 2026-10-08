@@ -197,6 +197,7 @@ export async function render(root) {
       <p class="chart-hint">${t("chart_hint")}</p>
       <div id="river-notices"></div>
       <p class="muted">${t("river.source_note")}</p>
+      <p class="muted">${t("river.flow_status_note")}</p>
     </section>`;
   const files = { raw, daily, yearbook };
   root.querySelector("#river-controls").addEventListener("click", (event) => {
