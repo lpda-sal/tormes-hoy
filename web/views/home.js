@@ -232,11 +232,8 @@ export async function render(root) {
     </div>
     <nav class="home-links">
       <a class="next-days-link" href="#/weather/days">${t("home.next_days")}</a>
-      <a class="next-days-link" href="#/csck">${t("home.csck")}</a>
     </nav>`;
   const day = await solarDay(summary).catch(() => null);
-  const civilStart = new Date(day?.civil_twilight_begin ?? NaN).getTime();
-  const civilEnd = new Date(day?.civil_twilight_end ?? NaN).getTime();
   const xs = rain.rows.map((row) => forecastTime(row.time, summary.location.timezone));
   const night = civilNightRanges(xs, day, summary.location.timezone);
   miniChart(root, "#home-rain-chart", rain.rows, "precipitation_probability",
@@ -246,12 +243,17 @@ export async function render(root) {
     });
   try {
     const uvFile = await loadData("uv");
-    const daylight = Number.isFinite(civilStart) && Number.isFinite(civilEnd);
+    const uvDay = uvFile?.data?.date && uvFile.data.date !== day?.date
+      ? await loadSunTimes(summary.location, uvFile.data.date) : day;
+    const uvStart = new Date(uvDay?.civil_twilight_begin ?? "").getTime();
+    const uvEnd = new Date(uvDay?.civil_twilight_end ?? "").getTime();
+    const daylight = Number.isFinite(uvStart) && Number.isFinite(uvEnd)
+      && uvStart < uvEnd;
     miniChart(root, "#home-uv-chart", daylight ? uvFile?.data?.hourly ?? [] : [], "uv",
       t("uv.chart_label"), "#b26a00", Math.max(4, Math.ceil(uvFile?.data?.max ?? 0) + 1), {
-        xMin: civilStart, xMax: civilEnd,
+        xMin: uvStart, xMax: uvEnd,
         timeZone: summary.location.timezone,
-        xTicks: [civilStart, (civilStart + civilEnd) / 2, civilEnd],
+        xTicks: [uvStart, (uvStart + uvEnd) / 2, uvEnd],
         yZones: UV_ZONES.map((zone) => ({
           from: zone.from, to: zone.to, color: UV_COLORS[zone.level],
         })),

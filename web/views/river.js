@@ -1,14 +1,15 @@
 import { renderChart, timeTicks } from "../charts.js";
 import { loadData } from "../data.js";
-import { dateLabel, dateTimeLabel, esc, num, statusBadge } from "../format.js";
+import { dateLabel, dateTimeLabel, esc, num, statusBadge, UV_COLORS } from "../format.js";
 import { t } from "../i18n.js";
 
 const DAY = 86400000;
 const COLORS = {
-  current: "#1f5f8b",
-  previous: "#e07a1f",
+  current: "#e07a1f",
+  previous: "#1f5f8b",
   median: "#555555",
   band: "#8fa9bf",
+  extrema: "#9aa6a0",
   now: "#d1495b",
 };
 const UNITS = { flow_m3s: " m³/s", level_m: " m" };
@@ -61,14 +62,26 @@ function segmented(name, options, current) {
 }
 
 function yearbookParts(stats, keyOf) {
-  if (!stats) return { band: undefined, series: [] };
+  if (!stats) return { bands: [], series: [] };
+  const bands = [{
+    label: t("river.quartiles", { period: stats.period }),
+    color: COLORS.band,
+    lower: keyOf.map((md) => stats.byMd.get(md)?.p25 ?? null),
+    upper: keyOf.map((md) => stats.byMd.get(md)?.p75 ?? null),
+  }];
+  if (keyOf.some((md) => {
+    const row = stats.byMd.get(md);
+    return Number.isFinite(row?.min) && Number.isFinite(row?.max);
+  })) {
+    bands.unshift({
+      label: t("river.extrema", { period: stats.period }),
+      color: COLORS.extrema, opacity: 0.18, order: 101,
+      lower: keyOf.map((md) => stats.byMd.get(md)?.min ?? null),
+      upper: keyOf.map((md) => stats.byMd.get(md)?.max ?? null),
+    });
+  }
   return {
-    band: {
-      label: t("river.quartiles", { period: stats.period }),
-      color: COLORS.band,
-      lower: keyOf.map((md) => stats.byMd.get(md)?.p25 ?? null),
-      upper: keyOf.map((md) => stats.byMd.get(md)?.p75 ?? null),
-    },
+    bands,
     series: [{
       label: t("river.median", { period: stats.period }),
       color: COLORS.median,
@@ -79,13 +92,13 @@ function yearbookParts(stats, keyOf) {
   };
 }
 
-function yearSpec(files, variable, notices) {
+function yearSpec(files, variable) {
   const now = new Date();
   const year = now.getFullYear();
   const daily = files.daily?.daily ?? [];
   const xs = Array.from({ length: SLOTS }, (_, i) => i);
   const stats = yearbookFor(files.yearbook, variable);
-  const { band, series } = yearbookParts(stats, xs.map((i) => mdOf(slotDate(i))));
+  const { bands, series } = yearbookParts(stats, xs.map((i) => mdOf(slotDate(i))));
 
   const previous = yearValues(daily, variable, year - 1);
   const current = yearValues(daily, variable, year);
@@ -95,17 +108,10 @@ function yearSpec(files, variable, notices) {
     { label: t("river.year_label", { year }), color: COLORS.current, values: current, width: 2.4, spanGaps: 2 },
   );
 
-  const firstDate = daily.find((d) => d[variable]?.mean !== undefined)?.date;
-  if (!firstDate) {
-    notices.push(t("river.no_history"));
-  } else if (firstDate > `${year - 1}-01-02`) {
-    notices.push(t("river.history_notice", { date: dateLabel(`${firstDate}T12:00`) }));
-  }
-
   const reading = files.raw?.current?.data;
   return {
     x: xs,
-    band,
+    bands,
     series,
     xMin: 0,
     xMax: SLOTS - 1,
@@ -117,28 +123,41 @@ function yearSpec(files, variable, notices) {
   };
 }
 
-function monthSpec(files, variable, notices) {
-  const now = Date.now();
-  const x0 = now - 30 * DAY;
-  const readings = (files.raw?.readings ?? [])
-    .map((r) => ({ x: new Date(r.time).getTime(), y: r[variable] ?? null }))
-    .filter((r) => r.x >= x0)
-    .sort((a, b) => a.x - b.x);
-  if (!readings.length) notices.push(t("river.no_history"));
-  const xs = readings.map((r) => r.x);
+function monthSpec(files, variable) {
+  const today = new Date();
+  const year = today.getFullYear();
+  const dates = Array.from({ length: 31 }, (_, index) =>
+    new Date(year, today.getMonth(), today.getDate() - 30 + index, 12));
+  const xs = dates.map((date) => date.getTime());
+  const daily = new Map((files.daily?.daily ?? []).map((day) => [day.date, day]));
   const stats = yearbookFor(files.yearbook, variable);
-  const { band, series } = yearbookParts(stats, xs.map((x) => mdOf(new Date(x))));
-  series.push({ label: t("river.observed"), color: COLORS.current, values: readings.map((r) => r.y), width: 2 });
+  const { bands, series } = yearbookParts(stats, xs.map((x) => mdOf(new Date(x))));
+  for (const offset of [1, 0]) {
+    const values = dates.map((date) => {
+      const compared = new Date(date);
+      compared.setFullYear(date.getFullYear() - offset);
+      if (compared.getMonth() !== date.getMonth()) return null;
+      const key = `${compared.getFullYear()}-${mdOf(compared)}`;
+      const mean = daily.get(key)?.[variable]?.mean;
+      return Number.isFinite(mean) ? mean : null;
+    });
+    series.push({
+      label: t("river.year_label", { year: year - offset }),
+      color: offset ? COLORS.previous : COLORS.current,
+      values, width: offset ? 1.8 : 2.4, spanGaps: DAY,
+      pointRadius: values.filter((value) => value !== null).length === 1 ? 3 : 0,
+    });
+  }
   const reading = files.raw?.current?.data;
   return {
     x: xs,
-    band,
+    bands,
     series,
-    xMin: x0,
-    xMax: now + DAY / 4,
-    now,
+    xMin: xs[0] - DAY / 2,
+    xMax: xs[xs.length - 1] + DAY / 2,
+    now: Date.now(),
     dots: reading ? [{ x: new Date(reading.time).getTime(), y: reading[variable], color: COLORS.now, label: t("river.now") }] : [],
-    xTicks: timeTicks(x0, now, 7 * DAY),
+    xTicks: timeTicks(xs[0], xs[xs.length - 1], 7 * DAY),
     xFormat: (x) => dateLabel(x),
     titleFormat: (x) => dateTimeLabel(x),
   };
@@ -152,8 +171,8 @@ function draw(root, files) {
   else if (stats.detected_shifts?.length) notices.push(t("river.shift_notice", { period: stats.period }));
 
   const spec = state.range === "month"
-    ? monthSpec(files, variable, notices)
-    : yearSpec(files, variable, notices);
+    ? monthSpec(files, variable)
+    : yearSpec(files, variable);
 
   root.querySelector("#river-controls").innerHTML =
     segmented("variable", [["flow_m3s", t("river.flow")], ["level_m", t("river.level")]], state.variable) +
@@ -176,29 +195,47 @@ function draw(root, files) {
 }
 
 export async function render(root) {
-  const [raw, daily, yearbook] = await Promise.all([
+  const [raw, daily, yearbook, summary] = await Promise.all([
     loadData("river-observed-30d"),
     loadData("river-observed-daily"),
     loadData("river-yearbook-stats", { optional: true }),
+    loadData("summary", { optional: true }).catch(() => null),
   ]);
   const current = raw?.current;
-  const station = raw?.source?.station ?? "";
+  const reading = current?.data;
+  const summaryRiver = summary?.river;
+  const sameReading = reading && reading.time === summaryRiver?.data?.time
+    && reading.flow_m3s === summaryRiver.data.flow_m3s;
+  const flowStatus = sameReading && Number.isFinite(reading.flow_m3s)
+    && reading.flow_m3s >= 0
+    && ["safe", "caution", "danger"].includes(summaryRiver.flow_status)
+    ? summaryRiver.flow_status : "unknown";
+  const flowColor = {
+    safe: UV_COLORS.low, caution: UV_COLORS.moderate, danger: UV_COLORS.very_high,
+  }[flowStatus];
   root.innerHTML = `
     <a class="back" href="#/">${t("back")}</a>
-    <h1>${esc(t("river.title", { station }))} ${statusBadge(current?.status)}</h1>
+    <h1>${t("river.title")} ${statusBadge(current?.status)}</h1>
+    ${reading ? `<div class="river-current">
+      <div>
+        <h2>${t("river.flow")}</h2>
+        <div class="big"><span class="flow-chip ${flowStatus}"${flowColor ? ` style="background:${flowColor};color:#111"` : ""}>${t("units.flow", { v: num(reading.flow_m3s, 2) })}</span></div>
+        ${flowStatus !== "unknown" ? `<div class="muted flow-status">${t(`river.flow_status.${flowStatus}`)}</div>` : ""}
+      </div>
+      <div>
+        <h2>${t("river.level")}</h2>
+        <div class="big"><span class="level-chip">${num(reading.level_m, 2)}${UNITS.level_m}</span></div>
+      </div>
+    </div>` : `<p class="muted">${t("weather.no_data")}</p>`}
+    <p class="chart-hint">${t("chart_hint")}</p>
     <section class="card">
-      ${current?.data ? `<div class="row">
-        <span class="big">${num(current.data.flow_m3s, 2)} <span class="muted">m³/s</span></span>
-        <span class="big">${num(current.data.level_m, 2)} <span class="muted">m</span></span>
-        <span class="muted">${dateTimeLabel(current.data.time)}</span></div>` : ""}
       <div id="river-controls"></div>
       <h2 id="river-unit"></h2>
       <div id="river-chart"></div>
-      <p class="chart-hint">${t("chart_hint")}</p>
-      <div id="river-notices"></div>
-      <p class="muted">${t("river.source_note")}</p>
-      <p class="muted">${t("river.flow_status_note")}</p>
-    </section>`;
+    </section>
+    <div id="river-notices"></div>
+    <p class="muted">${t("river.source")}</p>
+    <p class="muted">${t("river.flow_status_note")}</p>`;
   const files = { raw, daily, yearbook };
   root.querySelector("#river-controls").addEventListener("click", (event) => {
     const button = event.target.closest("button");

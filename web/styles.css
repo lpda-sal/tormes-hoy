@@ -151,7 +151,8 @@ a.card:focus-visible {
 }
 
 .hour .icon,
-.day .icon {
+.day .icon,
+.days .icon {
   font-size: 1.4rem;
 }
 
@@ -182,10 +183,27 @@ a.card:focus-visible {
   font-weight: 700;
 }
 
-.flow-chip {
+.flow-chip,
+.level-chip {
   display: inline-block;
   border-radius: .5rem;
   padding: .1rem .4rem;
+}
+
+.river-current {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .35rem .75rem;
+  margin-bottom: 1rem;
+}
+
+.river-current h2 {
+  font-size: .95rem;
+  margin-bottom: .35rem;
+}
+
+.river-current .big {
+  font-size: 1.8rem;
 }
 
 .back {
@@ -312,7 +330,8 @@ a.card:focus-visible {
   text-align: right;
 }
 
-.home-grid .flow-status {
+.home-grid .flow-status,
+.river-current .flow-status {
   margin-top: .25rem;
 }
 
@@ -331,7 +350,8 @@ a.card:focus-visible {
 }
 
 .home-grid .big .muted,
-.home-grid .flow-status {
+.home-grid .flow-status,
+.river-current .flow-status {
   font-size: .875rem;
   font-weight: 600;
   line-height: 1.1;

@@ -14,21 +14,21 @@ from tormes_hoy.utils.config import Config
 from tormes_hoy.utils.models import JsonDict
 from tormes_hoy.utils.timeutil import is_older_than, parse_local
 
-NAME = 'meteoblue'
-META: JsonDict = {'label': 'Meteoblue', 'attribution': '© meteoblue'}
+NAME = "meteoblue"
+META: JsonDict = {"label": "Meteoblue", "attribution": "© meteoblue"}
 
 
 def _build_url(config: Config, api_key: str) -> str:
     """Return the package URL for the configured location."""
     params = {
-        'lat': config.location.lat,
-        'lon': config.location.lon,
-        'tz': config.location.timezone,
-        'format': 'json',
-        'windspeed': 'kmh',
-        'apikey': api_key,
+        "lat": config.location.lat,
+        "lon": config.location.lon,
+        "tz": config.location.timezone,
+        "format": "json",
+        "windspeed": "kmh",
+        "apikey": api_key,
     }
-    return f'{config.meteoblue.base_url}?{urlencode(params)}'
+    return f"{config.meteoblue.base_url}?{urlencode(params)}"
 
 
 def should_refresh(
@@ -51,7 +51,7 @@ def _col(block: JsonDict, name: str, n: int) -> list[Any]:
 
 
 def _local_minute(value: str) -> str:
-    return value.strip().replace(' ', 'T')[:16]
+    return value.strip().replace(" ", "T")[:16]
 
 
 def _parse(payload: JsonDict) -> JsonDict:
@@ -60,49 +60,49 @@ def _parse(payload: JsonDict) -> JsonDict:
     Raises:
         ValueError: If the payload lacks ``data_1h`` or ``data_day``.
     """
-    hourly = payload.get('data_1h')
-    daily = payload.get('data_day')
+    hourly = payload.get("data_1h")
+    daily = payload.get("data_day")
     if not isinstance(hourly, dict) or not isinstance(daily, dict):
-        raise ValueError('Meteoblue payload without data_1h/data_day')
-    times = hourly.get('time') or []
+        raise ValueError("Meteoblue payload without data_1h/data_day")
+    times = hourly.get("time") or []
     n = len(times)
-    temp = _col(hourly, 'temperature', n)
-    humidity = _col(hourly, 'relativehumidity', n)
-    prob = _col(hourly, 'precipitation_probability', n)
-    rain = _col(hourly, 'precipitation', n)
-    wind = _col(hourly, 'windspeed', n)
-    picto = _col(hourly, 'pictocode', n)
+    temp = _col(hourly, "temperature", n)
+    humidity = _col(hourly, "relativehumidity", n)
+    prob = _col(hourly, "precipitation_probability", n)
+    rain = _col(hourly, "precipitation", n)
+    wind = _col(hourly, "windspeed", n)
+    picto = _col(hourly, "pictocode", n)
     hourly_rows = [
         {
-            'time': _local_minute(str(times[i])),
-            'temperature': temp[i],
-            'humidity': humidity[i],
-            'precipitation_probability': prob[i],
-            'precipitation': rain[i],
-            'wind_speed': wind[i],
-            'pictocode': picto[i],
+            "time": _local_minute(str(times[i])),
+            "temperature": temp[i],
+            "humidity": humidity[i],
+            "precipitation_probability": prob[i],
+            "precipitation": rain[i],
+            "wind_speed": wind[i],
+            "pictocode": picto[i],
         }
         for i in range(n)
     ]
-    days = daily.get('time') or []
+    days = daily.get("time") or []
     m = len(days)
-    tmax = _col(daily, 'temperature_max', m)
-    tmin = _col(daily, 'temperature_min', m)
-    dprob = _col(daily, 'precipitation_probability', m)
-    drain = _col(daily, 'precipitation', m)
-    uv = _col(daily, 'uvindex', m)
+    tmax = _col(daily, "temperature_max", m)
+    tmin = _col(daily, "temperature_min", m)
+    dprob = _col(daily, "precipitation_probability", m)
+    drain = _col(daily, "precipitation", m)
+    uv = _col(daily, "uvindex", m)
     daily_rows = [
         {
-            'date': str(days[i])[:10],
-            'temperature_max': tmax[i],
-            'temperature_min': tmin[i],
-            'precipitation_probability': dprob[i],
-            'precipitation': drain[i],
-            'uv_max': uv[i],
+            "date": str(days[i])[:10],
+            "temperature_max": tmax[i],
+            "temperature_min": tmin[i],
+            "precipitation_probability": dprob[i],
+            "precipitation": drain[i],
+            "uv_max": uv[i],
         }
         for i in range(m)
     ]
-    return {'hourly': hourly_rows, 'daily': daily_rows}
+    return {"hourly": hourly_rows, "daily": daily_rows}
 
 
 def fetch(

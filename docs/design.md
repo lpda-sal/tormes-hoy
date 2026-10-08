@@ -35,7 +35,7 @@ Locally, once a year: tormes-hoy-build-yearbook daily.csv
 | Meteoblue | Every 6 h | Free trial is credit-limited |
 | UV | Open-Meteo hourly UV, threshold 3 | WHO: protection from "moderate" |
 | River now | CHD open data, station EA087 | Official source |
-| River stats | Yearbook day-of-year P25/P50/P75, last 10 available years, ±7 days | Validated data, smooth band |
+| River stats | Yearbook day-of-year min/P25/P50/P75/max, last 10 available years, 0-day window | Validated data, same calendar date only |
 | No mixing | Yearbook and observed stored and computed separately | Validated vs provisional |
 | Level shifts | Yearly median jump > 0.15 m → use only years after the jump | Datum changes |
 | Web | Vanilla JS, hash routes, no build | No toolchain to maintain |
@@ -65,6 +65,35 @@ chart legends and the observation card are omitted. The forecast-divergence
 note appears above the charts; the daily-forecast link is omitted. Axes use
 the configured timezone regardless of the browser timezone.
 
+The upcoming-days view contains only its title, back link and comparison
+table. Source names remain in the column headers, without an update-age
+legend, table subtitle or bottom weather link. Daily forecasts with a known
+WMO code use the home-screen weather icons with accessible descriptions;
+missing or unsupported codes do not display an invented condition.
+
+## River detail
+
+The river detail title is "Río Tormes", without the station identifier.
+Current flow and level appear above the chart, using the home reading's
+typography and value/unit chips. Flow repeats the home colour and category
+only when the summary's classification matches the raw reading's timestamp
+and flow; missing or mismatched categories remain unclassified. Level retains
+the same typography without a background. Reading age is omitted.
+The interaction hint precedes the chart card. Yearbook availability and
+level-reference notices follow it, outside the card, followed by the CHD
+attribution and provisional danger-level disclaimer. Observed-history notices
+and the data-origin paragraph are omitted.
+Both chart ranges use blue for the previous year and orange for the current
+year. Last month compares daily observed means over the latest 30 days and
+today with the same calendar dates one year earlier, aligned on one axis.
+Missing values remain gaps; absent years never acquire invented data.
+February 29 has no previous-year value when that date did not exist.
+Provisional observations and validated yearbook statistics remain separate.
+Both ranges show a lightly shaded historical minimum-to-maximum region behind
+the darker P25-P75 region, median and observed series. Region labels use the
+selected variable's actual yearbook period, and tooltips report each region's
+own endpoints. Older yearbooks without extrema retain only the quartile band.
+
 ## Home screen
 
 The home grid has four rows: current weather and river; full-width upcoming
@@ -80,7 +109,10 @@ with a fixed 0–100% scale. Night shading repeats today's local civil-dusk
 and civil-dawn times on each visible date, without requesting tomorrow's solar
 data; daylight after the repeated dawn remains unshaded.
 UV uses `uv.json` with the visible axis limited to civil dawn through civil
-dusk and the same risk-colour bands as the detail chart. Missing solar times
+dusk for the UV payload's date and the same risk-colour bands as the detail
+chart. After midnight, an older payload retains its own day's bounds so the
+orange curve is not clipped away by today's axis. The solar header still
+shows today. Missing solar times
 leave UV's small chart unavailable rather than inventing daylight boundaries.
 Both mini charts reuse the Chart.js wrapper
 and can be inspected without following a link. Their headings or summaries
@@ -99,8 +131,8 @@ the solar row is labelled Orto/Ocaso. Its footer shows the plain-text source
 label "Fuente: Sunrise-Sunset".
 There is no generated-data footer.
 
-The bottom navigation places the daily forecast link on the left and CSCK
-on the right. The explicitly requested `#/csck` route is a placeholder with
+The bottom navigation shows only the daily forecast link on the left.
+The existing `#/csck` route remains a placeholder with
 a development status and a return link. Current weather labels gusts as
 "Racha". Weather and river share an equal-height grid row sized to its
 content rather than expanded into unused space. The upcoming-hours row
@@ -159,7 +191,7 @@ job: the workflow always deploys.
 ## Charts
 
 `web/charts.js` is the only module that uses Chart.js. Views pass a spec
-(shared `x` array, series, optional percentile band, zones, "now" marker,
+(shared `x` array, series, optional layered bands, zones, "now" marker,
 highlighted dots, formatters); the wrapper builds the chart. Every series
 of a chart shares the same `x` values, so a touch shows all values at that
 point in one tooltip (`interaction.mode = "index"`), with a crosshair.

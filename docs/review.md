@@ -150,3 +150,32 @@ replace fixtures with real responses and tick it.
       an orange line without a series legend or protection-window shading,
       and frames only the chart. Tests cover the reference hour, timezone,
       note/hint/source placement and unavailable solar or hourly data.
+- Upcoming-days comparison omits the update-age legend, table subtitle and
+      bottom weather link. Known daily WMO codes reuse the home icons with
+      accessible descriptions; missing or unsupported codes omit the icon.
+- River detail uses the title "Río Tormes" and home-style current readings.
+      Flow shares the matching summary category; level has no background. Tests
+      cover colour bands, unmatched/missing categories, unavailable readings
+      and the level chart selector.
+- River month comparison aligns daily observed means for the current and
+      previous year, orange and blue respectively, matching annual colours.
+      Tests cover both variables, missing years, gaps and leap-day alignment.
+      Reading age is omitted; the hint precedes the chart card and yearbook
+      notices, CHD attribution and danger disclaimer follow it. Observed
+      history notices and the data-origin paragraph are omitted.
+- Home UV bounds follow the payload date rather than the browser's current
+      day. A midnight regression keeps the orange forecast curve visible
+      until new UV data arrives, without moving yesterday's values to today.
+- Yearbook import accepts the original CEDEX daily TXT, including missing
+      sentinels and UTF-8/Latin-1 encoding, while preserving CSV support.
+      Tests reject malformed rows, mixed stations and duplicate dates.
+      Min/max use the same configured window as P25/P50/P75; the
+      CLI prints the absolute path of its generated statistics JSON.
+- River charts layer the historical min/max envelope beneath the quartile
+      band and every line. Tests cover both ranges, per-band tooltips,
+      variable-specific periods, missing extrema and removed history text.
+- Yearbook statistics use a zero-day window, comparing only the same
+      calendar date across years. Regression tests exclude neighbouring
+      samples and verify insufficient leap-day data remains unavailable.
+- Home footer omits the CSCK link while keeping the daily forecast link
+      and the existing placeholder route. Rendering tests verify its absence.

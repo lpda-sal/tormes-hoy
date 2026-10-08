@@ -82,20 +82,35 @@ provisional and may be revised by SAIH Duero.
 
 ## Yearbook import (once a year, locally)
 
-1. Download the yearbook data of the Salamanca station (check its code in
-   the yearbooks; it may differ from `EA087`).
-2. Build a normalised CSV, one row per day (the CLI expects CSV, not
-   `data/river-observed-daily.json`):
+1. Download [CEDEX station 2087: Tormes at Salamanca](https://ceh.cedex.es/anuarioaforos/afo/estaf-datos_descarga.asp?indroea=2087).
+   Select "Alturas y caudales medios diarios" and the available year range.
+   The yearbook station code differs from the SAIH code `EA087`.
+2. Import the original TXT download directly from the repository root:
+   ```bash
+   mamba run -n tormes-hoy tormes-hoy-build-yearbook resultado5655.txt
+   ```
+   The reader skips the header, parses `DD/MM/YYYY`, and reads height in m
+   and flow in m3/s. `-100.00` means missing, not a negative reading;
+   legitimate zeros remain zero. UTF-8 and Latin-1 exports are supported.
+   Mixed stations, duplicate dates and malformed daily rows are rejected.
+3. The command writes `data/river-yearbook-stats.json` by default and prints
+   its absolute path. Use `--out-dir path/to/output` to change that directory.
+   Rebuild the preview with `tormes-hoy-build-site` and reload the river view.
+4. Normalised CSV input remains supported, with one row per day:
    ```csv
    date,flow_m3s,level_m
    2015-01-01,12.4,0.98
    ```
-   Empty cells are allowed. Years with < 300 values are ignored.
-3. Run `tormes-hoy-build-yearbook path/to/daily.csv` and commit
-   `data/river-yearbook-stats.json`.
+   Empty cells are allowed. Do not use `data/river-observed-daily.json` as
+   input: provisional observations are not yearbook data.
 
 The statistics use the last 10 complete years **available in the
-yearbooks** (not calendar years), a ±7-day window around each calendar day,
-and P25/P50/P75. For level, a yearly median jump above
+yearbooks** (not necessarily the last 10 calendar years). Completeness is
+checked per calendar year and variable, requiring at least 300 values.
+Minimum, P25, median (`p50`), P75 and maximum all use the same calendar date
+across the selected years (`smoothing_window_days = 0`), without neighbouring
+days. Dates with fewer than two available samples retain only their date and
+sample count, without invented statistics; this can affect February 29.
+For level, a yearly median jump above
 `level_shift_threshold_m` is treated as a datum change and only later years
 are used. Observed readings are never added to these statistics.

@@ -2,6 +2,7 @@ import { renderChart, timeTicks } from "../charts.js";
 import { loadData, loadSunTimes } from "../data.js";
 import {
   age, civilNightRanges, dayLabel, esc, forecastTime, num, SOURCE_COLORS, statusBadge,
+  wmoIcon, wmoText,
 } from "../format.js";
 import { t } from "../i18n.js";
 
@@ -78,7 +79,11 @@ function daysTable(forecasts) {
     const cells = SOURCES.map((k) => {
       const day = (forecasts[k]?.data?.daily ?? []).find((d) => d.date === date);
       if (!day) return `<td class="muted">–</td>`;
-      return `<td><strong>${num(day.temperature_max)}°</strong>/${num(day.temperature_min)}°<br><span class="muted">${num(day.precipitation_probability)}%</span></td>`;
+      const icon = Number.isFinite(day.weather_code) ? wmoIcon(day.weather_code) : "";
+      const condition = icon && icon !== "·"
+        ? `<div class="icon" role="img" aria-label="${esc(wmoText(day.weather_code))}" title="${esc(wmoText(day.weather_code))}">${icon}</div>`
+        : "";
+      return `<td>${condition}<strong>${num(day.temperature_max)}°</strong>/${num(day.temperature_min)}°<br><span class="muted">${num(day.precipitation_probability)}%</span></td>`;
     }).join("");
     return `<tr><td>${dayLabel(date)}</td>${cells}</tr>`;
   }).join("");
@@ -144,7 +149,5 @@ export async function renderDays(root) {
   root.innerHTML = `
     <a class="back" href="#/">${t("back")}</a>
     <h1>${t("weather.days_title")}</h1>
-    <div class="legend">${sourcesStatus(forecasts)}</div>
-    <section><h2>${t("weather.days_table")}</h2>${daysTable(forecasts)}</section>
-    <a class="next-days-link" href="#/weather">${t("weather.title")}</a>`;
+    ${daysTable(forecasts)}`;
 }

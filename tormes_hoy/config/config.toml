@@ -45,7 +45,7 @@ trend_level_m = 0.01            # >1 cm change in the window = rising/falling
 
 [yearbook]
 years = 10
-smoothing_window_days = 7       # +/- days around each day of year
+smoothing_window_days = 0       # compare the same calendar day only
 level_shift_threshold_m = 0.15  # yearly median jump flagged as datum shift
 
 [uv]

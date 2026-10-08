@@ -28,7 +28,14 @@ with offset. Units: °C, %, mm, km/h, m³/s, m.
 | `uv.json` | hourly | `data`: `date`, `threshold`, `now`, `now_level`, `max`, `max_time`, `protection{from,to}\|null`, `hourly[{time,uv}]` |
 | `river-observed-30d.json` | hourly | `source` (kind `provisional`), `current` (source block), `readings[{time,level_m,flow_m3s}]` |
 | `river-observed-daily.json` | hourly | `daily[{date, level_m{min,mean,max}, flow_m3s{min,mean,max}, n}]` from 1 January of the previous year (`river.daily_years = 2`) |
-| `river-yearbook-stats.json` | yearly, local | `source` (kind `validated`), `method`, `variables.{flow_m3s,level_m}` with `years`, `period`, `detected_shifts`, `stats[{md:"MM-DD",p25,p50,p75,n}]` (366 rows) |
+| `river-yearbook-stats.json` | yearly, local | `source` (kind `validated`), `method`, `variables.{flow_m3s,level_m}` with `years`, `period`, `detected_shifts`, `stats[{md:"MM-DD",min?,p25,p50,p75,max?,n}]` (366 rows) |
+
+Yearbook `min` and `max` are additive extrema for the same selected years
+and configured calendar-day window as `p25`, `p50` (median) and `p75`.
+All five statistics are omitted when fewer than two samples are available;
+`md` and `n` remain. Older files may omit the extrema; schema version stays 1.
+The import accepts validated CEDEX daily TXT or normalised CSV; the TXT
+missing-data sentinel `-100.00` is excluded from every statistic.
 
 Hourly row: `time, temperature, humidity?, apparent_temperature?, precipitation_probability,
 precipitation, wind_speed, weather_code? (WMO), uv?, sky? (AEMET text), pictocode? (Meteoblue)`.

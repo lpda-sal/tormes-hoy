@@ -63,6 +63,7 @@ import { clearDataCache, loadSunTimes } from './web/data.js';
 import { render, renderSun, renderCsck } from './web/views/home.js';
 import { render as renderWeather, renderDays } from './web/views/weather.js';
 import { render as renderUv } from './web/views/uv.js';
+import { render as renderRiver } from './web/views/river.js';
 import { SOURCE_COLORS, UV_COLORS } from './web/format.js';
 
 let now = new Date('2026-10-08T12:00:00+02:00');
@@ -90,7 +91,7 @@ summary.next_days = {status: 'ok', data: [{
 }]};
 const weather = {forecasts: {openmeteo: {status: 'ok', data: {daily: [{
     date: '2026-10-09', temperature_max: 24, temperature_min: 10,
-    precipitation_probability: 5,
+    precipitation_probability: 5, weather_code: 0,
 }]}}}};
 weather.forecasts.openmeteo.data.hourly = Array.from({length: 28},
     (_, index) => {
@@ -107,6 +108,16 @@ summary.uv.data = {now: 3, max: 5, max_time: '15:00',
 let solarCalls = 0;
 let solarFailure = false;
 let uvFailure = false;
+const riverFile = {source: {station: 'EA087'}, current: {status: 'ok',
+    data: {time: '2026-10-08T11:00:00+02:00', flow_m3s: 6.8, level_m: 0.43}},
+    readings: []};
+const riverDaily = {daily: [
+    {date: '2025-10-07', flow_m3s: {mean: 5}, level_m: {mean: 0.3}},
+    {date: '2025-10-08', flow_m3s: {mean: 6}, level_m: {mean: 0.4}},
+    {date: '2026-10-06', flow_m3s: {mean: 7}, level_m: {mean: 0.5}},
+    {date: '2026-10-08', flow_m3s: {mean: 8}, level_m: {mean: 0.6}},
+]};
+const riverYearbook = {variables: {}};
 const uvFile = {location: summary.location, status: 'ok',
 generated_at: summary.generated_at, source: {label: 'Open-Meteo'},
 data: {date: '2026-10-08', now: 3, max: 5,
@@ -132,6 +143,15 @@ const solar = {
     astronomical_twilight_end: '2026-10-08T19:24:00+00:00',
 };
 globalThis.fetch = async (url) => {
+    if (String(url).includes('river-observed-30d.json')) {
+        return {ok: true, json: async () => riverFile};
+    }
+    if (String(url).includes('river-observed-daily.json')) {
+        return {ok: true, json: async () => riverDaily};
+    }
+    if (String(url).includes('river-yearbook-stats.json')) {
+        return {ok: true, json: async () => riverYearbook};
+    }
     if (String(url).includes('uv.json')) {
         if (uvFailure) throw new Error('UV file unavailable');
         return {ok: true, json: async () => uvFile};
@@ -167,6 +187,7 @@ globalThis.document = {
 const containers = Object.fromEntries([
     '#home-rain-chart', '#home-uv-chart',
     '#temp-chart', '#rain-chart', '#humidity-chart', '#uv-chart',
+    '#river-controls', '#river-unit', '#river-chart', '#river-notices',
 ].map((key) => [key, {
     innerHTML: '', replaceChildren() {},
     appendChild() { this.legendCount = (this.legendCount ?? 0) + 1; },
@@ -252,7 +273,7 @@ assert.ok(root.innerHTML.indexOf(strings.home.uv_max.split('{v}')[0])
 assert.ok(root.innerHTML.includes(
     `${strings.uv.protection_label}<br>de 12:32 a 17:30`));
 assert.ok(root.innerHTML.includes('class="home-links"'));
-assert.ok(root.innerHTML.includes('href="#/csck"'));
+assert.ok(!root.innerHTML.includes('href="#/csck"'));
 assert.ok(!root.innerHTML.includes(strings.river.level));
 assert.ok(!root.innerHTML.includes('SALAMANCA/MATACAN'));
 assert.ok(root.innerHTML.includes('Lluvia'));
@@ -429,6 +450,21 @@ await renderDays(root);
 assert.ok(root.innerHTML.includes(strings.weather.days_title));
 assert.ok(root.innerHTML.includes('<table'));
 assert.ok(!root.innerHTML.includes('temp-chart'));
+assert.ok(!root.innerHTML.includes('class="legend"'));
+assert.ok(!root.innerHTML.includes(strings.weather.days_table));
+assert.ok(!root.innerHTML.includes('href="#/weather"'));
+assert.ok(root.innerHTML.includes('class="back" href="#/"'));
+assert.ok(root.innerHTML.includes(`aria-label="${strings.wmo['0']}"`));
+assert.ok(root.innerHTML.includes('☀️'));
+assert.ok(root.innerHTML.includes('24°'));
+assert.ok(root.innerHTML.includes('5%'));
+weather.forecasts.openmeteo.data.daily[0].weather_code = null;
+await renderDays(root);
+assert.ok(!root.innerHTML.includes('role="img"'));
+weather.forecasts.openmeteo.data.daily[0].weather_code = 999;
+await renderDays(root);
+assert.ok(!root.innerHTML.includes('role="img"'));
+weather.forecasts.openmeteo.data.daily[0].weather_code = 0;
 const shell = readFileSync('web/index.html', 'utf8');
 assert.match(shell, /id="sun-times" href="#\/sun"/);
 assert.ok(!shell.includes('id="footer"'));
@@ -598,6 +634,31 @@ assert.equal(uvSpec.options.scales.x.max,
     new Date(solar.civil_twilight_end).getTime());
 assert.equal(uvSpec.options.scales.x.ticks.callback(
     new Date(solar.civil_twilight_begin).getTime()), '08:00');
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async (url) => {
+    if (String(url).includes('api.sunrise-sunset.org')
+        && new URL(url).searchParams.get('date') === '2026-10-09') {
+        const nextSolar = Object.fromEntries(Object.entries(solar).map(
+            ([key, value]) => [key, key === 'date' ? '2026-10-09'
+                : new NativeDate(new NativeDate(value).getTime()
+                    + 86400000).toISOString()]));
+        return {ok: true, json: async () => nextSolar};
+    }
+    return originalFetch(url);
+};
+now = new NativeDate('2026-10-09T00:30:00+02:00');
+await render(root);
+const midnightUv = chartSpecs.at(-1);
+assert.equal(midnightUv.data.datasets[0].borderColor, '#b26a00');
+assert.equal(midnightUv.options.scales.x.min,
+    new NativeDate(solar.civil_twilight_begin).getTime());
+assert.equal(midnightUv.options.scales.x.max,
+    new NativeDate(solar.civil_twilight_end).getTime());
+assert.ok(midnightUv.data.datasets[0].data.some(point =>
+    point.x >= midnightUv.options.scales.x.min
+    && point.x <= midnightUv.options.scales.x.max));
+globalThis.fetch = originalFetch;
+now = new NativeDate('2026-10-08T12:00:00+02:00');
 const countBeforeSolarFailure = chartSpecs.length;
 solarFailure = true;
 savedSolar = null;
@@ -609,6 +670,136 @@ uvFile.data.hourly = [];
 await renderUv(root);
 assert.ok(root.innerHTML.includes(strings.weather.no_data));
 assert.ok(!root.innerHTML.includes('class="card'));
+let riverControls;
+containers['#river-controls'].addEventListener = (_, handler) => {
+    riverControls = handler;
+};
+summary.river.data = {...riverFile.current.data};
+for (const [status, color] of [
+    ['safe', UV_COLORS.low], ['caution', UV_COLORS.moderate],
+    ['danger', UV_COLORS.very_high],
+]) {
+    summary.river.flow_status = status;
+    await renderRiver(root);
+    assert.ok(root.innerHTML.includes('<h1>Río Tormes '));
+    assert.ok(!root.innerHTML.includes('EA087'));
+    assert.ok(root.innerHTML.includes(`class="flow-chip ${status}"`));
+    assert.ok(root.innerHTML.includes(`background:${color};color:#111`));
+    assert.ok(root.innerHTML.includes(strings.river.flow_status[status]));
+    assert.ok(root.innerHTML.includes('6,80 m³/s</span>'));
+    assert.ok(root.innerHTML.includes('class="level-chip">0,43 m</span>'));
+    assert.ok(!root.innerHTML.includes('Lectura hace'));
+    assert.ok(root.innerHTML.indexOf(strings.chart_hint)
+        < root.innerHTML.indexOf('<section class="card">'));
+    assert.ok(!root.innerHTML.includes(strings.river.source_note));
+    for (const text of ['id="river-notices"',
+        strings.river.source, strings.river.flow_status_note]) {
+        assert.ok(root.innerHTML.indexOf(text)
+            > root.innerHTML.indexOf('</section>'));
+    }
+    assert.ok(root.innerHTML.indexOf(strings.river.source)
+        < root.innerHTML.indexOf(strings.river.flow_status_note));
+    assert.ok(root.innerHTML.indexOf('class="river-current"')
+        < root.innerHTML.indexOf('<section class="card">'));
+}
+assert.equal(chartSpecs.at(-1).data.datasets[0].label, '2025');
+assert.equal(chartSpecs.at(-1).data.datasets[0].borderColor, '#1f5f8b');
+assert.equal(chartSpecs.at(-1).data.datasets[1].label, '2026');
+assert.equal(chartSpecs.at(-1).data.datasets[1].borderColor, '#e07a1f');
+riverControls({target: {closest: () => ({dataset: {variable: 'level_m'}})}});
+assert.ok(containers['#river-unit'].textContent.includes(strings.river.level));
+assert.equal(chartSpecs.at(-1).options.plugins.decorations.dots[0].y, 0.43);
+riverControls({target: {closest: () => ({dataset: {range: 'month'}})}});
+const monthLevel = chartSpecs.at(-1).data.datasets;
+assert.deepEqual(monthLevel.map(series => series.label), ['2025', '2026']);
+assert.deepEqual(monthLevel[0].data.slice(-3).map(point => point.y),
+    [null, 0.3, 0.4]);
+assert.deepEqual(monthLevel[1].data.slice(-3).map(point => point.y),
+    [0.5, null, 0.6]);
+assert.equal(monthLevel[0].data.at(-1).x, monthLevel[1].data.at(-1).x);
+riverControls({target: {closest: () => ({dataset: {variable: 'flow_m3s'}})}});
+const monthFlow = chartSpecs.at(-1).data.datasets;
+assert.deepEqual(monthFlow[0].data.slice(-3).map(point => point.y),
+    [null, 5, 6]);
+assert.deepEqual(monthFlow[1].data.slice(-3).map(point => point.y),
+    [7, null, 8]);
+assert.equal(monthFlow[0].borderColor, '#1f5f8b');
+assert.equal(monthFlow[1].borderColor, '#e07a1f');
+assert.equal(monthFlow[1].spanGaps, 86400000);
+riverDaily.daily = riverDaily.daily.filter(day => day.date.startsWith('2026'));
+riverControls({target: {closest: () => ({dataset: {range: 'month'}})}});
+assert.ok(chartSpecs.at(-1).data.datasets[0].data.every(
+    point => point.y === null));
+assert.ok(!containers['#river-notices'].innerHTML.includes(
+    strings.river.no_year_history.replace('{year}', '2025')));
+riverDaily.daily = riverDaily.daily.filter(day => day.date === '2026-10-08');
+riverControls({target: {closest: () => ({dataset: {range: 'month'}})}});
+assert.equal(chartSpecs.at(-1).data.datasets[1].pointRadius, 3);
+riverDaily.daily.push(
+    {date: '2023-03-01', flow_m3s: {mean: 9}},
+    {date: '2024-02-29', flow_m3s: {mean: 10}},
+);
+now = new NativeDate('2024-03-01T12:00:00Z');
+riverControls({target: {closest: () => ({dataset: {range: 'month'}})}});
+const leapMonth = chartSpecs.at(-1).data.datasets;
+assert.equal(leapMonth[0].data.at(-2).y, null);
+assert.equal(leapMonth[0].data.at(-1).y, 9);
+assert.equal(leapMonth[1].data.at(-2).y, 10);
+now = new NativeDate('2026-10-08T12:00:00+02:00');
+const bookStats = Array.from({length: 366}, (_, index) => ({
+    md: new NativeDate(Date.UTC(2000, 0, index + 1))
+        .toISOString().slice(5, 10),
+    min: 1, p25: 3, p50: 5, p75: 7, max: 9,
+}));
+riverYearbook.variables.flow_m3s = {period: '2012-2021', stats: bookStats};
+riverYearbook.variables.level_m = {period: '2018-2021', stats: bookStats};
+for (const range of ['year', 'month']) {
+    riverControls({target: {closest: () => ({dataset: {range}})}});
+    const bandSpec = chartSpecs.at(-1);
+    const datasets = bandSpec.data.datasets;
+    assert.equal(datasets[1].label, 'Mínimo y máximo 2012-2021');
+    assert.equal(datasets[1].data[0].y, 9);
+    assert.equal(datasets[0].data[0].y, 1);
+    assert.equal(datasets[3].label, 'Cuartiles 25–75 % 2012-2021');
+    assert.equal(datasets[3].data[0].y, 7);
+    assert.equal(datasets[2].data[0].y, 3);
+    assert.ok(datasets[1].order > datasets[3].order);
+    assert.ok(datasets[3].order > datasets[4].order);
+    assert.equal(datasets[1].fill, '-1');
+    assert.equal(datasets[3].fill, '-1');
+    const tooltip = bandSpec.options.plugins.tooltip.callbacks;
+    for (const [index, lower, upper] of [[1, 1, 9], [3, 3, 7]]) {
+        const item = {dataset: datasets[index], dataIndex: 0,
+            raw: datasets[index].data[0], chart: {data: {datasets}}};
+        assert.ok(tooltip.label(item).endsWith(
+            `${lower},00 m³/s – ${upper},00 m³/s`));
+        assert.equal(tooltip.labelColor(item).backgroundColor,
+            datasets[index].bandColor);
+    }
+    assert.ok(!containers['#river-notices'].innerHTML.includes('lecturas'));
+}
+riverControls({target: {closest: () => ({dataset: {variable: 'level_m'}})}});
+assert.equal(chartSpecs.at(-1).data.datasets[1].label,
+    'Mínimo y máximo 2018-2021');
+riverYearbook.variables.level_m.stats = bookStats.map(
+    ({min, max, ...row}) => row);
+riverControls({target: {closest: () => ({dataset: {variable: 'level_m'}})}});
+assert.equal(chartSpecs.at(-1).data.datasets[1].label,
+    'Cuartiles 25–75 % 2018-2021');
+assert.ok(!chartSpecs.at(-1).data.datasets.some(
+    dataset => dataset.label.startsWith('Mínimo y máximo')));
+summary.river.data.time = '2026-10-08T10:00:00+02:00';
+await renderRiver(root);
+assert.ok(root.innerHTML.includes('class="flow-chip unknown"'));
+assert.ok(!root.innerHTML.includes('class="muted flow-status"'));
+summary.river.data = {...riverFile.current.data};
+summary.river.flow_status = null;
+await renderRiver(root);
+assert.ok(root.innerHTML.includes('class="flow-chip unknown"'));
+riverFile.current = {status: 'error', data: null};
+await renderRiver(root);
+assert.ok(root.innerHTML.includes(strings.weather.no_data));
+assert.ok(!root.innerHTML.includes('class="river-current"'));
 """
     result = subprocess.run(
         [node, '--experimental-default-type=module', '--input-type=module'],

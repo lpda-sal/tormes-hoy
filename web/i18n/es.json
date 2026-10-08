@@ -60,7 +60,7 @@
     "astronomical": "Crepúsculo astronómico",
     "nautical": "Crepúsculo náutico",
     "civil": "Crepúsculo civil",
-    "sun": "Orto/Ocaso"
+    "sun": "Orto / Ocaso"
   },
   "uv": {
     "title": "Índice UV",
@@ -102,30 +102,33 @@
     "no_data": "Sin datos"
   },
   "river": {
-    "title": "Río Tormes · {station}",
+    "title": "Río Tormes",
     "flow": "Caudal",
     "flow_status": {
       "safe": "Sin peligro",
       "caution": "Precaución",
       "danger": "Peligro"
     },
-    "flow_status_note": "Los colores usan límites provisionales del club. No son alertas oficiales ni garantizan que sea seguro navegar.",
+    "flow_status_note": "Los niveles de peligrosidad usan límites provisionales. No son alertas oficiales ni garantizan que sea seguro navegar.",
     "level": "Nivel",
     "last_month": "Último mes",
     "observed": "Observado",
     "median": "Mediana {period}",
     "quartiles": "Cuartiles 25–75 % {period}",
+    "extrema": "Mínimo y máximo {period}",
     "now": "Última lectura",
     "no_yearbook": "Todavía no hay estadística de anuarios para esta variable.",
     "shift_notice": "Se detectaron cambios de referencia del nivel; la estadística usa solo {period}.",
     "history_notice": "Las lecturas propias empiezan el {date}; antes no hay datos observados.",
     "no_history": "Aún no hay lecturas guardadas.",
+    "no_year_history": "No hay lecturas guardadas de {year} para este periodo.",
     "trend": {
       "rising": "↗ subiendo",
       "falling": "↘ bajando",
       "steady": "→ estable"
     },
-    "source_note": "Líneas por año y último mes: lecturas en tiempo real de la CHD (datos provisionales). Mediana y cuartiles: anuarios de aforos de la CHD (datos validados). Las dos fuentes no se mezclan.",
+    "source_note": "Líneas por año y último mes: medias diarias de las lecturas de la CHD (datos provisionales). Mediana y cuartiles: anuarios de aforos de la CHD (datos validados). Las dos fuentes no se mezclan.",
+    "source": "Fuente: Confederación Hidrográfica del Duero",
     "by_year": "Año actual y anterior",
     "year_label": "{year}"
   },

@@ -83,6 +83,7 @@ const decorations = {
  *   x: number[],                                   shared x values
  *   series: [{ label, color, values, dashed, width, spanGaps, tooltip }],
  *   band:   { label, color, lower: [], upper: [] } percentile band (optional)
+ *   bands:  [{ label, color, lower, upper, opacity, order }] layered bands
  *   dots:   [{ x, y, color, label }]               highlighted points
  *   yZones: [{ from, to, color }], xRanges: [{ from, to, color }], now,
  *   xMin, xMax, yMin, yMax, xTicks: number[],
@@ -103,15 +104,19 @@ export function renderChart(container, spec) {
   const xs = spec.x;
   const points = (values) => xs.map((x, i) => ({ x, y: values[i] ?? null }));
   const datasets = [];
-  if (spec.band) {
+  const bands = spec.bands ?? (spec.band ? [spec.band] : []);
+  for (const band of bands) {
+    const lowerDatasetIndex = datasets.length;
     datasets.push({
-      label: "band-lower", data: points(spec.band.lower), role: "band-lower",
+      label: "band-lower", data: points(band.lower), role: "band-lower",
       borderWidth: 0, pointRadius: 0, pointHoverRadius: 0, fill: false,
+      order: band.order ?? 100,
     });
     datasets.push({
-      label: spec.band.label, data: points(spec.band.upper), role: "band-upper",
+      label: band.label, data: points(band.upper), role: "band-upper",
       borderWidth: 0, pointRadius: 0, pointHoverRadius: 0,
-      backgroundColor: hexAlpha(spec.band.color, 0.3), fill: "-1",
+      backgroundColor: hexAlpha(band.color, band.opacity ?? 0.3), fill: "-1",
+      order: band.order ?? 100, lowerDatasetIndex, bandColor: band.color,
     });
   }
   for (const s of spec.series) {
@@ -189,15 +194,15 @@ export function renderChart(container, spec) {
               ? spec.titleFormat(items[0].raw.x) : ""),
             label: (item) => {
               if (item.dataset.role === "band-upper") {
-                const lower = item.chart.data.datasets[0].data[item.dataIndex]?.y;
+                const lower = item.chart.data.datasets[item.dataset.lowerDatasetIndex].data[item.dataIndex]?.y;
                 return ` ${item.dataset.label}: ${valueFormat(lower)} – ${valueFormat(item.raw.y)}`;
               }
               return ` ${item.dataset.label}: ${valueFormat(item.raw.y)}`;
             },
             labelColor: (item) => ({
-              borderColor: item.dataset.borderColor ?? spec.band?.color,
+              borderColor: item.dataset.borderColor ?? item.dataset.bandColor,
               backgroundColor: item.dataset.role === "band-upper"
-                ? spec.band.color : item.dataset.borderColor,
+                ? item.dataset.bandColor : item.dataset.borderColor,
             }),
           },
         },
@@ -213,7 +218,8 @@ function legend(spec) {
   const box = document.createElement("div");
   box.className = "legend";
   const items = [
-    ...(spec.band ? [{ ...spec.band, isBand: true }] : []),
+    ...(spec.bands ?? (spec.band ? [spec.band] : []))
+      .map((band) => ({ ...band, isBand: true })),
     ...spec.series.filter((s) => s.label),
     ...(spec.dots ?? []).filter((d) => d.label).map((d) => ({ ...d, isDot: true })),
   ];
