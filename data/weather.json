@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-08T22:09:03+02:00",
+ "generated_at": "2026-10-08T22:36:54+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,31 +19,31 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-08T22:09:03+02:00",
+  "fetched_at": "2026-10-08T22:36:54+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-08T21:00:00+02:00",
+   "time": "2026-10-08T22:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 12.8,
-   "humidity": 58.0,
-   "wind_speed": 9.0,
-   "wind_gust": 25.9,
-   "wind_direction": 92.0,
+   "temperature": 11.7,
+   "humidity": 63.0,
+   "wind_speed": 10.1,
+   "wind_gust": 19.4,
+   "wind_direction": 88.0,
    "precipitation": 0.0,
-   "pressure": 936.3
+   "pressure": 936.7
   }
  },
  "forecasts": {
   "aemet": {
-   "status": "ok",
+   "status": "stale",
    "source": {
     "name": "aemet",
     "label": "AEMET",
     "attribution": "© AEMET. Información elaborada por AEMET"
    },
    "fetched_at": "2026-10-08T22:09:03+02:00",
-   "error": null,
+   "error": "GET https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/37274 failed: HTTP Error 429: Too Many Requests",
    "data": {
     "hourly": [
      {
@@ -490,17 +490,17 @@
     "label": "Open-Meteo",
     "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
    },
-   "fetched_at": "2026-10-08T22:09:03+02:00",
+   "fetched_at": "2026-10-08T22:36:54+02:00",
    "error": null,
    "data": {
     "current": {
-     "time": "2026-10-08T22:00",
-     "temperature": 10.6,
-     "apparent_temperature": 7.6,
-     "humidity": 65,
+     "time": "2026-10-08T22:30",
+     "temperature": 10.2,
+     "apparent_temperature": 7.2,
+     "humidity": 67,
      "weather_code": 1,
      "wind_speed": 11.5,
-     "wind_gust": 22.3,
+     "wind_gust": 20.9,
      "wind_direction": 70,
      "precipitation": 0.0,
      "uv": 0.0
