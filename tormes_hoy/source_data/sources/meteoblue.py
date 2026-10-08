@@ -67,6 +67,7 @@ def _parse(payload: JsonDict) -> JsonDict:
     times = hourly.get("time") or []
     n = len(times)
     temp = _col(hourly, "temperature", n)
+    humidity = _col(hourly, "relativehumidity", n)
     prob = _col(hourly, "precipitation_probability", n)
     rain = _col(hourly, "precipitation", n)
     wind = _col(hourly, "windspeed", n)
@@ -75,6 +76,7 @@ def _parse(payload: JsonDict) -> JsonDict:
         {
             "time": _local_minute(str(times[i])),
             "temperature": temp[i],
+            "humidity": humidity[i],
             "precipitation_probability": prob[i],
             "precipitation": rain[i],
             "wind_speed": wind[i],

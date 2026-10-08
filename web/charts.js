@@ -118,7 +118,9 @@ export function renderChart(container, spec) {
     datasets.push({
       label: s.label, data: points(s.values), role: s.tooltip === false ? "hidden" : "series",
       borderColor: s.color, backgroundColor: s.color, borderWidth: s.width ?? 2,
-      borderDash: s.dashed ? [6, 4] : [], pointRadius: 0, pointHoverRadius: 4,
+      borderDash: s.dashed ? [6, 4] : [], pointRadius: s.pointRadius ?? 0, pointHoverRadius: 4,
+      showLine: s.showLine ?? true,
+      order: s.order ?? 0,
       spanGaps: s.spanGaps ?? false, fill: false, tension: s.tension ?? 0.15,
     });
   }
@@ -203,7 +205,7 @@ export function renderChart(container, spec) {
     },
   });
   instances.set(container, chart);
-  if (!spec.compact) container.appendChild(legend(spec));
+  if (!spec.compact && spec.showLegend !== false) container.appendChild(legend(spec));
   return chart;
 }
 

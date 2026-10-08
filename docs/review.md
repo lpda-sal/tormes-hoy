@@ -81,7 +81,7 @@ replace fixtures with real responses and tick it.
       screen has no attribution or generated-data footer. Rain and UV canvases
       contain plotted pixels and tapping them shows values without navigation.
       Tests cover their series, rain's 0–100% scale and missing chart data.
-- Home content checked through 04:00 with night shading and civil-twilight
+- Home content checked over 24 hours with night shading and civil-twilight
       UV bounds and risk-colour backgrounds. Weather shows precipitation and
       reading age without a station name; river level stays in the detail view.
       Tests cover flow band boundaries, invalid thresholds, interpolation,
@@ -100,7 +100,7 @@ replace fixtures with real responses and tick it.
       uses the UV palette on the value and units; its category is plain muted
       text on the following line. The flow label is omitted on home.
       Home rain compares all three source colours without a legend; tests cover
-      alignment, missing values, a missing main model and the 04:00 cutoff.
+      alignment, missing values, a missing main model and the 24-hour window.
 - UV summary and chart have equal heights with a top-left title and separate
       current, maximum and protection blocks. Layout verified from the compact
       260 × 562 viewport through desktop, without page overflow or overlap.
@@ -127,3 +127,26 @@ replace fixtures with real responses and tick it.
       Tests check a 15:37 UTC generation timestamp displays 17:00 in Madrid,
       independently of the browser clock. Pixel 8 checks confirm both labels
       fit without page overflow and retain 14px text.
+- Solar detail shows a Spanish date with an initial capital, no location label,
+      reversed event order and plain-text source attribution. Tests cover the
+      date, omitted location, row order and removed explanatory note.
+- Weather detail uses temperature and rain probability charts, with
+      the latest temperature observation plotted as a point.
+      A "Fuentes:" list below puts observation first with reading age, then
+      the three forecasts with update ages in parentheses. The spread note is above.
+      Tests cover percentage scales, axis units, observation timestamps,
+      missing/error sources, stale readings, chart order and no duplicate legends.
+      Humidity parsers cover optional source columns and missing values.
+- Weather forecasts cover the next 24 hours plus the observation timestamp.
+      Tests at 23:30 and 00:30 confirm the previous reading stays at the left
+      with its original date. No rainfall amount is reinterpreted as probability.
+      Axis labels show only hours; tooltip dates distinguish midnight transitions.
+- Both weather-detail charts shade civil-twilight night intervals using the
+      shared home-screen calculation; tests verify the dusk-to-dawn band.
+- Home hourly cards and rain comparison cover the next 24 hours. Tests check
+      midday and pre-dawn windows, exclude the end-hour sample, and repeat
+      today's civil-twilight times for night shading without another solar call.
+- UV detail matches the home current reading and civil-twilight bounds, uses
+      an orange line without a series legend or protection-window shading,
+      and frames only the chart. Tests cover the reference hour, timezone,
+      note/hint/source placement and unavailable solar or hourly data.

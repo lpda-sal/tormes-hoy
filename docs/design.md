@@ -44,6 +44,27 @@ Locally, once a year: tormes-hoy-build-yearbook daily.csv
 | PWA | Shell cache-first, data network-first | Fast start, offline last data |
 | Languages | Code/docs English, UI Spanish (`es.json`) | Project rule |
 
+## Weather detail
+
+The weather detail title is "Tiempo". It has two charts in order:
+temperature (degrees Celsius) and rain probability (%).
+Rain covers 0–100%; both vertical axes display their units.
+The time window covers the next 24 hours and the latest observation, with
+only hours on the horizontal axis and dates retained in tooltips.
+Both charts shade civil-twilight nights using the same intervals as the home
+rain chart.
+Forecasts remain lines; the latest temperature observation is a point
+with a tooltip at its exact timestamp. Observed
+rainfall in mm is not plotted as probability. Error observations and
+missing values are not plotted. Stale readings retain their timestamp.
+One shared legend below the charts identifies forecast colours and the
+observation marker. Under "Fuentes:", a vertical list puts observation first
+with reading age, followed by AEMET, Open-Meteo and Meteoblue with update ages
+in parentheses. Individual
+chart legends and the observation card are omitted. The forecast-divergence
+note appears above the charts; the daily-forecast link is omitted. Axes use
+the configured timezone regardless of the browser timezone.
+
 ## Home screen
 
 The home grid has four rows: current weather and river; full-width upcoming
@@ -53,9 +74,11 @@ distributes available viewport height across the rows, keeping all cards and
 the daily forecast link visible on the checked phone and desktop sizes.
 Upcoming hours keep
 their fixed width and scroll horizontally inside the card without adding
-rows. Hours include the next 04:00 in the configured timezone (the current
-date before 04:00, otherwise the following date). Rain uses the same hours
-with a fixed 0–100% scale and night shading outside the civil twilight window.
+rows. Hours cover a 24-hour window starting at the current local hour,
+excluding the following day's same-hour endpoint. Rain uses the same window
+with a fixed 0–100% scale. Night shading repeats today's local civil-dusk
+and civil-dawn times on each visible date, without requesting tomorrow's solar
+data; daylight after the repeated dawn remains unshaded.
 UV uses `uv.json` with the visible axis limited to civil dawn through civil
 dusk and the same risk-colour bands as the detail chart. Missing solar times
 leave UV's small chart unavailable rather than inventing daylight boundaries.
@@ -68,9 +91,12 @@ by location and local date. Times use the configured location's timezone.
 The browser caches successful results for that location and date; failed
 requests show an unavailable state without replacing the other cards.
 The header ranges link to `#/sun`, a detail view listing sunrise, sunset and
-civil, nautical and astronomical twilight when provided by the API. Actual
-usable light depends on weather and terrain as well as the astronomical times.
-Source attribution appears on that detail view rather than the home screen.
+civil, nautical and astronomical twilight when provided by the API. The detail
+shows the date in Spanish with an initial capital, without a separate location
+label; configured coordinates and timezone still determine the solar data.
+Rows run from sunrise/sunset through civil, nautical and astronomical twilight;
+the solar row is labelled Orto/Ocaso. Its footer shows the plain-text source
+label "Fuente: Sunrise-Sunset".
 There is no generated-data footer.
 
 The bottom navigation places the daily forecast link on the left and CSCK
@@ -103,7 +129,7 @@ Home secondary text and categories use 14px at the Pixel 8 reference size;
 solar times use 12.8px and compact chart ticks 11px. Headings and large
 numeric values retain their existing sizes.
 
-The home rain chart compares AEMET, Open-Meteo and Meteoblue through 04:00
+The home rain chart compares AEMET, Open-Meteo and Meteoblue over 24 hours
 using the shared forecast-source colours from the weather detail view. It has
 no legend, retains night shading and shows all available values in tooltips.
 Missing values are gaps, not zero; unavailable sources do not hide the others.
@@ -116,6 +142,12 @@ view only. The home flow value uses green/yellow/red bands with provisional
 club thresholds in configuration; these are not official safety alerts.
 UV protection starts and ends at linearly interpolated threshold crossings,
 rounded outwards to the minute. UV lines are straight to match that calculation.
+The UV detail view uses the home reading's reference hour and typography.
+Only its chart is framed; the estimation note and interaction hint precede it,
+and the risk legend and Open-Meteo attribution follow it. Its orange line spans
+civil dawn through civil dusk, with WHO risk bands but no protection-window
+shading, threshold caption or series legend. Missing solar boundaries leave
+the chart unavailable without hiding the current reading.
 
 ## Failure behaviour
 

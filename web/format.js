@@ -26,6 +26,42 @@ export function hourLabel(value) {
   return toDate(value).toLocaleTimeString(LOCALE, { hour: "2-digit", minute: "2-digit" });
 }
 
+export function forecastTime(value, timeZone) {
+  if (/(?:Z|[+-]\d{2}:\d{2})$/.test(value)) return new Date(value).getTime();
+  const offset = new Intl.DateTimeFormat("en", {
+    timeZone, timeZoneName: "longOffset",
+  }).formatToParts(new Date(`${value}Z`)).find((part) => part.type === "timeZoneName").value;
+  return new Date(`${value}${offset === "GMT" ? "Z" : offset.replace("GMT", "")}`).getTime();
+}
+
+export function civilNightRanges(xs, day, timeZone) {
+  if (!xs.length || !day?.civil_twilight_begin || !day?.civil_twilight_end) return [];
+  const dawn = new Date(day.civil_twilight_begin);
+  const dusk = new Date(day.civil_twilight_end);
+  if (!Number.isFinite(dawn.getTime()) || !Number.isFinite(dusk.getTime())) return [];
+  const clock = new Intl.DateTimeFormat("en-GB", {
+    timeZone, hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23",
+  });
+  const dates = new Intl.DateTimeFormat("en-CA", {
+    timeZone, year: "numeric", month: "2-digit", day: "2-digit",
+  });
+  const cursor = new Date(`${dates.format(new Date(xs[0]))}T12:00:00Z`);
+  const lastDate = dates.format(new Date(xs[xs.length - 1]));
+  cursor.setUTCDate(cursor.getUTCDate() - 1);
+  const ranges = [];
+  while (cursor.toISOString().slice(0, 10) <= lastDate) {
+    const date = cursor.toISOString().slice(0, 10);
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+    const tomorrow = cursor.toISOString().slice(0, 10);
+    const from = forecastTime(`${date}T${clock.format(dusk)}`, timeZone);
+    const to = forecastTime(`${tomorrow}T${clock.format(dawn)}`, timeZone);
+    if (from < xs[xs.length - 1] && to > xs[0]) {
+      ranges.push({ from, to, color: "#555" });
+    }
+  }
+  return ranges;
+}
+
 export function dayLabel(value) {
   // "YYYY-MM-DD" strings are dates without time: read them at local noon.
   const date = typeof value === "string" && value.length === 10

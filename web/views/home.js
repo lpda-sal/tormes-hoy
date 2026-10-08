@@ -1,7 +1,7 @@
 import { loadData, loadSunTimes } from "../data.js";
 import { renderChart } from "../charts.js";
 import {
-  age, esc, hourLabel, num, statusBadge, uvChip, uvLevel, wmoIcon, wmoText,
+  age, civilNightRanges, esc, forecastTime, hourLabel, num, statusBadge, uvChip, uvLevel, wmoIcon, wmoText,
   SOURCE_COLORS, UV_COLORS, UV_ZONES,
 } from "../format.js";
 import { t } from "../i18n.js";
@@ -42,11 +42,14 @@ function upcomingHours(summary, block) {
     day: "2-digit", hour: "2-digit", hourCycle: "h23",
   }).formatToParts(new Date()).map((part) => [part.type, part.value]));
   const date = `${parts.year}-${parts.month}-${parts.day}`;
-  const nextDate = new Date(Date.UTC(+parts.year, +parts.month - 1, +parts.day + 1))
-    .toISOString().slice(0, 10);
-  const start = `${date}T${parts.hour}:00`;
-  const end = `${+parts.hour < 4 ? date : nextDate}T04:00`;
-  return (block?.data ?? []).filter((row) => row.time >= start && row.time <= end);
+  const start = forecastTime(`${date}T${parts.hour}:00`, summary.location.timezone);
+  const end = start + 24 * 3600000;
+  return (block?.data ?? []).filter((row) => {
+    if (!Number.isFinite(new Date(row.time).getTime())) return false;
+    const time = forecastTime(row.time, summary.location.timezone);
+    return time >= start && time < end;
+  }).sort((left, right) => forecastTime(left.time, summary.location.timezone)
+    - forecastTime(right.time, summary.location.timezone));
 }
 
 function restOfDayCard(block, hours) {
@@ -107,14 +110,6 @@ function rainCard(block) {
     <h2><a href="#/weather">${t("home.rain_hours")}</a>${statusBadge(block?.status)}</h2>
     <div class="mini-chart" id="home-rain-chart"></div>
   </section>`;
-}
-
-function forecastTime(value, timeZone) {
-  if (/(?:Z|[+-]\d{2}:\d{2})$/.test(value)) return new Date(value).getTime();
-  const offset = new Intl.DateTimeFormat("en", {
-    timeZone, timeZoneName: "longOffset",
-  }).formatToParts(new Date(`${value}Z`)).find((part) => part.type === "timeZoneName").value;
-  return new Date(`${value}${offset === "GMT" ? "Z" : offset.replace("GMT", "")}`).getTime();
 }
 
 function rainForecasts(summary, weather) {
@@ -243,10 +238,7 @@ export async function render(root) {
   const civilStart = new Date(day?.civil_twilight_begin ?? NaN).getTime();
   const civilEnd = new Date(day?.civil_twilight_end ?? NaN).getTime();
   const xs = rain.rows.map((row) => forecastTime(row.time, summary.location.timezone));
-  const night = Number.isFinite(civilStart) && Number.isFinite(civilEnd) && xs.length
-    ? [{ from: xs[0], to: civilStart, color: "#555" },
-      { from: civilEnd, to: xs[xs.length - 1], color: "#555" }]
-    : [];
+  const night = civilNightRanges(xs, day, summary.location.timezone);
   miniChart(root, "#home-rain-chart", rain.rows, "precipitation_probability",
     t("home.rain_chart_label"), SOURCE_COLORS.openmeteo, 100, {
       series: rain.series,
@@ -284,15 +276,20 @@ export async function renderSun(root) {
       <h1>${t("sun.title")}</h1><p class="notice">${t("home.sun_unavailable")}</p>`;
     return;
   }
+  const date = new Intl.DateTimeFormat("es-ES", {
+    timeZone: "UTC", weekday: "long", day: "numeric", month: "long",
+    year: "numeric",
+  }).format(new Date(`${day.date}T12:00:00Z`));
+  const displayDate = `${date[0].toLocaleUpperCase("es-ES")}${date.slice(1)}`;
   const events = [
     ["astronomical", "astronomical_twilight_begin", "astronomical_twilight_end"],
     ["nautical", "nautical_twilight_begin", "nautical_twilight_end"],
     ["civil", "civil_twilight_begin", "civil_twilight_end"],
     ["sun", "sunrise", "sunset"],
-  ].filter(([, begin, end]) => begin in day || end in day);
+  ].reverse().filter(([, begin, end]) => begin in day || end in day);
   root.innerHTML = `<a class="back" href="#/">${t("back")}</a>
     <h1>${t("sun.title")}</h1>
-    <p class="muted">${esc(day.date)} · ${esc(summary.location.timezone)}</p>
+    <p class="muted">${esc(displayDate)}</p>
     <table class="days sun-details">
       <thead><tr><th>${t("sun.event")}</th><th>${t("home.sunrise")}</th><th>${t("home.sunset")}</th></tr></thead>
       <tbody>${events.map(([label, begin, end]) => `<tr>
@@ -301,8 +298,7 @@ export async function renderSun(root) {
         <td>${solarHour(day[end], summary)}</td>
       </tr>`).join("")}</tbody>
     </table>
-    <p class="muted">${t("sun.light_note")}</p>
-    <p><a href="https://sunrise-sunset.org/" target="_blank" rel="noopener noreferrer">${t("home.sun_source")}</a></p>`;
+    <p>${t("home.sun_source")}</p>`;
 }
 
 export function renderCsck(root) {

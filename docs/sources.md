@@ -29,9 +29,10 @@ date, with an in-memory fallback if storage is unavailable. New dates require
 a successful request; yesterday's solar times are never used for today.
 The request sends coordinates and date to this third-party service. It does
 not change the collector, hourly Actions budget or published JSON contract.
-A visible attribution link is included in the solar detail view (`#/sun`),
-which also shows nautical and astronomical events when available, as required by
-[Sunrise-Sunset.org](https://sunrise-sunset.org/api).
+The solar detail view (`#/sun`) shows the date in Spanish without a separate
+location label. Its plain-text attribution reads "Fuente: Sunrise-Sunset";
+nautical and astronomical events are also shown when available, as required by
+the API.
 
 ## AEMET
 

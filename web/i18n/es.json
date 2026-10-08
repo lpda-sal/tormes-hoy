@@ -38,7 +38,7 @@
     "rest_of_day": "Tiempo - Próximas horas",
     "rain_hours": "Lluvia - Próximas horas",
     "rain_chart_label": "Probabilidad de lluvia por horas",
-    "no_more_hours": "No hay horas disponibles hasta las 04:00.",
+    "no_more_hours": "No hay datos disponibles para las próximas 24 horas.",
     "uv_now": "Índice UV",
     "uv_at": "A las {time}",
     "uv_max": "Máximo {v} a las {time}",
@@ -50,21 +50,20 @@
     "sunset": "Atardecer",
     "sunrise_range": "Amanecer civil → salida",
     "sunset_range": "Puesta → fin civil",
-    "sun_source": "Sunrise-Sunset.org",
+    "sun_source": "Fuente: Sunrise-Sunset",
     "sun_unavailable": "Horarios solares no disponibles",
     "rain_prob": "Prob. lluvia"
   },
   "sun": {
-    "title": "Amanecer y atardecer · hoy",
+    "title": "Amanecer y atardecer",
     "event": "Tipo",
     "astronomical": "Crepúsculo astronómico",
     "nautical": "Crepúsculo náutico",
     "civil": "Crepúsculo civil",
-    "sun": "Salida / puesta del sol",
-    "light_note": "El crepúsculo civil delimita la luz natural habitual. Las nubes y el terreno pueden reducir la luz disponible."
+    "sun": "Orto/Ocaso"
   },
   "uv": {
-    "title": "Índice UV · hoy",
+    "title": "Índice UV",
     "protection_window": "Protección solar: de {from} a {to}",
     "protection_label": "Protección solar:",
     "protection_hours": "de {from} a {to}",
@@ -79,18 +78,22 @@
       "extreme": "Extremo"
     },
     "chart_label": "Índice UV por horas de hoy",
-    "source_note": "Previsión de {source}. El índice UV es una estimación del modelo, no una medición.",
+    "source_note": "El índice UV es una estimación del modelo, no una medición.",
+    "source": "Fuente: {source}",
     "series": "Índice UV"
   },
   "csck": {
     "pending": "En desarrollo"
   },
   "weather": {
-    "title": "Tiempo - Hoy",
+    "title": "Tiempo",
     "days_title": "Tiempo - Próximos días",
     "observation": "Observación",
-    "temperature_today": "Temperatura · hoy",
-    "rain_today": "Probabilidad de lluvia · hoy",
+    "observation_source": "Observación {source}",
+    "sources": "Fuentes:",
+    "temperature_today": "Temperatura",
+    "rain_today": "Lluvia",
+    "humidity": "Humedad",
     "days_table": "Próximos días por fuente",
     "max_min": "Máx / mín",
     "rain": "Lluvia",

@@ -30,8 +30,19 @@ with offset. Units: °C, %, mm, km/h, m³/s, m.
 | `river-observed-daily.json` | hourly | `daily[{date, level_m{min,mean,max}, flow_m3s{min,mean,max}, n}]` from 1 January of the previous year (`river.daily_years = 2`) |
 | `river-yearbook-stats.json` | yearly, local | `source` (kind `validated`), `method`, `variables.{flow_m3s,level_m}` with `years`, `period`, `detected_shifts`, `stats[{md:"MM-DD",p25,p50,p75,n}]` (366 rows) |
 
-Hourly row: `time, temperature, apparent_temperature?, precipitation_probability,
+Hourly row: `time, temperature, humidity?, apparent_temperature?, precipitation_probability,
 precipitation, wind_speed, weather_code? (WMO), uv?, sky? (AEMET text), pictocode? (Meteoblue)`.
+
+Hourly `humidity` is optional (number or `null`, %): Open-Meteo supplies
+`relative_humidity_2m`, AEMET `humedadRelativa`, and Meteoblue
+`relativehumidity`. Missing columns become `null`; older published files may
+omit the field until each source refreshes. This additive field keeps schema
+version 1. Weather detail uses precipitation probabilities on a 0–100% axis.
+Observed rainfall amounts in mm are not plotted as probabilities.
+The temperature chart uses degrees Celsius; humidity remains available in
+the data but is not displayed as a chart in weather detail.
+The latest observation is plotted at its own timestamp, including stale readings,
+and is never substituted for a missing forecast value.
 
 Daily row: `date, temperature_max, temperature_min, precipitation_probability,
 precipitation?, weather_code?, uv_max?, sky?`.
@@ -65,7 +76,10 @@ start rounds down and the end rounds up to the minute. Missing adjacent
 values are not interpolated; available above-threshold endpoints are used
 instead. Multiple intervals are conservatively combined from first to last.
 The web's upcoming-weather strip reads the full Open-Meteo forecast from
-`weather.json` through the next 04:00, inclusive; `summary.today` continues
-to mean the rest of the current day.
+`weather.json` for 24 hours starting at the current local hour, with the
+window end excluded; `summary.today` continues to mean the rest of the
+current day.
 The home rain chart aligns the three hourly forecast sources over that same
-time window, preserving missing probabilities as gaps.
+time window, preserving missing probabilities as gaps. Night shading repeats
+today's civil-twilight clock times across the visible dates without an extra
+solar request; missing solar data leaves the chart unshaded.

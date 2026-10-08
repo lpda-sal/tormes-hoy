@@ -1,28 +1,32 @@
 import { renderChart, timeTicks } from "../charts.js";
-import { loadData } from "../data.js";
+import { loadData, loadSunTimes } from "../data.js";
 import {
-  age, dayLabel, esc, hourLabel, num, SOURCE_COLORS, statusBadge,
+  age, civilNightRanges, dayLabel, esc, forecastTime, num, SOURCE_COLORS, statusBadge,
 } from "../format.js";
 import { t } from "../i18n.js";
 
 const SOURCES = ["aemet", "openmeteo", "meteoblue"];
 const HOUR = 3600000;
+const OBSERVATION_COLOR = "#b26a00";
 
-function seriesFor(forecasts, field, xs) {
+function seriesFor(forecasts, field, xs, timeZone) {
   return SOURCES.map((key) => {
     const block = forecasts[key];
     const byTime = new Map(
-      (block?.data?.hourly ?? []).map((h) => [new Date(h.time).getTime(), h[field] ?? null]),
+      (block?.status === "error" ? [] : block?.data?.hourly ?? []).map((h) => [
+        forecastTime(h.time, timeZone), Number.isFinite(h[field]) ? h[field] : null,
+      ]),
     );
     return {
       label: block?.source?.label ?? key,
       color: SOURCE_COLORS[key],
       values: xs.map((x) => byTime.get(x) ?? null),
+      spanGaps: HOUR,
     };
   }).filter((s) => s.values.some((v) => v !== null));
 }
 
-function chartBlock(container, series, xs, unit, digits) {
+function chartBlock(container, series, xs, unit, digits, timeZone, bounds = {}) {
   if (!series.length) {
     container.innerHTML = `<p class="muted">${t("weather.no_data")}</p>`;
     return;
@@ -30,20 +34,39 @@ function chartBlock(container, series, xs, unit, digits) {
   renderChart(container, {
     x: xs,
     series,
+    showLegend: false,
     now: Date.now(),
+    xMin: xs.length === 1 ? xs[0] - HOUR / 2 : xs[0],
+    xMax: xs.length === 1 ? xs[0] + HOUR / 2 : xs[xs.length - 1],
     xTicks: timeTicks(xs[0], xs[xs.length - 1], 6 * HOUR),
-    xFormat: (x) => hourLabel(x),
-    titleFormat: (x) => `${dayLabel(x)} ${hourLabel(x)}`,
+    xFormat: (x) => new Intl.DateTimeFormat("es-ES", {
+      timeZone, hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).format(new Date(x)),
+    titleFormat: (x) => new Intl.DateTimeFormat("es-ES", {
+      timeZone, day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
+    }).format(new Date(x)),
     valueFormat: (v) => `${num(v, digits)}${unit}`,
+    yFormat: (v) => `${num(v)}${unit}`,
+    ...bounds,
   });
 }
 
-function sourcesStatus(forecasts) {
-  return SOURCES.map((key) => {
+function sourcesStatus(forecasts, observation) {
+  const sources = SOURCES.map((key) => {
     const block = forecasts[key];
     const fetched = block?.fetched_at ? t("weather.fetched", { age: age(block.fetched_at) }) : "";
-    return `<span><i style="background:${SOURCE_COLORS[key]}"></i>${esc(block?.source?.label ?? key)} ${statusBadge(block?.status)} <span class="muted">${fetched}</span></span>`;
+    return `<span><i style="background:${SOURCE_COLORS[key]}"></i>${esc(block?.source?.label ?? key)} ${statusBadge(block?.status)} <span class="muted">${fetched ? `(${fetched})` : ""}</span></span>`;
   }).join("");
+  if (!observation) return sources;
+  const reading = observation.data?.time
+    ? t("home.river_reading", { age: age(observation.data.time) }) : "";
+  return `<span><i class="dot" style="background:${OBSERVATION_COLOR}"></i>${esc(observationLabel(observation))} ${statusBadge(observation.status)} <span class="muted">${reading ? `(${reading})` : ""}</span></span>${sources}`;
+}
+
+function observationLabel(observation) {
+  return observation?.source?.label
+    ? t("weather.observation_source", { source: observation.source.label })
+    : t("weather.observation");
 }
 
 function daysTable(forecasts) {
@@ -62,43 +85,57 @@ function daysTable(forecasts) {
   return `<div class="table-scroll"><table class="days"><thead><tr><th></th>${header}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-function observationBlock(observation) {
-  const data = observation?.data;
-  if (!data) return `<p class="muted">${t("weather.no_data")} ${statusBadge(observation?.status ?? "error")}</p>`;
-  return `
-    <div class="row">
-      <span class="big">${t("units.temperature", { v: num(data.temperature, 1) })}</span>
-      <span>${t("home.humidity", { v: t("units.humidity", { v: num(data.humidity) }) })}</span>
-      <span>${t("home.wind", { v: t("units.wind", { v: num(data.wind_speed) }) })}</span>
-      <span>${t("weather.rain")}: ${t("units.rain", { v: num(data.precipitation, 1) })}</span>
-    </div>
-    <div class="muted">${t("home.observed_at", { station: esc(data.station_name ?? "AEMET"), age: age(data.time) })} ${statusBadge(observation.status)}</div>`;
-}
-
 export async function render(root) {
   const weather = await loadData("weather");
   const forecasts = weather.forecasts ?? {};
+  const timeZone = weather.location?.timezone;
   const today = new Intl.DateTimeFormat("en-CA", {
     timeZone: weather.location?.timezone,
     year: "numeric", month: "2-digit", day: "2-digit",
   }).format(new Date());
-  const xs = [...new Set(SOURCES.flatMap((key) =>
-    (forecasts[key]?.data?.hourly ?? [])
-      .filter((hour) => hour.time.slice(0, 10) === today)
-      .map((hour) => new Date(hour.time).getTime()),
-  ))].sort((left, right) => left - right);
+  const hour = new Intl.DateTimeFormat("en-GB", {
+    timeZone, hour: "2-digit", hourCycle: "h23",
+  }).format(new Date());
+  const start = forecastTime(`${today}T${hour}:00`, timeZone);
+  const end = start + 24 * HOUR;
+  const solar = await loadSunTimes(weather.location, today).catch(() => null);
+  const observation = weather.observation;
+  const observedTime = observation?.status !== "error" && observation?.data?.time
+    ? forecastTime(observation.data.time, timeZone) : NaN;
+  const xs = [...new Set([...SOURCES.flatMap((key) =>
+    (forecasts[key]?.status === "error" ? [] : forecasts[key]?.data?.hourly ?? [])
+      .map((hour) => forecastTime(hour.time, timeZone))
+      .filter((time) => time >= start && time < end),
+  ), ...(Number.isFinite(observedTime) ? [observedTime] : [])])]
+    .sort((left, right) => left - right);
   root.innerHTML = `
     <a class="back" href="#/">${t("back")}</a>
     <h1>${t("weather.title")}</h1>
-    <section class="card"><h2>${t("weather.observation")}</h2>${observationBlock(weather.observation)}</section>
-    <div class="legend">${sourcesStatus(forecasts)}</div>
+    <p class="muted">${t("weather.spread_note")}</p>
     <p class="chart-hint">${t("chart_hint")}</p>
-    <section class="card"><h2>${t("weather.temperature_today")}</h2><div id="temp-chart"></div>
-      <p class="muted">${t("weather.spread_note")}</p></section>
+    <section class="card"><h2>${t("weather.temperature_today")}</h2><div id="temp-chart"></div></section>
     <section class="card"><h2>${t("weather.rain_today")}</h2><div id="rain-chart"></div></section>
-    <a class="next-days-link" href="#/weather/days">${t("home.next_days")}</a>`;
-  chartBlock(root.querySelector("#temp-chart"), seriesFor(forecasts, "temperature", xs), xs, " °C", 1);
-  chartBlock(root.querySelector("#rain-chart"), seriesFor(forecasts, "precipitation_probability", xs), xs, " %", 0);
+    <div class="weather-sources">
+      <p class="weather-sources-label">${t("weather.sources")}</p>
+      <div class="legend">${sourcesStatus(forecasts, observation)}</div>
+    </div>`;
+  const night = civilNightRanges(xs, solar, timeZone);
+  for (const [selector, field, unit, digits, bounds] of [
+    ["#temp-chart", "temperature", " °C", 1, {}],
+    ["#rain-chart", "precipitation_probability", " %", 0, { yMin: 0, yMax: 100 }],
+  ]) {
+    const series = seriesFor(forecasts, field, xs, timeZone);
+    if (Number.isFinite(observedTime) && Number.isFinite(observation.data[field])) {
+      series.push({
+        label: observationLabel(observation), color: OBSERVATION_COLOR,
+        values: xs.map((x) => x === observedTime ? observation.data[field] : null),
+        showLine: false, pointRadius: 5, order: -1,
+      });
+    }
+    chartBlock(root.querySelector(selector), series, xs, unit, digits, timeZone, {
+      ...bounds, xRanges: night,
+    });
+  }
 }
 
 export async function renderDays(root) {

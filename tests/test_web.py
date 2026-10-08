@@ -8,28 +8,28 @@ from pathlib import Path
 
 import pytest
 
-WEB = Path(__file__).resolve().parents[1] / 'web'
+WEB = Path(__file__).resolve().parents[1] / "web"
 
 
 def _js_files() -> list[Path]:
-    return [p for p in WEB.rglob('*.js') if 'vendor' not in p.parts]
+    return [p for p in WEB.rglob("*.js") if "vendor" not in p.parts]
 
 
 def test_service_worker_shell_files_exist() -> None:
-    source = (WEB / 'sw.js').read_text(encoding='utf-8')
-    block = re.search(r'const SHELL = \[(.*?)\];', source, re.S)
+    source = (WEB / "sw.js").read_text(encoding="utf-8")
+    block = re.search(r"const SHELL = \[(.*?)\];", source, re.S)
     assert block is not None
     files = re.findall(r'"([^"]+)"', block.group(1))
-    missing = [f for f in files if f != './' and not (WEB / f).exists()]
+    missing = [f for f in files if f != "./" and not (WEB / f).exists()]
     assert missing == []
 
 
 def test_every_translation_key_exists() -> None:
-    strings = json.loads((WEB / 'i18n' / 'es.json').read_text('utf-8'))
+    strings = json.loads((WEB / "i18n" / "es.json").read_text("utf-8"))
 
     def has(key: str) -> bool:
         node: object = strings
-        for part in key.split('.'):
+        for part in key.split("."):
             if not isinstance(node, dict) or part not in node:
                 return False
             node = node[part]
@@ -38,33 +38,34 @@ def test_every_translation_key_exists() -> None:
     keys = {
         key
         for path in _js_files()
-        for key in re.findall(r'\bt\("([\w.]+)"', path.read_text('utf-8'))
+        for key in re.findall(r'\bt\("([\w.]+)"', path.read_text("utf-8"))
     }
-    assert keys, 'no t() calls found'
+    assert keys, "no t() calls found"
     assert sorted(k for k in keys if not has(k)) == []
 
 
 def test_chartjs_is_only_used_by_the_wrapper() -> None:
     users = [
-        p.name for p in _js_files() if 'window.Chart' in p.read_text('utf-8')
+        p.name for p in _js_files() if "window.Chart" in p.read_text("utf-8")
     ]
-    assert users == ['charts.js']
+    assert users == ["charts.js"]
 
 
 def test_home_and_weather_views_render() -> None:
-    node = shutil.which('node')
+    node = shutil.which("node")
     if node is None:
-        pytest.skip('Node is required to execute the web rendering checks')
+        pytest.skip("Node is required to execute the web rendering checks")
     script = r"""
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { loadStrings } from './web/i18n.js';
 import { clearDataCache, loadSunTimes } from './web/data.js';
 import { render, renderSun, renderCsck } from './web/views/home.js';
-import { renderDays } from './web/views/weather.js';
+import { render as renderWeather, renderDays } from './web/views/weather.js';
+import { render as renderUv } from './web/views/uv.js';
 import { SOURCE_COLORS, UV_COLORS } from './web/format.js';
 
-const now = new Date('2026-10-08T12:00:00+02:00');
+let now = new Date('2026-10-08T12:00:00+02:00');
 const NativeDate = Date;
 globalThis.Date = class extends NativeDate {
     constructor(...args) { super(...(args.length ? args : [now])); }
@@ -91,7 +92,7 @@ const weather = {forecasts: {openmeteo: {status: 'ok', data: {daily: [{
     date: '2026-10-09', temperature_max: 24, temperature_min: 10,
     precipitation_probability: 5,
 }]}}}};
-weather.forecasts.openmeteo.data.hourly = Array.from({length: 22},
+weather.forecasts.openmeteo.data.hourly = Array.from({length: 28},
     (_, index) => {
         const hour = 10 + index;
         const day = hour < 24 ? '2026-10-08' : '2026-10-09';
@@ -100,12 +101,16 @@ weather.forecasts.openmeteo.data.hourly = Array.from({length: 22},
             weather_code: 0};
     });
 summary.river.flow_status = 'safe';
+summary.river.data.trend = 'falling';
 summary.uv.data = {now: 3, max: 5, max_time: '15:00',
     protection: {from: '12:32', to: '17:30'}};
 let solarCalls = 0;
 let solarFailure = false;
 let uvFailure = false;
-const uvFile = {data: {max: 5, hourly: [
+const uvFile = {location: summary.location, status: 'ok',
+generated_at: summary.generated_at, source: {label: 'Open-Meteo'},
+data: {date: '2026-10-08', now: 3, max: 5,
+protection: {from: '12:32', to: '17:30'}, hourly: [
     {time: '2026-10-08T00:00', uv: 0},
     {time: '2026-10-08T12:00', uv: 5},
     {time: '2026-10-08T23:00', uv: 0},
@@ -161,8 +166,10 @@ globalThis.document = {
 };
 const containers = Object.fromEntries([
     '#home-rain-chart', '#home-uv-chart',
+    '#temp-chart', '#rain-chart', '#humidity-chart', '#uv-chart',
 ].map((key) => [key, {
-    innerHTML: '', replaceChildren() {}, appendChild() {},
+    innerHTML: '', replaceChildren() {},
+    appendChild() { this.legendCount = (this.legendCount ?? 0) + 1; },
 }]));
 const solarHeader = {innerHTML: '', hidden: true};
 const root = {
@@ -172,12 +179,15 @@ const root = {
 };
 await render(root);
 assert.deepEqual(chartSpecs[0].data.datasets[0].data.map(p => p.y),
-    Array.from({length: 17}, (_, index) => (index + 2) * 4));
+    Array.from({length: 24}, (_, index) => (index + 2) * 4));
 const rainPoints = chartSpecs[0].data.datasets[0].data;
 assert.equal(rainPoints.at(-1).x,
-    new Date('2026-10-09T04:00:00+02:00').getTime());
-assert.equal(chartSpecs[0].options.plugins.decorations.xRanges[1].from,
+    new Date('2026-10-09T11:00:00+02:00').getTime());
+assert.equal(chartSpecs[0].options.plugins.decorations.xRanges[0].from,
     new Date(solar.civil_twilight_end).getTime());
+assert.equal(chartSpecs[0].options.plugins.decorations.xRanges[0].to,
+    new Date('2026-10-09T08:00:00+02:00').getTime());
+assert.equal(chartSpecs[0].options.plugins.decorations.xRanges.length, 1);
 assert.equal(chartSpecs[1].options.scales.x.min,
     new Date(solar.civil_twilight_begin).getTime());
 assert.equal(chartSpecs[1].options.scales.x.max,
@@ -208,7 +218,7 @@ assert.ok(root.innerHTML.includes('id="home-uv-chart"'));
 assert.ok(root.innerHTML.includes(strings.home.rain_hours));
 assert.ok(root.innerHTML.includes('class="card wide uv-card"'));
 assert.ok(root.innerHTML.includes('class="uv-summary" href="#/uv"'));
-assert.equal((root.innerHTML.match(/class="hour"/g) ?? []).length, 17);
+assert.equal((root.innerHTML.match(/class="hour"/g) ?? []).length, 24);
 assert.ok(root.innerHTML.includes('flow-chip safe'));
 assert.ok(root.innerHTML.includes('class="muted flow-status"'));
 assert.ok(root.innerHTML.includes('style="background:#3ea72d;color:#111"'));
@@ -287,7 +297,11 @@ assert.deepEqual(comparison.data.datasets.map(series => series.data[0].y),
     [25, 8, null]);
 assert.equal(comparison.data.datasets[2].data[1].y, 60);
 assert.equal(comparison.data.datasets[2].data[2].y, null);
-assert.equal(comparison.data.datasets[0].data.at(-1).y, 35);
+assert.equal(comparison.data.datasets[0].data.find(point => point.x ===
+    new Date('2026-10-09T04:00:00+02:00').getTime()).y, 35);
+assert.equal(comparison.data.datasets[0].data.find(point => point.x ===
+    new Date('2026-10-09T05:00:00+02:00').getTime()).y, 99);
+assert.equal(comparison.data.datasets[0].data.at(-1).y, null);
 assert.equal(comparison.options.plugins.legend.display, false);
 assert.ok(root.innerHTML.includes(strings.status.stale));
 const savedHourly = weather.forecasts.openmeteo.data.hourly;
@@ -297,6 +311,29 @@ assert.equal(chartSpecs.at(-2).data.datasets.length, 2);
 weather.forecasts.openmeteo.data.hourly = savedHourly;
 delete weather.forecasts.aemet;
 delete weather.forecasts.meteoblue;
+now = new NativeDate('2026-10-08T03:30:00+02:00');
+weather.forecasts.openmeteo.data.hourly = Array.from({length: 36},
+    (_, index) => ({
+        time: `2026-10-${index < 24 ? '08' : '09'}T`
+            + `${String(index % 24).padStart(2, '0')}:00`,
+        temperature: 20, precipitation_probability: 0, weather_code: 0,
+    }));
+await render(root);
+assert.equal((root.innerHTML.match(/class="hour"/g) ?? []).length, 24);
+const earlyRain = chartSpecs.at(-2);
+assert.equal(earlyRain.data.datasets[0].data.at(-1).x,
+    new Date('2026-10-09T02:00:00+02:00').getTime());
+const earlyNights = earlyRain.options.plugins.decorations.xRanges;
+assert.equal(earlyNights.length, 2);
+assert.equal(earlyNights[0].to,
+    new Date('2026-10-08T08:00:00+02:00').getTime());
+assert.equal(earlyNights[1].from,
+    new Date(solar.civil_twilight_end).getTime());
+assert.equal(earlyNights[1].to,
+    new Date('2026-10-09T08:00:00+02:00').getTime());
+assert.equal(solarCalls, 1);
+now = new NativeDate('2026-10-08T12:00:00+02:00');
+weather.forecasts.openmeteo.data.hourly = savedHourly;
 summary.weather_now.data.wind_gust = 0;
 await render(root);
 assert.ok(root.innerHTML.includes(gustLabel('0')));
@@ -321,9 +358,18 @@ assert.ok(root.innerHTML.includes(strings.sun.title));
 assert.ok(root.innerHTML.includes(strings.sun.civil));
 assert.ok(root.innerHTML.includes(strings.sun.nautical));
 assert.ok(root.innerHTML.includes(strings.sun.astronomical));
+assert.ok(root.innerHTML.includes('Jueves, 8 de octubre de 2026'));
+assert.ok(!root.innerHTML.includes('Salamanca'));
+assert.ok(!root.innerHTML.includes('Europe/Madrid'));
+assert.ok(!root.innerHTML.includes('hoy'));
+assert.ok(!root.innerHTML.includes('terreno'));
+const sunRows = ['sun', 'civil', 'nautical', 'astronomical']
+    .map(key => root.innerHTML.indexOf(strings.sun[key]));
+assert.deepEqual(sunRows, [...sunRows].sort((left, right) => left - right));
 assert.ok(root.innerHTML.includes('07:27'));
 assert.ok(root.innerHTML.includes('21:24'));
-assert.ok(root.innerHTML.includes('href="https://sunrise-sunset.org/"'));
+assert.ok(root.innerHTML.includes('Fuente: Sunrise-Sunset'));
+assert.ok(!root.innerHTML.includes('sunrise-sunset.org'));
 assert.ok(root.innerHTML.includes('08:00'));
 await render(root);
 assert.equal(solarCalls, 1);
@@ -386,14 +432,191 @@ assert.ok(!root.innerHTML.includes('temp-chart'));
 const shell = readFileSync('web/index.html', 'utf8');
 assert.match(shell, /id="sun-times" href="#\/sun"/);
 assert.ok(!shell.includes('id="footer"'));
+
+weather.location = {...summary.location};
+now = new NativeDate('2026-10-08T10:30:00+02:00');
+solar.civil_twilight_end = '2026-10-08T18:20:00+00:00';
+savedSolar = null;
+clearDataCache();
+weather.observation = {status: 'ok', source: {label: 'AEMET'},
+    fetched_at: '2026-10-08T10:30:00+02:00', data: {
+        time: '2026-10-08T10:15:00+02:00', temperature: 18.2,
+        precipitation: 0, humidity: 58,
+    }};
+for (const key of ['aemet', 'openmeteo', 'meteoblue']) {
+    weather.forecasts[key] = {status: 'ok', source: {label: key},
+        fetched_at: '2026-10-08T09:00:00+02:00', data: {hourly:
+            Array.from({length: 28}, (_, index) => {
+                const hour = index + 10;
+                const day = hour < 24 ? '08' : '09';
+                return {time: `2026-10-${day}T`
+                    + `${String(hour % 24).padStart(2, '0')}:00`,
+                    temperature: 18 + index, precipitation: 1.2,
+                    humidity: 60, precipitation_probability: 75};
+            })}};
+}
+await renderWeather(root);
+assert.ok(root.innerHTML.includes('<h1>Tiempo</h1>'));
+assert.deepEqual([...root.innerHTML.matchAll(/<h2>([^<]+)<\/h2>/g)]
+    .map(match => match[1]), ['Temperatura', 'Lluvia']);
+assert.ok(!root.innerHTML.includes('id="humidity-chart"'));
+assert.ok(root.innerHTML.includes(
+    '<p class="weather-sources-label">Fuentes:</p>'));
+assert.equal((root.innerHTML.match(/class="legend"/g) ?? []).length, 1);
+assert.ok(root.innerHTML.includes('Observación AEMET'));
+assert.ok(root.innerHTML.includes('Actualizado hace'));
+const sourceList = root.innerHTML.slice(
+    root.innerHTML.indexOf('class="weather-sources"'));
+const sourcePositions = [
+    'Observación AEMET', 'aemet', 'openmeteo', 'meteoblue',
+].map(label => sourceList.indexOf(label));
+assert.ok(sourcePositions.every(position => position >= 0));
+assert.deepEqual(sourcePositions,
+    [...sourcePositions].sort((left, right) => left - right));
+assert.match(sourceList, /\(Lectura hace [^)]+\)/);
+assert.equal((sourceList.match(/\(Actualizado [^)]+\)/g) ?? []).length, 3);
+assert.ok(!root.innerHTML.includes('<h2>Observación</h2>'));
+assert.ok(root.innerHTML.indexOf(strings.weather.spread_note)
+    < root.innerHTML.indexOf('id="temp-chart"'));
+assert.ok(root.innerHTML.indexOf('id="rain-chart"')
+    < root.innerHTML.indexOf('class="weather-sources-label"'));
+assert.ok(root.innerHTML.indexOf('class="legend"')
+    > root.innerHTML.indexOf('class="weather-sources-label"'));
+assert.ok(!root.innerHTML.includes('href="#/weather/days"'));
+const weatherCharts = chartSpecs.slice(-2);
+const observedValues = [18.2, null];
+for (const [index, spec] of weatherCharts.entries()) {
+    const observed = spec.data.datasets.find(series =>
+        series.showLine === false);
+    if (index === 1) {
+        assert.equal(observed, undefined);
+        continue;
+    }
+    assert.equal(observed.pointRadius, 5);
+    assert.equal(observed.order, -1);
+    assert.equal(observed.label, 'Observación AEMET');
+    const points = observed.data.filter(point => point.y !== null);
+    assert.deepEqual(points, [{
+        x: new Date('2026-10-08T10:15:00+02:00').getTime(),
+        y: observedValues[index],
+    }]);
+    assert.ok(spec.options.plugins.tooltip.filter({dataset: observed,
+        raw: points[0]}));
+    assert.ok(spec.options.plugins.tooltip.callbacks.title([{raw: points[0]}])
+        .includes('8 oct'));
+    assert.equal(spec.options.scales.x.ticks.callback(points[0].x), '10:15');
+    assert.equal(spec.data.datasets[0].data[0].x,
+        new Date('2026-10-08T10:00:00+02:00').getTime());
+    assert.equal(spec.data.datasets[0].spanGaps, 3600000);
+    assert.deepEqual(spec.options.plugins.decorations.xRanges, [{
+        from: new Date('2026-10-08T18:20:00+00:00').getTime(),
+        to: new Date('2026-10-09T06:00:00+00:00').getTime(),
+        color: '#555',
+    }]);
+}
+assert.equal(weatherCharts[1].data.datasets[0].data[0].y, 75);
+assert.equal(weatherCharts[1].options.plugins.tooltip.callbacks.label({
+    dataset: weatherCharts[1].data.datasets[0], raw: {y: 75},
+}), ' aemet: 75 %');
+assert.equal(weatherCharts[1].options.scales.y.min, 0);
+assert.equal(weatherCharts[1].options.scales.y.max, 100);
+assert.equal(weatherCharts[1].options.scales.y.ticks.callback(50), '50 %');
+assert.equal(weatherCharts[0].options.scales.y.ticks.callback(20), '20 °C');
+for (const selector of ['#temp-chart', '#rain-chart']) {
+    assert.equal(containers[selector].legendCount ?? 0, 0);
+}
+now = new NativeDate('2026-10-08T23:30:00+02:00');
+weather.observation.data.time = '2026-10-08T23:00:00+02:00';
+for (const key of ['aemet', 'openmeteo', 'meteoblue']) {
+    weather.forecasts[key].data.hourly = [
+        '2026-10-08T22:00', '2026-10-08T23:00',
+        '2026-10-09T00:00', '2026-10-09T22:00', '2026-10-09T23:00',
+    ].map(time => ({time, temperature: 19, humidity: 60,
+        precipitation_probability: 30}));
+}
+await renderWeather(root);
+const lateCharts = chartSpecs.slice(-2);
+const lastReadingTime = new Date('2026-10-08T23:00:00+02:00').getTime();
+assert.ok(lateCharts.every(spec => spec.options.scales.x.min
+    === lastReadingTime));
+assert.ok(lateCharts.every(spec => spec.options.scales.x.max ===
+    new Date('2026-10-09T22:00:00+02:00').getTime()));
+const lateObservation = lateCharts[0].data.datasets.find(series =>
+    series.showLine === false);
+assert.equal(lateObservation.data[0].x, lastReadingTime);
+assert.equal(lateObservation.data[0].y, 18.2);
+now = new NativeDate('2026-10-09T00:30:00+02:00');
+await renderWeather(root);
+assert.equal(chartSpecs.at(-2).options.scales.x.min, lastReadingTime);
+assert.equal(chartSpecs.at(-2).data.datasets[0].data[0].y, 19);
+assert.equal(chartSpecs.at(-2).data.datasets[0].data[1].x,
+    new Date('2026-10-09T00:00:00+02:00').getTime());
+weather.observation.status = 'error';
+await renderWeather(root);
+assert.ok(chartSpecs.slice(-2).every(spec =>
+    spec.data.datasets.every(series => series.showLine !== false)));
+weather.observation.status = 'stale';
+weather.observation.data.time = '2026-10-07T23:15:00+02:00';
+for (const key of ['aemet', 'openmeteo', 'meteoblue']) {
+    weather.forecasts[key] = {status: 'error', data: null};
+}
+await renderWeather(root);
+assert.equal(chartSpecs.at(-1).data.datasets.length, 1);
+assert.ok(containers['#rain-chart'].innerHTML.includes(strings.weather.no_data));
+assert.equal(chartSpecs.at(-1).data.datasets[0].data[0].x,
+    new Date('2026-10-07T23:15:00+02:00').getTime());
+now = new Date('2026-10-08T12:00:00+02:00');
+solarFailure = false;
+solar.civil_twilight_end = '2026-10-08T18:20:00+00:00';
+savedSolar = null;
+clearDataCache();
+await renderUv(root);
+assert.ok(root.innerHTML.includes('<h1>Índice UV '));
+assert.ok(root.innerHTML.includes('A las 17:00'));
+assert.ok(root.innerHTML.includes('uv-reading-meta'));
+assert.ok(!root.innerHTML.includes('Umbral'));
+assert.ok(root.innerHTML.includes(
+    '<section class="card"><div id="uv-chart"></div></section>'));
+assert.ok(root.innerHTML.indexOf(strings.uv.source_note)
+    < root.innerHTML.indexOf('id="uv-chart"'));
+assert.ok(root.innerHTML.indexOf(strings.chart_hint)
+    < root.innerHTML.indexOf('id="uv-chart"'));
+assert.ok(root.innerHTML.indexOf('Fuente: Open-Meteo')
+    > root.innerHTML.indexOf('</section>'));
+assert.equal(containers['#uv-chart'].legendCount ?? 0, 0);
+const uvSpec = chartSpecs.at(-1);
+assert.equal(uvSpec.data.datasets[0].borderColor, '#b26a00');
+assert.equal((uvSpec.options.plugins.decorations.xRanges ?? []).length, 0);
+assert.equal(uvSpec.options.plugins.decorations.yZones.length, 5);
+assert.equal(uvSpec.options.plugins.decorations.dots[0].x,
+    new Date('2026-10-08T17:00:00+02:00').getTime());
+assert.equal(uvSpec.data.datasets[0].data[1].x,
+    new Date('2026-10-08T12:00:00+02:00').getTime());
+assert.equal(uvSpec.options.scales.x.min,
+    new Date(solar.civil_twilight_begin).getTime());
+assert.equal(uvSpec.options.scales.x.max,
+    new Date(solar.civil_twilight_end).getTime());
+assert.equal(uvSpec.options.scales.x.ticks.callback(
+    new Date(solar.civil_twilight_begin).getTime()), '08:00');
+const countBeforeSolarFailure = chartSpecs.length;
+solarFailure = true;
+savedSolar = null;
+clearDataCache();
+await renderUv(root);
+assert.equal(chartSpecs.length, countBeforeSolarFailure);
+assert.ok(containers['#uv-chart'].innerHTML.includes(strings.weather.no_data));
+uvFile.data.hourly = [];
+await renderUv(root);
+assert.ok(root.innerHTML.includes(strings.weather.no_data));
+assert.ok(!root.innerHTML.includes('class="card'));
 """
     result = subprocess.run(
-        [node, '--experimental-default-type=module', '--input-type=module'],
+        [node, "--experimental-default-type=module", "--input-type=module"],
         input=script,
         text=True,
         capture_output=True,
         cwd=WEB.parent,
-        env={'TZ': 'UTC'},
+        env={"TZ": "UTC"},
         check=False,
     )
     assert result.returncode == 0, result.stderr

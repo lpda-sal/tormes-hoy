@@ -16,6 +16,18 @@ def test_parse() -> None:
     assert data["daily"][1]["precipitation"] == EXPECTED_DAILY_PRECIPITATION_MM
 
 
+def test_parse_hourly_humidity() -> None:
+    payload = load_fixture("meteoblue_basic.json")
+    length = len(payload["data_1h"]["time"])
+    payload["data_1h"]["relativehumidity"] = [0, 58] + [None] * (length - 2)
+    rows = meteoblue._parse(payload)["hourly"]
+    assert [row["humidity"] for row in rows[:3]] == [0, 58, None]
+    del payload["data_1h"]["relativehumidity"]
+    assert all(
+        row["humidity"] is None for row in meteoblue._parse(payload)["hourly"]
+    )
+
+
 def test_should_refresh_every_six_hours() -> None:
     now = datetime(2026, 10, 5, 17, 17, tzinfo=ZoneInfo(TZ))
     assert meteoblue.should_refresh(None, now, 6, TZ)
