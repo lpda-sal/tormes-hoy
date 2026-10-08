@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-08T21:34:43+02:00",
+ "generated_at": "2026-10-08T22:07:18+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -8,8 +8,8 @@
  "location": {
   "id": "salamanca",
   "name": "Salamanca",
-  "lat": 40.965,
-  "lon": -5.664,
+  "lat": 40.95726767218838,
+  "lon": -5.638355587757416,
   "timezone": "Europe/Madrid"
  },
  "status": "ok",
@@ -27,8 +27,8 @@
   "max_time": "15:00",
   "max_level": "moderate",
   "protection": {
-   "from": "13:00",
-   "to": "17:00"
+   "from": "12:32",
+   "to": "17:30"
   },
   "hourly": [
    {
