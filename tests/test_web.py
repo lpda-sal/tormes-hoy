@@ -8,28 +8,28 @@ from pathlib import Path
 
 import pytest
 
-WEB = Path(__file__).resolve().parents[1] / "web"
+WEB = Path(__file__).resolve().parents[1] / 'web'
 
 
 def _js_files() -> list[Path]:
-    return [p for p in WEB.rglob("*.js") if "vendor" not in p.parts]
+    return [p for p in WEB.rglob('*.js') if 'vendor' not in p.parts]
 
 
 def test_service_worker_shell_files_exist() -> None:
-    source = (WEB / "sw.js").read_text(encoding="utf-8")
-    block = re.search(r"const SHELL = \[(.*?)\];", source, re.S)
+    source = (WEB / 'sw.js').read_text(encoding='utf-8')
+    block = re.search(r'const SHELL = \[(.*?)\];', source, re.S)
     assert block is not None
     files = re.findall(r'"([^"]+)"', block.group(1))
-    missing = [f for f in files if f != "./" and not (WEB / f).exists()]
+    missing = [f for f in files if f != './' and not (WEB / f).exists()]
     assert missing == []
 
 
 def test_every_translation_key_exists() -> None:
-    strings = json.loads((WEB / "i18n" / "es.json").read_text("utf-8"))
+    strings = json.loads((WEB / 'i18n' / 'es.json').read_text('utf-8'))
 
     def has(key: str) -> bool:
         node: object = strings
-        for part in key.split("."):
+        for part in key.split('.'):
             if not isinstance(node, dict) or part not in node:
                 return False
             node = node[part]
@@ -38,23 +38,23 @@ def test_every_translation_key_exists() -> None:
     keys = {
         key
         for path in _js_files()
-        for key in re.findall(r'\bt\("([\w.]+)"', path.read_text("utf-8"))
+        for key in re.findall(r'\bt\("([\w.]+)"', path.read_text('utf-8'))
     }
-    assert keys, "no t() calls found"
+    assert keys, 'no t() calls found'
     assert sorted(k for k in keys if not has(k)) == []
 
 
 def test_chartjs_is_only_used_by_the_wrapper() -> None:
     users = [
-        p.name for p in _js_files() if "window.Chart" in p.read_text("utf-8")
+        p.name for p in _js_files() if 'window.Chart' in p.read_text('utf-8')
     ]
-    assert users == ["charts.js"]
+    assert users == ['charts.js']
 
 
 def test_home_and_weather_views_render() -> None:
-    node = shutil.which("node")
+    node = shutil.which('node')
     if node is None:
-        pytest.skip("Node is required to execute the web rendering checks")
+        pytest.skip('Node is required to execute the web rendering checks')
     script = r"""
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -388,12 +388,12 @@ assert.match(shell, /id="sun-times" href="#\/sun"/);
 assert.ok(!shell.includes('id="footer"'));
 """
     result = subprocess.run(
-        [node, "--experimental-default-type=module", "--input-type=module"],
+        [node, '--experimental-default-type=module', '--input-type=module'],
         input=script,
         text=True,
         capture_output=True,
         cwd=WEB.parent,
-        env={"TZ": "UTC"},
+        env={'TZ': 'UTC'},
         check=False,
     )
     assert result.returncode == 0, result.stderr

@@ -25,31 +25,31 @@ def _build_site(root: Path, out: Path) -> Path:
     """
     if out.exists():
         shutil.rmtree(out)
-    shutil.copytree(root / "web", out)
-    data_out = out / "data"
+    shutil.copytree(root / 'web', out)
+    data_out = out / 'data'
     data_out.mkdir(parents=True, exist_ok=True)
-    for path in sorted((root / "data").glob("*.json")):
+    for path in sorted((root / 'data').glob('*.json')):
         shutil.copy2(path, data_out / path.name)
-        if path.name == "summary.json":
-            summary = json.loads(path.read_text(encoding="utf-8"))
-            river = summary.get("river")
-            if isinstance(river, dict) and "flow_status" not in river:
+        if path.name == 'summary.json':
+            summary = json.loads(path.read_text(encoding='utf-8'))
+            river = summary.get('river')
+            if isinstance(river, dict) and 'flow_status' not in river:
                 config = load_config(
-                    root / "tormes_hoy" / "config" / "config.toml"
+                    root / 'tormes_hoy' / 'config' / 'config.toml'
                 )
-                river["flow_status"] = _flow_status(
-                    (river.get("data") or {}).get("flow_m3s"), config.river
+                river['flow_status'] = _flow_status(
+                    (river.get('data') or {}).get('flow_m3s'), config.river
                 )
                 write_files(data_out, {path.name: summary})
-    (out / ".nojekyll").touch()
+    (out / '.nojekyll').touch()
     return out
 
 
 def main(argv: list[str] | None = None) -> int:
     """Command-line entry point."""
-    parser = argparse.ArgumentParser(description="Build the static site.")
-    parser.add_argument("--root", type=Path, default=Path.cwd())
-    parser.add_argument("--out", type=Path, default=Path("_site"))
+    parser = argparse.ArgumentParser(description='Build the static site.')
+    parser.add_argument('--root', type=Path, default=Path.cwd())
+    parser.add_argument('--out', type=Path, default=Path('_site'))
     args = parser.parse_args(argv)
-    print(f"Built {_build_site(args.root, args.out)}")
+    print(f'Built {_build_site(args.root, args.out)}')
     return 0

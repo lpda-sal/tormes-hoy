@@ -28,11 +28,11 @@ from tormes_hoy.utils.timeutil import (
 log = logging.getLogger(__name__)
 
 _FILES = (
-    "summary.json",
-    "weather.json",
-    "uv.json",
-    "river-observed-30d.json",
-    "river-observed-daily.json",
+    'summary.json',
+    'weather.json',
+    'uv.json',
+    'river-observed-30d.json',
+    'river-observed-daily.json',
 )
 
 
@@ -55,7 +55,7 @@ def _load_previous(data_dir: Path) -> dict[str, JsonDict | None]:
     for name in _FILES:
         path = data_dir / name
         try:
-            content = json.loads(path.read_text(encoding="utf-8"))
+            content = json.loads(path.read_text(encoding='utf-8'))
             previous[name] = content if isinstance(content, dict) else None
         except (OSError, json.JSONDecodeError):
             previous[name] = None
@@ -73,13 +73,13 @@ def _attempt(
     try:
         data = call()
     except Exception as exc:  # noqa: BLE001 - isolation is the contract
-        log.warning("%s failed: %s", name, exc)
+        log.warning('%s failed: %s', name, exc)
         return reuse_or_error(name, str(exc), previous, meta)
-    return SourceResult(name, "ok", data, iso(now), meta=meta)
+    return SourceResult(name, 'ok', data, iso(now), meta=meta)
 
 
 def _missing_key(name: str, meta: JsonDict, var: str) -> SourceResult:
-    return SourceResult(name, "error", error=f"{var} not set", meta=meta)
+    return SourceResult(name, 'error', error=f'{var} not set', meta=meta)
 
 
 def _collect_weather(
@@ -90,55 +90,55 @@ def _collect_weather(
     previous: dict[str, JsonDict | None],
 ) -> dict[str, SourceResult]:
     """Query weather sources (observation and three forecasts)."""
-    prev = previous.get("weather.json")
-    if prev and prev.get("location") != config.location.to_dict():
+    prev = previous.get('weather.json')
+    if prev and prev.get('location') != config.location.to_dict():
         prev = None
     tz = config.location.timezone
     results: dict[str, SourceResult] = {}
 
-    results["openmeteo"] = _attempt(
+    results['openmeteo'] = _attempt(
         openmeteo.NAME,
         openmeteo.META,
         lambda: fetchers.openmeteo(config),
-        previous_block(prev, "forecasts", "openmeteo"),
+        previous_block(prev, 'forecasts', 'openmeteo'),
         now,
     )
 
-    aemet_key = env.get("AEMET_API_KEY", "")
+    aemet_key = env.get('AEMET_API_KEY', '')
     if aemet_key:
         observation = _attempt(
             aemet.NAME,
             aemet.META,
             lambda: fetchers.aemet_observation(config, aemet_key),
-            previous_block(prev, "observation"),
+            previous_block(prev, 'observation'),
             now,
         )
-        if observation.status == "ok" and aemet.observation_is_stale(
+        if observation.status == 'ok' and aemet.observation_is_stale(
             observation.data, now, tz, config.aemet.stale_after_hours
         ):
-            observation.status = "stale"
-        results["observation"] = observation
-        results["aemet"] = _attempt(
+            observation.status = 'stale'
+        results['observation'] = observation
+        results['aemet'] = _attempt(
             aemet.NAME,
             aemet.META,
             lambda: fetchers.aemet_forecast(config, aemet_key),
-            previous_block(prev, "forecasts", "aemet"),
+            previous_block(prev, 'forecasts', 'aemet'),
             now,
         )
     else:
-        results["observation"] = _missing_key(
-            aemet.NAME, aemet.META, "AEMET_API_KEY"
+        results['observation'] = _missing_key(
+            aemet.NAME, aemet.META, 'AEMET_API_KEY'
         )
-        results["aemet"] = _missing_key(
-            aemet.NAME, aemet.META, "AEMET_API_KEY"
+        results['aemet'] = _missing_key(
+            aemet.NAME, aemet.META, 'AEMET_API_KEY'
         )
 
-    results["meteoblue"] = _collect_meteoblue(
+    results['meteoblue'] = _collect_meteoblue(
         config,
         now,
         env,
         fetchers,
-        previous_block(prev, "forecasts", "meteoblue"),
+        previous_block(prev, 'forecasts', 'meteoblue'),
     )
     return results
 
@@ -151,16 +151,16 @@ def _collect_meteoblue(
     prev: JsonDict | None,
 ) -> SourceResult:
     """Meteoblue is only queried every ``refresh_every_hours`` (credits)."""
-    key = env.get("METEOBLUE_API_KEY", "")
+    key = env.get('METEOBLUE_API_KEY', '')
     if not key:
         return _missing_key(
-            meteoblue.NAME, meteoblue.META, "METEOBLUE_API_KEY"
+            meteoblue.NAME, meteoblue.META, 'METEOBLUE_API_KEY'
         )
     tz = config.location.timezone
-    last = prev.get("fetched_at") if prev else None
+    last = prev.get('fetched_at') if prev else None
     if (
         prev is not None
-        and prev.get("data")
+        and prev.get('data')
         and isinstance(last, str)
         and not meteoblue.should_refresh(
             last, now, config.meteoblue.refresh_every_hours, tz
@@ -171,8 +171,8 @@ def _collect_meteoblue(
         )
         return SourceResult(
             meteoblue.NAME,
-            "stale" if stale else "ok",
-            prev["data"],
+            'stale' if stale else 'ok',
+            prev['data'],
             last,
             meta=meteoblue.META,
         )
@@ -193,20 +193,20 @@ def _collect_river(
 ) -> tuple[SourceResult, list[JsonDict], list[JsonDict]]:
     """Query the current reading and update the observed history."""
     tz = config.location.timezone
-    prev_raw = previous.get("river-observed-30d.json")
-    prev_daily = previous.get("river-observed-daily.json")
+    prev_raw = previous.get('river-observed-30d.json')
+    prev_daily = previous.get('river-observed-daily.json')
     current = _attempt(
         chd.NAME,
         chd.META,
         lambda: fetchers.chd(config),
-        previous_block(prev_raw, "current"),
+        previous_block(prev_raw, 'current'),
         now,
     )
-    new = current.data if current.status == "ok" else None
+    new = current.data if current.status == 'ok' else None
     if new and is_older_than(
-        parse_local(new["time"], tz), now, config.river.stale_after_hours
+        parse_local(new['time'], tz), now, config.river.stale_after_hours
     ):
-        current.status = "stale"
+        current.status = 'stale'
     readings = river.merge_readings(
         river.readings_from(prev_raw),
         new,
@@ -242,11 +242,11 @@ def main() -> int:
     Always returns 0: a failing source is reported in the data, not by
     failing the scheduled job.
     """
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    logging.basicConfig(level=logging.INFO, format='%(levelname)s %(message)s')
     config = load_config()
     files = _run(config)
     write_files(config.data_dir, files)
-    summary = files["summary.json"]
-    for key in ("weather_now", "today", "uv", "river", "next_days"):
-        print(f"{key}: {summary[key]['status']}")
+    summary = files['summary.json']
+    for key in ('weather_now', 'today', 'uv', 'river', 'next_days'):
+        print(f'{key}: {summary[key]["status"]}')
     return 0

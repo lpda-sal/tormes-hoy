@@ -6,7 +6,7 @@ from math import isfinite
 from pathlib import Path
 from typing import Any
 
-_DEFAULT_CONFIG_PATH = Path(__file__).parents[1] / "config" / "config.toml"
+_DEFAULT_CONFIG_PATH = Path(__file__).parents[1] / 'config' / 'config.toml'
 
 
 @dataclass(frozen=True)
@@ -30,11 +30,11 @@ class _Location:
     def to_dict(self) -> dict[str, Any]:
         """Return a JSON-serialisable representation."""
         return {
-            "id": self.id,
-            "name": self.name,
-            "lat": self.lat,
-            "lon": self.lon,
-            "timezone": self.timezone,
+            'id': self.id,
+            'name': self.name,
+            'lat': self.lat,
+            'lon': self.lon,
+            'timezone': self.timezone,
         }
 
 
@@ -129,25 +129,25 @@ def load_config(path: Path = _DEFAULT_CONFIG_PATH) -> Config:
         KeyError: If a required section or key is missing.
         ValueError: If river flow thresholds are invalid.
     """
-    with path.open("rb") as fh:
+    with path.open('rb') as fh:
         raw = tomllib.load(fh)
-    river = RiverConfig(**raw["river"])
+    river = RiverConfig(**raw['river'])
     if not (
         isfinite(river.flow_caution_m3s)
         and isfinite(river.flow_danger_m3s)
         and 0 < river.flow_caution_m3s < river.flow_danger_m3s
     ):
         raise ValueError(
-            "River flow thresholds must be positive and increasing"
+            'River flow thresholds must be positive and increasing'
         )
     return Config(
-        app=_AppInfo(**raw["app"]),
-        location=_Location(**raw["location"]),
-        openmeteo=_OpenMeteoConfig(**raw["openmeteo"]),
-        aemet=_AemetConfig(**raw["aemet"]),
-        meteoblue=_MeteoblueConfig(**raw["meteoblue"]),
+        app=_AppInfo(**raw['app']),
+        location=_Location(**raw['location']),
+        openmeteo=_OpenMeteoConfig(**raw['openmeteo']),
+        aemet=_AemetConfig(**raw['aemet']),
+        meteoblue=_MeteoblueConfig(**raw['meteoblue']),
         river=river,
-        yearbook=_YearbookConfig(**raw["yearbook"]),
-        uv=_UvConfig(**raw["uv"]),
-        data_dir=Path(raw["output"]["data_dir"]),
+        yearbook=_YearbookConfig(**raw['yearbook']),
+        uv=_UvConfig(**raw['uv']),
+        data_dir=Path(raw['output']['data_dir']),
     )
