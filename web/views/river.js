@@ -21,7 +21,7 @@ const REF_YEAR = 2000;
 const SLOTS = 366;
 const MONTH_STARTS = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335];
 
-const state = { variable: "flow_m3s", range: "year" };
+const state = { variable: "flow_m3s", range: "month" };
 
 function slotOf(date) {
   return Math.round(
@@ -44,10 +44,11 @@ function yearbookFor(yearbook, variable) {
 }
 
 /** Daily observed means of one calendar year, by slot. */
-function yearValues(daily, variable, year) {
+function yearValues(daily, variable, year, before) {
   const values = new Array(SLOTS).fill(null);
   for (const day of daily) {
     if (!day.date.startsWith(`${year}-`)) continue;
+    if (before && day.date >= before) continue;
     const mean = day[variable]?.mean;
     if (mean !== undefined && mean !== null) {
       values[slotOf(new Date(`${day.date}T12:00`))] = mean;
@@ -101,7 +102,7 @@ function yearSpec(files, variable) {
   const { bands, series } = yearbookParts(stats, xs.map((i) => mdOf(slotDate(i))));
 
   const previous = yearValues(daily, variable, year - 1);
-  const current = yearValues(daily, variable, year);
+  const current = yearValues(daily, variable, year, `${year}-${mdOf(now)}`);
   // Bridge only the 29 Feb slot in non-leap years (gap of 2 slots).
   series.push(
     { label: t("river.year_label", { year: year - 1 }), color: COLORS.previous, values: previous, width: 1.8, spanGaps: 2 },
@@ -115,6 +116,8 @@ function yearSpec(files, variable) {
     series,
     xMin: 0,
     xMax: SLOTS - 1,
+    yMin: variable === "flow_m3s" ? 0 : undefined,
+    yMax: variable === "flow_m3s" ? 250 : undefined,
     now: slotOf(now),
     dots: reading ? [{ x: slotOf(new Date(reading.time)), y: reading[variable], color: COLORS.now, label: t("river.now") }] : [],
     xTicks: MONTH_STARTS,
@@ -126,14 +129,20 @@ function yearSpec(files, variable) {
 function monthSpec(files, variable) {
   const today = new Date();
   const year = today.getFullYear();
-  const dates = Array.from({ length: 31 }, (_, index) =>
-    new Date(year, today.getMonth(), today.getDate() - 30 + index, 12));
+  const start = new Date(year, today.getMonth() - 2, 1, 12);
+  const lastDay = new Date(year, today.getMonth() - 1, 0).getDate();
+  start.setDate(Math.min(today.getDate(), lastDay));
+  const end = new Date(year, today.getMonth(), today.getDate(), 12);
+  const count = Math.round((end.getTime() - start.getTime()) / DAY) + 1;
+  const dates = Array.from({ length: count }, (_, index) =>
+    new Date(start.getFullYear(), start.getMonth(), start.getDate() + index, 12));
   const xs = dates.map((date) => date.getTime());
   const daily = new Map((files.daily?.daily ?? []).map((day) => [day.date, day]));
   const stats = yearbookFor(files.yearbook, variable);
   const { bands, series } = yearbookParts(stats, xs.map((x) => mdOf(new Date(x))));
   for (const offset of [1, 0]) {
     const values = dates.map((date) => {
+      if (offset === 0 && date >= end) return null;
       const compared = new Date(date);
       compared.setFullYear(date.getFullYear() - offset);
       if (compared.getMonth() !== date.getMonth()) return null;
@@ -190,6 +199,7 @@ function draw(root, files) {
   renderChart(container, {
     ...spec,
     ariaLabel: t(`river.${LABEL_KEYS[variable]}`),
+    yFormat: variable === "level_m" ? (value) => num(value, 2) : undefined,
     valueFormat: (v) => `${num(v, 2)}${UNITS[variable]}`,
   });
 }

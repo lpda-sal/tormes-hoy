@@ -9,6 +9,49 @@ import { t } from "../i18n.js";
 const SOURCES = ["aemet", "openmeteo", "meteoblue"];
 const HOUR = 3600000;
 const OBSERVATION_COLOR = "#b26a00";
+const AEMET_ICON_CODES = [
+  ["clear", 0], ["few_clouds", 1], ["high_clouds", 2],
+  ["cloud_intervals", 2], ["cloudy", 2], ["very_cloudy", 3],
+  ["overcast", 3], ["fog", 45], ["mist", 45],
+];
+const METEOBLUE_ICON_CODES = new Map([
+  [1, 0], [2, 1], [3, 2], [4, 3], [5, 45], [6, 61], [7, 80],
+  [8, 95], [9, 71], [10, 85], [11, 71], [12, 61], [13, 71],
+  [14, 61], [15, 71], [16, 61], [17, 71], [20, 3],
+  [21, 95], [22, 95], [23, 95], [24, 95], [25, 95],
+]);
+
+function forecastCondition(source, day) {
+  let code;
+  let label;
+  if (source === "aemet") {
+    if (typeof day.sky !== "string") return null;
+    const sky = day.sky.trim();
+    const [clouds, ...precipitation] = sky.toLowerCase().split(t("aemet.with"));
+    const cloud = AEMET_ICON_CODES.find(([key]) =>
+      clouds === t(`aemet.sky.${key}`).toLowerCase());
+    if (!cloud) return null;
+    code = cloud[1];
+    if (precipitation.length) {
+      const condition = precipitation.join(t("aemet.with"));
+      const weather = [["thunderstorm", 95], ["hail", 95], ["snow", 71], ["rain", 61]]
+        .find(([key]) => condition.includes(t(`aemet.precipitation.${key}`)));
+      if (!weather) return null;
+      code = weather[1];
+    }
+    label = sky;
+  } else if (source === "meteoblue") {
+    if (!METEOBLUE_ICON_CODES.has(day.pictocode)) return null;
+    code = METEOBLUE_ICON_CODES.get(day.pictocode);
+    label = t(`meteoblue.pictocode.${day.pictocode}`);
+  } else {
+    if (!Number.isFinite(day.weather_code)) return null;
+    code = day.weather_code;
+    label = wmoText(code);
+  }
+  const icon = wmoIcon(code);
+  return icon === "·" ? null : { icon, label };
+}
 
 function seriesFor(forecasts, field, xs, timeZone) {
   return SOURCES.map((key) => {
@@ -70,6 +113,39 @@ function observationLabel(observation) {
     : t("weather.observation");
 }
 
+function hourlyConditions(forecasts, start, timeZone) {
+  const hours = Array.from({ length: 24 }, (_, index) => start + index * HOUR);
+  const hourFormat = new Intl.DateTimeFormat("es-ES", {
+    timeZone, hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  });
+  const dateFormat = new Intl.DateTimeFormat("es-ES", {
+    timeZone, day: "numeric", month: "short", hour: "2-digit",
+    minute: "2-digit", hourCycle: "h23",
+  });
+  const header = hours.map((time) => `<th scope="col" title="${esc(dateFormat.format(time))}">${hourFormat.format(time)}</th>`).join("");
+  const rows = SOURCES.map((key) => {
+    const block = forecasts[key];
+    const byTime = new Map(
+      (block?.status === "error" ? [] : block?.data?.hourly ?? []).map((row) => [
+        forecastTime(row.time, timeZone), row,
+      ]),
+    );
+    const cells = hours.map((time) => {
+      const row = byTime.get(time);
+      const condition = row ? forecastCondition(key, row) : null;
+      return condition
+        ? `<td><span class="icon" role="img" aria-label="${esc(condition.label)}" title="${esc(condition.label)}">${condition.icon}</span></td>`
+        : `<td aria-label="${t("weather.no_data")}"></td>`;
+    }).join("");
+    return `<tr><th scope="row" class="weather-hour-source" style="color:${SOURCE_COLORS[key]}">${esc(block?.source?.label ?? key)}</th>${cells}</tr>`;
+  }).join("");
+  return `<section class="card weather-hourly">
+    <div class="table-scroll" tabindex="0" role="region" aria-label="${t("weather.hourly_conditions")}">
+      <table class="weather-hours"><thead><tr><th scope="col" class="weather-hour-source" aria-label="${t("weather.sources")}"></th>${header}</tr></thead><tbody>${rows}</tbody></table>
+    </div>
+  </section>`;
+}
+
 function daysTable(forecasts, today) {
   const dates = [...new Set(SOURCES.flatMap((k) => (forecasts[k]?.data?.daily ?? []).map((d) => d.date)))]
     .filter((date) => typeof date === "string" && date >= today)
@@ -80,9 +156,9 @@ function daysTable(forecasts, today) {
     const cells = SOURCES.map((k) => {
       const day = (forecasts[k]?.data?.daily ?? []).find((d) => d.date === date);
       if (!day) return `<td class="muted">–</td>`;
-      const icon = Number.isFinite(day.weather_code) ? wmoIcon(day.weather_code) : "";
-      const condition = icon && icon !== "·"
-        ? `<div class="icon" role="img" aria-label="${esc(wmoText(day.weather_code))}" title="${esc(wmoText(day.weather_code))}">${icon}</div>`
+      const weather = forecastCondition(k, day);
+      const condition = weather
+        ? `<div class="icon" role="img" aria-label="${esc(weather.label)}" title="${esc(weather.label)}">${weather.icon}</div>`
         : "";
       return `<td>${condition}<strong>${num(day.temperature_max)}°</strong>/${num(day.temperature_min)}°<br><span class="muted">${num(day.precipitation_probability)}%</span></td>`;
     }).join("");
@@ -121,6 +197,7 @@ export async function render(root) {
     <p class="chart-hint">${t("chart_hint")}</p>
     <section class="card"><h2>${t("weather.temperature_today")}</h2><div id="temp-chart"></div></section>
     <section class="card"><h2>${t("weather.rain_today")}</h2><div id="rain-chart"></div></section>
+    ${hourlyConditions(forecasts, start, timeZone)}
     <div class="weather-sources">
       <p class="weather-sources-label">${t("weather.sources")}</p>
       <div class="legend">${sourcesStatus(forecasts, observation)}</div>

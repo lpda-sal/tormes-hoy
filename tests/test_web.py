@@ -8,28 +8,28 @@ from pathlib import Path
 
 import pytest
 
-WEB = Path(__file__).resolve().parents[1] / 'web'
+WEB = Path(__file__).resolve().parents[1] / "web"
 
 
 def _js_files() -> list[Path]:
-    return [p for p in WEB.rglob('*.js') if 'vendor' not in p.parts]
+    return [p for p in WEB.rglob("*.js") if "vendor" not in p.parts]
 
 
 def test_service_worker_shell_files_exist() -> None:
-    source = (WEB / 'sw.js').read_text(encoding='utf-8')
-    block = re.search(r'const SHELL = \[(.*?)\];', source, re.S)
+    source = (WEB / "sw.js").read_text(encoding="utf-8")
+    block = re.search(r"const SHELL = \[(.*?)\];", source, re.S)
     assert block is not None
     files = re.findall(r'"([^"]+)"', block.group(1))
-    missing = [f for f in files if f != './' and not (WEB / f).exists()]
+    missing = [f for f in files if f != "./" and not (WEB / f).exists()]
     assert missing == []
 
 
 def test_every_translation_key_exists() -> None:
-    strings = json.loads((WEB / 'i18n' / 'es.json').read_text('utf-8'))
+    strings = json.loads((WEB / "i18n" / "es.json").read_text("utf-8"))
 
     def has(key: str) -> bool:
         node: object = strings
-        for part in key.split('.'):
+        for part in key.split("."):
             if not isinstance(node, dict) or part not in node:
                 return False
             node = node[part]
@@ -38,23 +38,33 @@ def test_every_translation_key_exists() -> None:
     keys = {
         key
         for path in _js_files()
-        for key in re.findall(r'\bt\("([\w.]+)"', path.read_text('utf-8'))
+        for key in re.findall(r'\bt\("([\w.]+)"', path.read_text("utf-8"))
     }
-    assert keys, 'no t() calls found'
+    assert keys, "no t() calls found"
     assert sorted(k for k in keys if not has(k)) == []
 
 
 def test_chartjs_is_only_used_by_the_wrapper() -> None:
     users = [
-        p.name for p in _js_files() if 'window.Chart' in p.read_text('utf-8')
+        p.name for p in _js_files() if "window.Chart" in p.read_text("utf-8")
     ]
-    assert users == ['charts.js']
+    assert users == ["charts.js"]
+
+
+def test_weather_chart_heights_are_scoped() -> None:
+    styles = (WEB / "styles.css").read_text(encoding="utf-8")
+    assert re.search(
+        r"#temp-chart \.chart-canvas,\s*"
+        r"#rain-chart \.chart-canvas\s*\{\s*height: 10rem;\s*\}",
+        styles,
+    )
+    assert re.search(r"(?m)^\.chart-canvas\s*\{[^}]*height: 15rem;", styles)
 
 
 def test_home_and_weather_views_render() -> None:
-    node = shutil.which('node')
+    node = shutil.which("node")
     if node is None:
-        pytest.skip('Node is required to execute the web rendering checks')
+        pytest.skip("Node is required to execute the web rendering checks")
     script = r"""
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -465,6 +475,82 @@ weather.forecasts.openmeteo.data.daily[0].weather_code = 999;
 await renderDays(root);
 assert.ok(!root.innerHTML.includes('role="img"'));
 weather.forecasts.openmeteo.data.daily[0].weather_code = 0;
+const iconForecasts = weather.forecasts;
+const iconDay = iconForecasts.openmeteo.data.daily[0];
+weather.forecasts = {...iconForecasts,
+    aemet: {status: 'ok', data: {daily: [{...iconDay,
+        sky: strings.aemet.sky.few_clouds}]}},
+    meteoblue: {status: 'ok', data: {daily: [{...iconDay, pictocode: 2}]}},
+};
+const iconCells = () => {
+    const row = root.innerHTML.match(
+        /<tbody><tr><td>.*?<\/td>([\s\S]*?)<\/tr>/)[1];
+    return [...row.matchAll(/<td>([\s\S]*?)<\/td>/g)].map(match => match[1]);
+};
+await renderDays(root);
+assert.equal((root.innerHTML.match(/role="img"/g) ?? []).length, 3);
+assert.ok(iconCells()[0].includes('🌤️'));
+assert.ok(iconCells()[0].includes(
+    `aria-label="${strings.aemet.sky.few_clouds}"`));
+assert.ok(iconCells()[1].includes('☀️'));
+assert.ok(iconCells()[2].includes('🌤️'));
+assert.ok(iconCells()[2].includes(
+    `aria-label="${strings.meteoblue.pictocode['2']}"`));
+const aemetDay = weather.forecasts.aemet.data.daily[0];
+for (const [sky, icon] of [
+    [strings.aemet.sky.clear, '☀️'],
+    [strings.aemet.sky.high_clouds, '⛅'],
+    [strings.aemet.sky.cloud_intervals, '⛅'],
+    [strings.aemet.sky.cloudy, '⛅'],
+    [strings.aemet.sky.very_cloudy, '☁️'],
+    [strings.aemet.sky.overcast, '☁️'],
+    [strings.aemet.sky.fog, '🌫️'],
+    [strings.aemet.sky.mist, '🌫️'],
+    [strings.aemet.sky.cloudy + strings.aemet.with
+        + strings.aemet.precipitation.rain, '🌧️'],
+    [strings.aemet.sky.cloudy + strings.aemet.with
+        + strings.aemet.precipitation.snow, '🌨️'],
+    [strings.aemet.sky.cloudy + strings.aemet.with
+        + strings.aemet.precipitation.thunderstorm, '⛈️'],
+]) {
+    aemetDay.sky = sky;
+    await renderDays(root);
+    assert.ok(iconCells()[0].includes(icon));
+    assert.ok(iconCells()[0].includes(`aria-label="${sky}"`));
+}
+const meteoblueDay = weather.forecasts.meteoblue.data.daily[0];
+for (const [pictocode, icon] of [
+    [1, '☀️'], [3, '⛅'], [4, '☁️'], [5, '🌫️'], [6, '🌧️'],
+    [7, '🌧️'], [8, '⛈️'], [9, '🌨️'], [10, '🌨️'], [11, '🌨️'],
+    [12, '🌧️'], [13, '🌨️'], [14, '🌧️'], [15, '🌨️'],
+    [16, '🌧️'], [17, '🌨️'], [20, '☁️'], [21, '⛈️'],
+    [22, '⛈️'], [23, '⛈️'], [24, '⛈️'], [25, '⛈️'],
+]) {
+    meteoblueDay.pictocode = pictocode;
+    await renderDays(root);
+    assert.ok(iconCells()[2].includes(icon));
+    assert.ok(iconCells()[2].includes(
+        `aria-label="${strings.meteoblue.pictocode[pictocode]}"`));
+}
+for (const missing of [null, undefined, '', 'unknown']) {
+    aemetDay.sky = missing;
+    await renderDays(root);
+    assert.ok(!iconCells()[0].includes('role="img"'));
+}
+for (const missing of [null, undefined, 0, 18, 19, 999, 1.5, '1']) {
+    meteoblueDay.pictocode = missing;
+    await renderDays(root);
+    assert.ok(!iconCells()[2].includes('role="img"'));
+}
+delete meteoblueDay.pictocode;
+await renderDays(root);
+assert.ok(!iconCells()[2].includes('role="img"'));
+aemetDay.sky = strings.aemet.sky.cloudy + strings.aemet.with
+    + strings.aemet.precipitation.rain + ' <svg onload="alert(1)">';
+await renderDays(root);
+assert.ok(iconCells()[0].includes('&lt;svg onload=&quot;'));
+assert.ok(!root.innerHTML.includes('<svg'));
+weather.forecasts = iconForecasts;
 const originalDailyForecasts = weather.forecasts;
 const originalDaysClock = now;
 const originalDaysLocation = weather.location;
@@ -526,13 +612,54 @@ for (const key of ['aemet', 'openmeteo', 'meteoblue']) {
                 return {time: `2026-10-${day}T`
                     + `${String(hour % 24).padStart(2, '0')}:00`,
                     temperature: 18 + index, precipitation: 1.2,
-                    humidity: 60, precipitation_probability: 75};
+                    humidity: 60, precipitation_probability: 75,
+                    sky: strings.aemet.sky.clear,
+                    weather_code: 3, pictocode: 2};
             })}};
 }
+weather.forecasts.aemet.data.hourly[1].sky = null;
+weather.forecasts.openmeteo.data.hourly[1].weather_code = 999;
+weather.forecasts.meteoblue.data.hourly[1].pictocode = null;
 await renderWeather(root);
 assert.ok(root.innerHTML.includes('<h1>Tiempo</h1>'));
 assert.deepEqual([...root.innerHTML.matchAll(/<h2>([^<]+)<\/h2>/g)]
     .map(match => match[1]), ['Temperatura', 'Lluvia']);
+const hourlyPanel = () => root.innerHTML.match(
+    /<section class="card weather-hourly">([\s\S]*?)<\/section>/)[1];
+const hourlyHeaders = () => [...hourlyPanel().matchAll(
+    /<th scope="col" title="[^"]*">([^<]*)<\/th>/g)]
+    .map(match => match[1]);
+const hourlyRows = () => [...hourlyPanel().matchAll(
+    /<tr><th scope="row"[\s\S]*?<\/th>([\s\S]*?)<\/tr>/g)]
+    .map(match => [...match[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)]
+        .map(cell => cell[1]));
+assert.deepEqual(hourlyHeaders(), Array.from({length: 24}, (_, index) =>
+    `${String((10 + index) % 24).padStart(2, '0')}:00`));
+assert.equal(hourlyRows().length, 3);
+assert.ok(hourlyRows().every(row => row.length === 24 && row[1] === ''));
+assert.ok(hourlyRows()[0][0].includes('☀️'));
+assert.ok(hourlyRows()[1][0].includes('☁️'));
+assert.ok(hourlyRows()[2][0].includes('🌤️'));
+assert.ok(!hourlyPanel().includes('°'));
+assert.ok(!hourlyPanel().includes('%'));
+assert.ok(!hourlyPanel().includes(strings.home.humidity.split('{v}')[0]));
+assert.ok(hourlyPanel().includes('tabindex="0"'));
+assert.ok(!hourlyPanel().includes('<h2>'));
+assert.ok(hourlyPanel().includes(
+    `aria-label="${strings.weather.hourly_conditions}"`));
+assert.ok(root.innerHTML.indexOf('id="rain-chart"')
+    < root.innerHTML.indexOf('class="card weather-hourly"'));
+assert.ok(root.innerHTML.indexOf('class="card weather-hourly"')
+    < root.innerHTML.indexOf('class="weather-sources"'));
+weather.forecasts.meteoblue.status = 'error';
+await renderWeather(root);
+assert.ok(hourlyRows()[2].every(cell => cell === ''));
+assert.ok(hourlyRows()[0][0].includes('☀️'));
+weather.forecasts.meteoblue.status = 'stale';
+await renderWeather(root);
+assert.ok(hourlyRows()[2][0].includes('🌤️'));
+weather.forecasts.meteoblue.status = 'ok';
+await renderWeather(root);
 assert.ok(!root.innerHTML.includes('id="humidity-chart"'));
 assert.ok(root.innerHTML.includes(
     '<p class="weather-sources-label">Fuentes:</p>'));
@@ -606,10 +733,16 @@ for (const key of ['aemet', 'openmeteo', 'meteoblue']) {
         '2026-10-08T22:00', '2026-10-08T23:00',
         '2026-10-09T00:00', '2026-10-09T22:00', '2026-10-09T23:00',
     ].map(time => ({time, temperature: 19, humidity: 60,
-        precipitation_probability: 30}));
+        precipitation_probability: 30, weather_code: 3,
+        sky: strings.aemet.sky.overcast, pictocode: 4}));
 }
 await renderWeather(root);
 const lateCharts = chartSpecs.slice(-2);
+assert.equal(hourlyHeaders()[0], '23:00');
+assert.equal(hourlyHeaders().at(-1), '22:00');
+assert.equal(hourlyHeaders().length, 24);
+assert.ok(hourlyRows().every(row => row[0].includes('☁️')
+    && row[1].includes('☁️') && row[2] === '' && row[23].includes('☁️')));
 const lastReadingTime = new Date('2026-10-08T23:00:00+02:00').getTime();
 assert.ok(lateCharts.every(spec => spec.options.scales.x.min
     === lastReadingTime));
@@ -621,6 +754,10 @@ assert.equal(lateObservation.data[0].x, lastReadingTime);
 assert.equal(lateObservation.data[0].y, 18.2);
 now = new NativeDate('2026-10-09T00:30:00+02:00');
 await renderWeather(root);
+assert.equal(hourlyHeaders()[0], '00:00');
+assert.equal(hourlyHeaders().at(-1), '23:00');
+assert.ok(hourlyRows().every(row => row[0].includes('☁️')
+    && row[1] === '' && row[22].includes('☁️') && row[23].includes('☁️')));
 assert.equal(chartSpecs.at(-2).options.scales.x.min, lastReadingTime);
 assert.equal(chartSpecs.at(-2).data.datasets[0].data[0].y, 19);
 assert.equal(chartSpecs.at(-2).data.datasets[0].data[1].x,
@@ -635,6 +772,7 @@ for (const key of ['aemet', 'openmeteo', 'meteoblue']) {
     weather.forecasts[key] = {status: 'error', data: null};
 }
 await renderWeather(root);
+assert.ok(hourlyRows().every(row => row.every(cell => cell === '')));
 assert.equal(chartSpecs.at(-1).data.datasets.length, 1);
 assert.ok(containers['#rain-chart'].innerHTML.includes(strings.weather.no_data));
 assert.equal(chartSpecs.at(-1).data.datasets[0].data[0].x,
@@ -699,9 +837,17 @@ for (const [clock, value, hour] of [
     await render(root);
     assert.ok(root.innerHTML.includes(`A las ${hour}`), root.innerHTML);
     assert.ok(root.innerHTML.includes(`>${value},0</span>`));
+    const homeDecorations = chartSpecs.at(-1).options.plugins.decorations;
+    assert.equal(homeDecorations.now, now.getTime());
+    assert.equal(homeDecorations.dots[0].x, expectedTime);
+    assert.equal(homeDecorations.dots[0].y, value);
     await renderUv(root);
     assert.ok(root.innerHTML.includes(`A las ${hour}`));
     assert.ok(root.innerHTML.includes(`>${value},0</span>`));
+    assert.equal(chartSpecs.at(-1).options.plugins.decorations.now,
+        homeDecorations.now);
+    assert.deepEqual(chartSpecs.at(-1).options.plugins.decorations.dots,
+        homeDecorations.dots);
     assert.equal(chartSpecs.at(-1).options.plugins.decorations.dots[0].x,
         expectedTime);
     assert.equal(chartSpecs.at(-1).options.plugins.decorations.dots[0].y,
@@ -777,6 +923,8 @@ containers['#river-controls'].addEventListener = (_, handler) => {
     riverControls = handler;
 };
 summary.river.data = {...riverFile.current.data};
+assert.equal(strings.river.last_month, 'Últimos meses');
+assert.equal(strings.river.by_year, 'Últimos años');
 for (const [status, color] of [
     ['safe', UV_COLORS.low], ['caution', UV_COLORS.moderate],
     ['danger', UV_COLORS.very_high],
@@ -808,33 +956,87 @@ assert.equal(chartSpecs.at(-1).data.datasets[0].label, '2025');
 assert.equal(chartSpecs.at(-1).data.datasets[0].borderColor, '#1f5f8b');
 assert.equal(chartSpecs.at(-1).data.datasets[1].label, '2026');
 assert.equal(chartSpecs.at(-1).data.datasets[1].borderColor, '#e07a1f');
+assert.ok(containers['#river-controls'].innerHTML.includes(
+    'data-range="month" aria-pressed="true"'));
+const defaultRiverPoints = chartSpecs.at(-1).data.datasets[1].data;
+assert.equal(chartSpecs.at(-1).options.scales.y.min, undefined);
+assert.equal(chartSpecs.at(-1).options.scales.y.max, undefined);
+assert.equal(defaultRiverPoints.length, 62);
+assert.equal(defaultRiverPoints[0].x,
+    new NativeDate('2026-08-08T12:00:00Z').getTime());
+assert.equal(defaultRiverPoints.at(-1).x,
+    new NativeDate('2026-10-08T12:00:00Z').getTime());
+riverControls({target: {closest: () => ({dataset: {range: 'year'}})}});
+assert.equal(chartSpecs.at(-1).data.datasets[1].data.length, 366);
+assert.equal(chartSpecs.at(-1).options.scales.y.min, 0);
+assert.equal(chartSpecs.at(-1).options.scales.y.max, 250);
+assert.ok(containers['#river-controls'].innerHTML.includes(
+    'data-range="year" aria-pressed="true"'));
 riverControls({target: {closest: () => ({dataset: {variable: 'level_m'}})}});
 assert.ok(containers['#river-unit'].textContent.includes(strings.river.level));
 assert.equal(chartSpecs.at(-1).options.plugins.decorations.dots[0].y, 0.43);
+assert.equal(chartSpecs.at(-1).options.scales.y.min, undefined);
+assert.equal(chartSpecs.at(-1).options.scales.y.max, undefined);
+assert.equal(chartSpecs.at(-1).options.scales.y.ticks.callback(0.333333),
+    '0,33');
+assert.equal(chartSpecs.at(-1).options.scales.y.ticks.callback(1), '1,00');
 riverControls({target: {closest: () => ({dataset: {range: 'month'}})}});
+assert.equal(chartSpecs.at(-1).options.scales.y.ticks.callback(1.234567),
+    '1,23');
 const monthLevel = chartSpecs.at(-1).data.datasets;
 assert.deepEqual(monthLevel.map(series => series.label), ['2025', '2026']);
 assert.deepEqual(monthLevel[0].data.slice(-3).map(point => point.y),
     [null, 0.3, 0.4]);
 assert.deepEqual(monthLevel[1].data.slice(-3).map(point => point.y),
-    [0.5, null, 0.6]);
+    [0.5, null, null]);
 assert.equal(monthLevel[0].data.at(-1).x, monthLevel[1].data.at(-1).x);
 riverControls({target: {closest: () => ({dataset: {variable: 'flow_m3s'}})}});
 const monthFlow = chartSpecs.at(-1).data.datasets;
 assert.deepEqual(monthFlow[0].data.slice(-3).map(point => point.y),
     [null, 5, 6]);
 assert.deepEqual(monthFlow[1].data.slice(-3).map(point => point.y),
-    [7, null, 8]);
+    [7, null, null]);
 assert.equal(monthFlow[0].borderColor, '#1f5f8b');
 assert.equal(monthFlow[1].borderColor, '#e07a1f');
 assert.equal(monthFlow[1].spanGaps, 86400000);
+const originalRiverDays = riverDaily.daily;
+riverDaily.daily = [...originalRiverDays,
+    {date: '2026-10-07', flow_m3s: {mean: 9}, level_m: {mean: 0.7}},
+    {date: '2026-10-09', flow_m3s: {mean: 10}, level_m: {mean: 0.8}},
+];
+for (const range of ['month', 'year']) {
+    for (const [variable, mean, reading, previous] of [
+        ['flow_m3s', 9, 6.8, 6], ['level_m', 0.7, 0.43, 0.4],
+    ]) {
+        riverControls({target: {closest: () => ({dataset: {range}})}});
+        riverControls({target: {closest: () => ({dataset: {variable}})}});
+        const spec = chartSpecs.at(-1);
+        const current = spec.data.datasets[1].data;
+        const yesterday = range === 'month'
+            ? new NativeDate('2026-10-07T12:00:00Z').getTime()
+            : (Date.UTC(2000, 9, 7) - Date.UTC(2000, 0, 1)) / 86400000;
+        const today = yesterday + (range === 'month' ? 86400000 : 1);
+        assert.equal(current.find(point => point.x === yesterday).y, mean);
+        assert.ok(current.filter(point => point.x >= today)
+            .every(point => point.y === null));
+        assert.equal(spec.data.datasets[0].data.find(
+            point => point.x === today).y, previous);
+        const dot = spec.options.plugins.decorations.dots[0];
+        assert.equal(dot.y, reading);
+        assert.ok(dot.x > yesterday);
+        if (range === 'month') assert.equal(dot.x,
+            new NativeDate(riverFile.current.data.time).getTime());
+    }
+}
+riverDaily.daily = originalRiverDays;
+riverControls({target: {closest: () => ({dataset: {variable: 'flow_m3s'}})}});
 riverDaily.daily = riverDaily.daily.filter(day => day.date.startsWith('2026'));
 riverControls({target: {closest: () => ({dataset: {range: 'month'}})}});
 assert.ok(chartSpecs.at(-1).data.datasets[0].data.every(
     point => point.y === null));
 assert.ok(!containers['#river-notices'].innerHTML.includes(
     strings.river.no_year_history.replace('{year}', '2025')));
-riverDaily.daily = riverDaily.daily.filter(day => day.date === '2026-10-08');
+riverDaily.daily = riverDaily.daily.filter(day => day.date === '2026-10-06');
 riverControls({target: {closest: () => ({dataset: {range: 'month'}})}});
 assert.equal(chartSpecs.at(-1).data.datasets[1].pointRadius, 3);
 riverDaily.daily.push(
@@ -847,6 +1049,20 @@ const leapMonth = chartSpecs.at(-1).data.datasets;
 assert.equal(leapMonth[0].data.at(-2).y, null);
 assert.equal(leapMonth[0].data.at(-1).y, 9);
 assert.equal(leapMonth[1].data.at(-2).y, 10);
+for (const [clock, startDate] of [
+    ['2026-01-15', '2025-11-15'],
+    ['2026-04-30', '2026-02-28'],
+    ['2024-04-30', '2024-02-29'],
+]) {
+    now = new NativeDate(`${clock}T12:00:00Z`);
+    riverControls({target: {closest: () => ({dataset: {range: 'month'}})}});
+    const points = chartSpecs.at(-1).data.datasets[1].data;
+    assert.equal(points[0].x,
+        new NativeDate(`${startDate}T12:00:00Z`).getTime());
+    assert.equal(points.at(-1).x, now.getTime());
+    assert.ok(points.every((point, index) => index === 0
+        || point.x - points[index - 1].x === 86400000));
+}
 now = new NativeDate('2026-10-08T12:00:00+02:00');
 const bookStats = Array.from({length: 366}, (_, index) => ({
     md: new NativeDate(Date.UTC(2000, 0, index + 1))
@@ -904,12 +1120,12 @@ assert.ok(root.innerHTML.includes(strings.weather.no_data));
 assert.ok(!root.innerHTML.includes('class="river-current"'));
 """
     result = subprocess.run(
-        [node, '--experimental-default-type=module', '--input-type=module'],
+        [node, "--experimental-default-type=module", "--input-type=module"],
         input=script,
         text=True,
         capture_output=True,
         cwd=WEB.parent,
-        env={'TZ': 'UTC'},
+        env={"TZ": "UTC"},
         check=False,
     )
     assert result.returncode == 0, result.stderr

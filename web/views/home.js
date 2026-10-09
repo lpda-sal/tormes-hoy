@@ -248,10 +248,15 @@ export async function render(root) {
     const uvEnd = new Date(uvDay?.civil_twilight_end ?? "").getTime();
     const daylight = Number.isFinite(uvStart) && Number.isFinite(uvEnd)
       && uvStart < uvEnd;
+    const reading = selectUvReading(uvFile?.data?.hourly, summary.location.timezone);
     miniChart(root, "#home-uv-chart", daylight ? uvFile?.data?.hourly ?? [] : [], "uv",
       t("uv.chart_label"), "#b26a00", Math.max(4, Math.ceil(uvFile?.data?.max ?? 0) + 1), {
         xMin: uvStart, xMax: uvEnd,
         timeZone: summary.location.timezone,
+        now: Date.now(),
+        dots: reading
+          ? [{ x: reading.time, y: reading.value, color: UV_COLORS[uvLevel(reading.value)] }]
+          : [],
         xTicks: [uvStart, (uvStart + uvEnd) / 2, uvEnd],
         yZones: UV_ZONES.map((zone) => ({
           from: zone.from, to: zone.to, color: UV_COLORS[zone.level],

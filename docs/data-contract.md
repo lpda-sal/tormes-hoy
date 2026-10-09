@@ -52,7 +52,14 @@ The latest observation is plotted at its own timestamp, including stale readings
 and is never substituted for a missing forecast value.
 
 Daily row: `date, temperature_max, temperature_min, precipitation_probability,
-precipitation?, weather_code?, uv_max?, sky?`.
+precipitation?, weather_code?, uv_max?, sky?, pictocode?`.
+
+Daily `pictocode` is optional (number or `null`), preserved from Meteoblue's
+`data_day.pictocode`. It uses Meteoblue's daily pictogram set, not WMO codes.
+Missing columns become `null`; older files can omit the field until the
+next scheduled Meteoblue refresh. This additive field keeps schema version 1
+and does not add requests, packages or credit consumption. The web uses each
+source's own daily condition for icons and omits missing or unsupported ones.
 
 Current weather observation and model blocks may include `wind_gust`
 (number or `null`, km/h), also passed through to `summary.weather_now.data`

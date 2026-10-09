@@ -271,6 +271,57 @@ a.card:focus-visible {
   overflow-x: auto;
 }
 
+.weather-hourly {
+  margin-block: .75rem;
+}
+
+#temp-chart .chart-canvas,
+#rain-chart .chart-canvas {
+  height: 10rem;
+}
+
+.weather-hourly .table-scroll {
+  overflow-y: hidden;
+  padding-bottom: 1rem;
+}
+
+.weather-hours {
+  width: max-content;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .8rem;
+}
+
+.weather-hours th,
+.weather-hours td {
+  min-width: 3.25rem;
+  height: 2.25rem;
+  padding: .2rem .25rem;
+  text-align: center;
+}
+
+.weather-hours thead th {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.weather-hours .weather-hour-source {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 6.25rem;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.weather-hours .icon {
+  display: inline-block;
+  font-size: 1.4rem;
+  line-height: 1.25;
+}
+
 .legend i.dot {
   width: .6rem;
   height: .6rem;

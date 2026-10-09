@@ -129,6 +129,8 @@ replace fixtures with real responses and tick it.
       Regression tests cover both screens and the chart point, earlier/later
       selections, exact hours, ties, Madrid timezone, midnight, zero UV,
       invalid samples and missing data. Equal distances favour the later hour.
+      The home chart also shows the detail's dashed current-time line and
+      risk-coloured sample dot; tests verify matching markers in both views.
 - Solar detail shows a Spanish date with an initial capital, no location label,
       reversed event order and plain-text source attribution. Tests cover the
       date, omitted location, row order and removed explanatory note.
@@ -143,6 +145,18 @@ replace fixtures with real responses and tick it.
       Tests at 23:30 and 00:30 confirm the previous reading stays at the left
       with its original date. No rainfall amount is reinterpreted as probability.
       Axis labels show only hours; tooltip dates distinguish midnight transitions.
+- Weather detail now has an icon-only, horizontally scrollable 24-hour
+      comparison after the charts and before sources, with sticky labels and native
+      AEMET/Open-Meteo/Meteoblue conditions. Its visible heading is removed;
+      tests retain the accessible region name. Tests cover three-source alignment,
+      missing hours, unknown conditions, stale/error sources, local midnight,
+      empty sources and omission of temperatures, humidity and percentages.
+      Order regression tests keep it between the rain chart and source list;
+      bottom clearance separates the final row from the horizontal scrollbar
+      and vertical scrolling is disabled within the box.
+      Weather chart canvases are reduced from 15rem to 10rem to fit the full
+      icon comparison at Pixel 8. A scoped CSS regression keeps other detail
+      charts at their default height.
 - Both weather-detail charts shade civil-twilight night intervals using the
       shared home-screen calculation; tests verify the dusk-to-dawn band.
 - Home hourly cards and rain comparison cover the next 24 hours. Tests check
@@ -153,8 +167,12 @@ replace fixtures with real responses and tick it.
       and frames only the chart. Tests cover the reference hour, timezone,
       note/hint/source placement and unavailable solar or hourly data.
 - Upcoming-days comparison omits the update-age legend, table subtitle and
-      bottom weather link. Known daily WMO codes reuse the home icons with
-      accessible descriptions; missing or unsupported codes omit the icon.
+      bottom weather link. All three sources reuse the home icon style with
+      native descriptions: AEMET daily sky, Open-Meteo WMO and Meteoblue daily
+      pictocode. Tests cover the official Meteoblue daily code set (excluding
+      unused 18/19), AEMET clouds and precipitation, accessible labels,
+      escaped external descriptions, unknown codes and older files without
+      daily pictocodes. Parser tests verify optional daily column preservation.
       Past dates from every source are now excluded before the seven-date
       limit, using the current configured local date rather than generation
       time or UTC. Tests cover stale source dates, Madrid midnight while UTC
@@ -166,6 +184,15 @@ replace fixtures with real responses and tick it.
 - River month comparison aligns daily observed means for the current and
       previous year, orange and blue respectively, matching annual colours.
       Tests cover both variables, missing years, gaps and leap-day alignment.
+      "Últimos meses" is selected initially and spans two calendar months
+      through today; "Últimos años" retains the annual comparison. Tests
+      verify the default selection, year switching and February boundaries.
+      Annual flow has fixed 0–250 m³/s bounds; level-axis labels use two
+      decimal places in both ranges. Tests verify their scope and rounding.
+      Current-year lines stop at yesterday's daily mean in both ranges and
+      variables. Tests exclude today's partial and future means, preserve
+      previous-year values, and keep the instantaneous reading to the right
+      with its actual timestamp in the monthly view.
       Reading age is omitted; the hint precedes the chart card and yearbook
       notices, CHD attribution and danger disclaimer follow it. Observed
       history notices and the data-origin paragraph are omitted.

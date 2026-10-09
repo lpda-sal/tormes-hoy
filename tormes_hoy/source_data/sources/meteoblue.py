@@ -91,6 +91,7 @@ def _parse(payload: JsonDict) -> JsonDict:
     dprob = _col(daily, "precipitation_probability", m)
     drain = _col(daily, "precipitation", m)
     uv = _col(daily, "uvindex", m)
+    daily_picto = _col(daily, "pictocode", m)
     daily_rows = [
         {
             "date": str(days[i])[:10],
@@ -99,6 +100,7 @@ def _parse(payload: JsonDict) -> JsonDict:
             "precipitation_probability": dprob[i],
             "precipitation": drain[i],
             "uv_max": uv[i],
+            "pictocode": daily_picto[i],
         }
         for i in range(m)
     ]

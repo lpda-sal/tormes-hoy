@@ -73,6 +73,13 @@ measure the real cost of `basic-1h_basic-day` and adjust
 `meteoblue.refresh_every_hours` (8 h ≈ 1,095 calls). Without a key, or
 after the trial, the source reports `error` and the rest keeps working.
 
+The collector preserves `data_day.pictocode` from the existing `basic-day`
+package for daily icons, without changing the refresh budget. Old cached
+rows remain without this optional field until the next normal refresh.
+The web follows the official [daily pictogram meanings](https://docs.meteoblue.com/en/meteo/variables/pictograms):
+codes 1-17 and 20-25 are supported; 18/19 are unused. These are Meteoblue's
+native codes, not WMO codes, and hourly pictograms are not used as daily ones.
+
 ## CHD current readings
 
 The collector reads the official station page at

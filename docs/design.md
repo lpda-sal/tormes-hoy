@@ -65,11 +65,32 @@ chart legends and the observation card are omitted. The forecast-divergence
 note appears above the charts; the daily-forecast link is omitted. Axes use
 the configured timezone regardless of the browser timezone.
 
+Weather temperature and rain chart canvases use a compact 10rem height so
+the hourly comparison fits in the Pixel 8 first viewport. Other detail
+charts retain their default 15rem height.
+
+Between the charts and source list, a compact framed comparison shows only
+weather-condition icons for AEMET, Open-Meteo and Meteoblue. The box has no
+visible heading; its scrolling region retains an accessible name. Twenty-four
+columns start at the current configured local hour, independent of the
+observation timestamp and available forecast rows. Source labels remain
+visible during horizontal scrolling. Native hourly sky/WMO/pictocode fields
+reuse the daily comparison's icon mapping with accessible descriptions;
+missing hours, unknown conditions and error sources leave empty cells.
+No temperatures, humidity or precipitation probabilities appear in this box.
+Hour tooltips include the date to distinguish midnight transitions.
+The horizontal scrollbar has bottom clearance below the final icon row;
+the box does not scroll vertically.
+
 The upcoming-days view contains only its title, back link and comparison
 table. Source names remain in the column headers, without an update-age
-legend, table subtitle or bottom weather link. Daily forecasts with a known
-WMO code use the home-screen weather icons with accessible descriptions;
-missing or unsupported codes do not display an invented condition.
+legend, table subtitle or bottom weather link. All three sources reuse the
+home-screen weather symbols with source-specific accessible descriptions and
+tooltips: AEMET uses its daily `sky` text, Open-Meteo its WMO code, and
+Meteoblue its native daily `pictocode`. Meteoblue codes are not WMO codes;
+their official daily meanings determine only the shared visual category.
+Missing or unsupported conditions omit the icon. Hourly conditions and rain
+probabilities are never substituted for a missing daily condition.
 Dates before the current calendar day in the configured timezone are removed
 from all sources before sorting and limiting the comparison to seven dates.
 Cached forecasts cannot bring yesterday back after local midnight.
@@ -87,8 +108,17 @@ level-reference notices follow it, outside the card, followed by the CHD
 attribution and provisional danger-level disclaimer. Observed-history notices
 and the data-origin paragraph are omitted.
 Both chart ranges use blue for the previous year and orange for the current
-year. Last month compares daily observed means over the latest 30 days and
-today with the same calendar dates one year earlier, aligned on one axis.
+year. The default "Últimos meses" range compares daily observed means from
+the same date two calendar months ago through today with the same calendar
+dates one year earlier, aligned on one axis. If the starting month lacks
+that day, its final day is used. "Últimos años" retains the current and
+previous calendar-year comparison.
+Annual flow uses a fixed vertical range of 0–250 m³/s; monthly flow keeps
+automatic bounds. Level-axis labels use two decimal places in both ranges.
+In both ranges, current-year flow and level lines include daily means only
+through yesterday; today's partial mean and future dates are omitted. The
+latest instantaneous reading remains a separate dot, using its actual
+timestamp in the monthly view rather than the daily mean's noon position.
 Missing values remain gaps; absent years never acquire invented data.
 February 29 has no previous-year value when that date did not exist.
 Provisional observations and validated yearbook statistics remain separate.
@@ -154,6 +184,8 @@ samples nearest the browser's current time, and display that sample's time
 in the configured timezone. Equal UV values favour the nearer sample;
 equal distances favour the later timestamp. A single valid sample is used
 on its own; no valid samples leave the reading unavailable and omit its time.
+Both UV charts show a dashed vertical line at the browser's current time
+and a risk-coloured dot at the selected sample's time and value.
 Maximum and protection remain separate
 blocks with a fixed 0.75rem gap rather than stretched spacing; protection's
 time range remains on its own line. Current weather facts use equal-spaced

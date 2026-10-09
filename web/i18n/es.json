@@ -88,6 +88,7 @@
   "weather": {
     "title": "Tiempo",
     "days_title": "Tiempo - Próximos días",
+    "hourly_conditions": "Próximas horas",
     "observation": "Observación",
     "observation_source": "Observación {source}",
     "sources": "Fuentes:",
@@ -111,7 +112,7 @@
     },
     "flow_status_note": "Los niveles de peligrosidad usan límites provisionales. No son alertas oficiales ni garantizan que sea seguro navegar.",
     "level": "Nivel",
-    "last_month": "Último mes",
+    "last_month": "Últimos meses",
     "observed": "Observado",
     "median": "Mediana {period}",
     "quartiles": "Cuartiles 25–75 % {period}",
@@ -129,8 +130,55 @@
     },
     "source_note": "Líneas por año y último mes: medias diarias de las lecturas de la CHD (datos provisionales). Mediana y cuartiles: anuarios de aforos de la CHD (datos validados). Las dos fuentes no se mezclan.",
     "source": "Fuente: Confederación Hidrográfica del Duero",
-    "by_year": "Año actual y anterior",
+    "by_year": "Últimos años",
     "year_label": "{year}"
+  },
+  "aemet": {
+    "with": " con ",
+    "sky": {
+      "clear": "Despejado",
+      "few_clouds": "Poco nuboso",
+      "high_clouds": "Nubes altas",
+      "cloud_intervals": "Intervalos nubosos",
+      "cloudy": "Nuboso",
+      "very_cloudy": "Muy nuboso",
+      "overcast": "Cubierto",
+      "fog": "Niebla",
+      "mist": "Bruma"
+    },
+    "precipitation": {
+      "thunderstorm": "tormenta",
+      "hail": "granizo",
+      "snow": "nieve",
+      "rain": "lluvia"
+    }
+  },
+  "meteoblue": {
+    "pictocode": {
+      "1": "Despejado",
+      "2": "Despejado con pocas nubes",
+      "3": "Parcialmente nuboso",
+      "4": "Cubierto",
+      "5": "Niebla",
+      "6": "Cubierto con lluvia",
+      "7": "Intervalos nubosos con chubascos",
+      "8": "Chubascos, tormentas probables",
+      "9": "Cubierto con nieve",
+      "10": "Intervalos nubosos con chubascos de nieve",
+      "11": "Mayormente nuboso con nieve y lluvia",
+      "12": "Cubierto con lluvia ocasional",
+      "13": "Cubierto con nieve ocasional",
+      "14": "Mayormente nuboso con lluvia",
+      "15": "Mayormente nuboso con nieve",
+      "16": "Mayormente nuboso con lluvia ocasional",
+      "17": "Mayormente nuboso con nieve ocasional",
+      "20": "Mayormente nuboso",
+      "21": "Mayormente despejado, posibles tormentas locales",
+      "22": "Parcialmente nuboso, posibles tormentas locales",
+      "23": "Parcialmente nuboso con tormentas locales y posibles chubascos",
+      "24": "Nuboso con tormentas y chubascos fuertes",
+      "25": "Mayormente nuboso con tormentas y chubascos"
+    }
   },
   "wmo": {
     "0": "Despejado",

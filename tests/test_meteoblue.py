@@ -28,6 +28,20 @@ def test_parse_hourly_humidity() -> None:
     )
 
 
+def test_parse_daily_pictocode() -> None:
+    payload = load_fixture("meteoblue_basic.json")
+    payload["data_day"]["pictocode"] = [1, 12]
+    rows = meteoblue._parse(payload)["daily"]
+    assert [row["pictocode"] for row in rows] == [1, 12]
+    payload["data_day"]["pictocode"] = [None, 999]
+    rows = meteoblue._parse(payload)["daily"]
+    assert [row["pictocode"] for row in rows] == [None, 999]
+    del payload["data_day"]["pictocode"]
+    assert all(
+        row["pictocode"] is None for row in meteoblue._parse(payload)["daily"]
+    )
+
+
 def test_should_refresh_every_six_hours() -> None:
     now = datetime(2026, 10, 5, 17, 17, tzinfo=ZoneInfo(TZ))
     assert meteoblue.should_refresh(None, now, 6, TZ)
