@@ -70,6 +70,9 @@ table. Source names remain in the column headers, without an update-age
 legend, table subtitle or bottom weather link. Daily forecasts with a known
 WMO code use the home-screen weather icons with accessible descriptions;
 missing or unsupported codes do not display an invented condition.
+Dates before the current calendar day in the configured timezone are removed
+from all sources before sorting and limiting the comparison to seven dates.
+Cached forecasts cannot bring yesterday back after local midnight.
 
 ## River detail
 

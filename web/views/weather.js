@@ -70,8 +70,9 @@ function observationLabel(observation) {
     : t("weather.observation");
 }
 
-function daysTable(forecasts) {
+function daysTable(forecasts, today) {
   const dates = [...new Set(SOURCES.flatMap((k) => (forecasts[k]?.data?.daily ?? []).map((d) => d.date)))]
+    .filter((date) => typeof date === "string" && date >= today)
     .sort()
     .slice(0, 7);
   const header = SOURCES.map((k) => `<th>${esc(forecasts[k]?.source?.label ?? k)}</th>`).join("");
@@ -146,8 +147,13 @@ export async function render(root) {
 export async function renderDays(root) {
   const weather = await loadData("weather");
   const forecasts = weather.forecasts ?? {};
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", {
+    timeZone: weather.location?.timezone,
+    year: "numeric", month: "2-digit", day: "2-digit",
+  }).formatToParts(new Date()).map((part) => [part.type, part.value]));
+  const today = `${parts.year}-${parts.month}-${parts.day}`;
   root.innerHTML = `
     <a class="back" href="#/">${t("back")}</a>
     <h1>${t("weather.days_title")}</h1>
-    ${daysTable(forecasts)}`;
+    ${daysTable(forecasts, today)}`;
 }

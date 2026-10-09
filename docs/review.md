@@ -155,6 +155,10 @@ replace fixtures with real responses and tick it.
 - Upcoming-days comparison omits the update-age legend, table subtitle and
       bottom weather link. Known daily WMO codes reuse the home icons with
       accessible descriptions; missing or unsupported codes omit the icon.
+      Past dates from every source are now excluded before the seven-date
+      limit, using the current configured local date rather than generation
+      time or UTC. Tests cover stale source dates, Madrid midnight while UTC
+      is still yesterday, retaining seven future dates and fully expired data.
 - River detail uses the title "Río Tormes" and home-style current readings.
       Flow shares the matching summary category; level has no background. Tests
       cover colour bands, unmatched/missing categories, unavailable readings
