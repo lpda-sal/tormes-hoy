@@ -45,7 +45,11 @@ replace fixtures with real responses and tick it.
       to minutes. Missing adjacent readings are not interpolated.
 - [ ] Club river flow bands: provisional caution/danger thresholds are
       configurable; validate them for actual club use, not official alerts.
-- [ ] Trend thresholds (3 h window, ±3 % flow, ±1 cm level).
+- [x] Trend criterion: current flow against yesterday's CHD mean, changing
+      only beyond max(15 %, 3 m3/s). Calibrated on CEDEX daily means 2011-2021
+      (92 % steady, rising and falling balanced). The live comparison uses
+      an instantaneous reading, which is noisier than the calibration; review
+      it once real rises and falls have been observed.
 - [ ] Level datum-shift threshold 0.15 m.
 - [ ] Repository growth from hourly data commits is acceptable.
 - [ ] Icons are placeholders (`web/icons/`).

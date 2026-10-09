@@ -9,26 +9,26 @@ from tormes_hoy.utils.config import load_config
 
 
 def test_build_site_copies_web_and_data(tmp_path: Path) -> None:
-    (tmp_path / 'web').mkdir()
-    (tmp_path / 'web' / 'index.html').write_text('<html></html>')
-    (tmp_path / 'data').mkdir()
-    (tmp_path / 'data' / 'summary.json').write_text('{}')
-    out = _build_site(tmp_path, tmp_path / '_site')
-    assert (out / 'index.html').exists()
-    assert (out / 'data' / 'summary.json').exists()
-    assert (out / '.nojekyll').exists()
+    (tmp_path / "web").mkdir()
+    (tmp_path / "web" / "index.html").write_text("<html></html>")
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "summary.json").write_text("{}")
+    out = _build_site(tmp_path, tmp_path / "_site")
+    assert (out / "index.html").exists()
+    assert (out / "data" / "summary.json").exists()
+    assert (out / ".nojekyll").exists()
 
 
 @pytest.mark.parametrize(
-    ('flow', 'has_status', 'published', 'expected'),
+    ("flow", "has_status", "published", "expected"),
     [
-        ('safe', False, None, 'safe'),
-        ('caution', False, None, 'caution'),
-        ('danger', False, None, 'danger'),
+        ("safe", False, None, "safe"),
+        ("caution", False, None, "caution"),
+        ("danger", False, None, "danger"),
         (None, False, None, None),
         (-1.0, False, None, None),
-        ('safe', True, 'danger', 'danger'),
-        ('safe', True, None, None),
+        ("safe", True, "danger", "danger"),
+        ("safe", True, None, None),
     ],
 )
 def test_build_site_completes_only_missing_flow_status(
@@ -38,32 +38,32 @@ def test_build_site_completes_only_missing_flow_status(
     published: str | None,
     expected: str | None,
 ) -> None:
-    (tmp_path / 'web').mkdir()
-    (tmp_path / 'data').mkdir()
-    config_dir = tmp_path / 'tormes_hoy' / 'config'
+    (tmp_path / "web").mkdir()
+    (tmp_path / "data").mkdir()
+    config_dir = tmp_path / "tormes_hoy" / "config"
     config_dir.mkdir(parents=True)
     project = Path(__file__).resolve().parents[1]
     shutil.copy2(
-        project / 'tormes_hoy' / 'config' / 'config.toml',
-        config_dir / 'config.toml',
+        project / "tormes_hoy" / "config" / "config.toml",
+        config_dir / "config.toml",
     )
     if isinstance(flow, str):
-        config = load_config(config_dir / 'config.toml')
+        config = load_config(config_dir / "config.toml")
         flow = {
-            'safe': config.river.flow_caution_m3s / 2,
-            'caution': config.river.flow_caution_m3s,
-            'danger': config.river.flow_danger_m3s,
+            "safe": config.river.flow_caution_m3s / 2,
+            "caution": config.river.flow_caution_m3s,
+            "danger": config.river.flow_danger_m3s,
         }[flow]
-    river: dict[str, object] = {'data': {'flow_m3s': flow}}
+    river: dict[str, object] = {"data": {"flow_m3s": flow}}
     if has_status:
-        river['flow_status'] = published
-    summary = {'generated_at': '2026-10-08T16:00:00+02:00', 'river': river}
-    source = tmp_path / 'data' / 'summary.json'
-    source.write_text(json.dumps(summary), encoding='utf-8')
+        river["flow_status"] = published
+    summary = {"generated_at": "2026-10-08T16:00:00+02:00", "river": river}
+    source = tmp_path / "data" / "summary.json"
+    source.write_text(json.dumps(summary), encoding="utf-8")
     original = source.read_bytes()
-    out = _build_site(tmp_path, tmp_path / '_site')
-    result = json.loads((out / 'data' / 'summary.json').read_text('utf-8'))
-    assert result['river']['flow_status'] == expected
-    assert result['river']['data'] == river['data']
-    assert result['generated_at'] == summary['generated_at']
+    out = _build_site(tmp_path, tmp_path / "_site")
+    result = json.loads((out / "data" / "summary.json").read_text("utf-8"))
+    assert result["river"]["flow_status"] == expected
+    assert result["river"]["data"] == river["data"]
+    assert result["generated_at"] == summary["generated_at"]
     assert source.read_bytes() == original

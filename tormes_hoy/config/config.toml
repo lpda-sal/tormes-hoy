@@ -39,9 +39,9 @@ time_field = "fecha"
 observed_days = 30
 daily_years = 2                 # daily history: current + previous year
 stale_after_hours = 3
-trend_window_hours = 3
-trend_flow_ratio = 0.03         # >3 % change in the window = rising/falling
-trend_level_m = 0.01            # >1 cm change in the window = rising/falling
+# Flow now vs yesterday's mean: a change must exceed the larger of both.
+trend_flow_ratio = 0.15         # fraction of yesterday's mean flow
+trend_flow_min_m3s = 3.0        # absolute floor; dominates below 20 m3/s
 
 [yearbook]
 years = 10

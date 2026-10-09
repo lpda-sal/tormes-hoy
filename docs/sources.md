@@ -87,6 +87,12 @@ The collector reads the official station page at
 decimal commas and local `DD/MM/YYYY HH:MM` timestamps. These readings are
 provisional and may be revised by SAIH Duero.
 
+The same page's statistics table (identified by its `Ayer` column header)
+gives yesterday's mean flow, which the collector stores as
+`yesterday_flow_m3s` for the river trend. The page also shows a "Tendencia"
+icon; it is not used because its window and thresholds are undocumented and
+it cannot be backtested. No extra request is made.
+
 ## Yearbook import (once a year, locally)
 
 1. Download [CEDEX station 2087: Tormes at Salamanca](https://ceh.cedex.es/anuarioaforos/afo/estaf-datos_descarga.asp?indroea=2087).

@@ -73,8 +73,17 @@ Stored UV `now` and `now_level` remain generation-time values. The web derives
 its displayed reading from `uv.json` hourly samples: select the two valid
 samples nearest the current browser time, then use the higher UV and that
 sample's timestamp. No schema or stored values change.
-River trend: `rising|falling|steady`, comparing the last reading with the one
-`trend_window_hours` earlier (flow ±3 %, else level ±1 cm).
+River trend: `rising|falling|steady`, comparing the current flow with
+yesterday's mean flow published by the CHD station page. The change must
+exceed the larger of `trend_flow_ratio` (15 %) of yesterday's mean and
+`trend_flow_min_m3s` (3 m3/s), so the floor decides below 20 m3/s. It is
+`null` when either value is missing; level is not used.
+
+The river current reading (`river-observed-30d.json` `current.data` and
+`summary.river.data`) may include `yesterday_flow_m3s` (number, m3/s), read
+from the "Ayer" column of the station page's statistics table. This additive
+field keeps schema version 1; older files and the JSON payload variant omit
+it, which leaves the trend `null`. Raw readings and daily means never store it.
 
 `summary.river.flow_status` is an optional, additive field:
 `safe|caution|danger|null`. It compares the current flow with the configured

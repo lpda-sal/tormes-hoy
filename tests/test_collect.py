@@ -94,6 +94,36 @@ def test_full_run_produces_all_files(config: Config, now: datetime) -> None:
     }
 
 
+@pytest.mark.parametrize(
+    ('flow', 'yesterday', 'expected'),
+    [
+        (7.3, 7.0, 'steady'),
+        (10.5, 7.0, 'rising'),
+        (3.5, 7.0, 'falling'),
+        (7.3, None, None),
+    ],
+)
+def test_river_trend_uses_yesterday_mean(
+    config: Config,
+    now: datetime,
+    flow: float,
+    yesterday: float | None,
+    expected: str | None,
+) -> None:
+    reading: dict[str, Any] = {
+        'time': '2026-10-05T16:30:00+02:00',
+        'level_m': 1.34,
+        'flow_m3s': flow,
+    }
+    if yesterday is not None:
+        reading['yesterday_flow_m3s'] = yesterday
+    fetchers = replace(_fetchers(), chd=lambda _config: reading)
+    files = collect._run(config, now, ENV, fetchers)
+    assert files['summary.json']['river']['data']['trend'] == expected
+    for entry in files['river-observed-30d.json']['readings']:
+        assert 'yesterday_flow_m3s' not in entry
+
+
 def test_failing_source_is_isolated(config: Config, now: datetime) -> None:
     files = collect._run(
         config, now, ENV, _fetchers(fail={'openmeteo', 'chd'})

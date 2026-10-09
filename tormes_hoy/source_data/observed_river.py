@@ -11,7 +11,7 @@ from typing import Any
 from tormes_hoy.utils.models import JsonDict
 from tormes_hoy.utils.timeutil import parse_local
 
-_VARIABLES = ("level_m", "flow_m3s")
+_VARIABLES = ('level_m', 'flow_m3s')
 
 
 def merge_readings(
@@ -23,30 +23,30 @@ def merge_readings(
 ) -> list[JsonDict]:
     """Add ``new`` to the raw readings, dedupe by time and trim to ``days``."""
     by_time: dict[str, JsonDict] = {
-        str(r["time"]): r for r in previous if r.get("time")
+        str(r['time']): r for r in previous if r.get('time')
     }
     if new is not None:
-        by_time[str(new["time"])] = {
-            "time": new["time"],
-            "level_m": new.get("level_m"),
-            "flow_m3s": new.get("flow_m3s"),
+        by_time[str(new['time'])] = {
+            'time': new['time'],
+            'level_m': new.get('level_m'),
+            'flow_m3s': new.get('flow_m3s'),
         }
     cutoff = now - timedelta(days=days)
     kept = [
         r
         for r in by_time.values()
-        if parse_local(r["time"], tz_name) >= cutoff
+        if parse_local(r['time'], tz_name) >= cutoff
     ]
-    return sorted(kept, key=lambda r: parse_local(r["time"], tz_name))
+    return sorted(kept, key=lambda r: parse_local(r['time'], tz_name))
 
 
 def _stats(values: list[float]) -> JsonDict | None:
     if not values:
         return None
     return {
-        "min": min(values),
-        "mean": round(fmean(values), 3),
-        "max": max(values),
+        'min': min(values),
+        'mean': round(fmean(values), 3),
+        'max': max(values),
     }
 
 
@@ -56,17 +56,17 @@ def _daily_from_readings(readings: list[JsonDict]) -> list[JsonDict]:
         lambda: {v: [] for v in _VARIABLES}
     )
     for reading in readings:
-        date = str(reading["time"])[:10]
+        date = str(reading['time'])[:10]
         for var in _VARIABLES:
             value = reading.get(var)
             if value is not None:
                 grouped[date][var].append(float(value))
     return [
         {
-            "date": date,
-            "level_m": _stats(values["level_m"]),
-            "flow_m3s": _stats(values["flow_m3s"]),
-            "n": max(len(values["level_m"]), len(values["flow_m3s"])),
+            'date': date,
+            'level_m': _stats(values['level_m']),
+            'flow_m3s': _stats(values['flow_m3s']),
+            'n': max(len(values['level_m']), len(values['flow_m3s'])),
         }
         for date, values in sorted(grouped.items())
     ]
@@ -87,66 +87,47 @@ def merge_daily(
     The oldest raw day may be partial (trimmed by the 30-day window), so it
     never overwrites an already stored daily value.
     """
-    by_date = {str(d["date"]): d for d in previous if d.get("date")}
+    by_date = {str(d['date']): d for d in previous if d.get('date')}
     recent = _daily_from_readings(readings)
     for index, day in enumerate(recent):
-        if index == 0 and day["date"] in by_date:
+        if index == 0 and day['date'] in by_date:
             continue
-        by_date[day["date"]] = day
-    first_day = f"{now.year - years + 1:04d}-01-01"
+        by_date[day['date']] = day
+    first_day = f'{now.year - years + 1:04d}-01-01'
     return [by_date[d] for d in sorted(by_date) if d >= first_day]
 
 
 def trend(
-    readings: list[JsonDict],
-    window_hours: float,
-    flow_ratio: float,
-    level_m: float,
-    tz_name: str,
+    flow: float | None,
+    yesterday: float | None,
+    ratio: float,
+    min_change: float,
 ) -> str | None:
-    """Return ``rising``, ``falling`` or ``steady`` for the last window.
+    """Return ``rising``, ``falling`` or ``steady`` against yesterday's mean.
 
-    Flow is preferred; level is used when flow is missing.
+    The change must exceed the larger of ``ratio`` times yesterday's mean
+    and ``min_change`` (m3/s). Returns ``None`` if either flow is missing.
     """
-    minimum_readings = 2
-    if len(readings) < minimum_readings:
+    if flow is None or yesterday is None:
         return None
-    last = readings[-1]
-    last_time = parse_local(last["time"], tz_name)
-    target = last_time - timedelta(hours=window_hours)
-    earlier = [
-        r for r in readings[:-1] if parse_local(r["time"], tz_name) <= target
-    ]
-    if not earlier:
-        return None
-    ref = earlier[-1]
-    flow_now, flow_ref = last.get("flow_m3s"), ref.get("flow_m3s")
-    if flow_now is not None and flow_ref:
-        change = (flow_now - flow_ref) / flow_ref
-        return _direction(change, flow_ratio)
-    lvl_now, lvl_ref = last.get("level_m"), ref.get("level_m")
-    if lvl_now is not None and lvl_ref is not None:
-        return _direction(lvl_now - lvl_ref, level_m)
-    return None
-
-
-def _direction(change: float, threshold: float) -> str:
-    if change > threshold:
-        return "rising"
-    if change < -threshold:
-        return "falling"
-    return "steady"
+    limit = max(ratio * yesterday, min_change)
+    change = flow - yesterday
+    if change > limit:
+        return 'rising'
+    if change < -limit:
+        return 'falling'
+    return 'steady'
 
 
 def readings_from(block: Any) -> list[JsonDict]:
     """Extract the readings list from a previously generated file."""
-    if isinstance(block, dict) and isinstance(block.get("readings"), list):
-        return [r for r in block["readings"] if isinstance(r, dict)]
+    if isinstance(block, dict) and isinstance(block.get('readings'), list):
+        return [r for r in block['readings'] if isinstance(r, dict)]
     return []
 
 
 def daily_from(block: Any) -> list[JsonDict]:
     """Extract the daily list from a previously generated file."""
-    if isinstance(block, dict) and isinstance(block.get("daily"), list):
-        return [d for d in block["daily"] if isinstance(d, dict)]
+    if isinstance(block, dict) and isinstance(block.get('daily'), list):
+        return [d for d in block['daily'] if isinstance(d, dict)]
     return []
