@@ -56,6 +56,7 @@ precipitation?, weather_code?, uv_max?, sky?, pictocode?`.
 
 Daily `pictocode` is optional (number or `null`), preserved from Meteoblue's
 `data_day.pictocode`. It uses Meteoblue's daily pictogram set, not WMO codes.
+Hourly `pictocode` uses the separate hourly set (1-35).
 Missing columns become `null`; older files can omit the field until the
 next scheduled Meteoblue refresh. This additive field keeps schema version 1
 and does not add requests, packages or credit consumption. The web uses each

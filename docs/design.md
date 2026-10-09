@@ -75,12 +75,22 @@ visible heading; its scrolling region retains an accessible name. Twenty-four
 columns start at the current configured local hour, independent of the
 observation timestamp and available forecast rows. Source labels remain
 visible during horizontal scrolling. Native hourly sky/WMO/pictocode fields
-reuse the daily comparison's icon mapping with accessible descriptions;
-missing hours, unknown conditions and error sources leave empty cells.
+map to the shared icon set with accessible descriptions; Meteoblue's hourly
+`pictocode` uses its own 1-35 hourly set (36/37 unused), which differs from
+the daily 1-17/20-25 set, so each is read with its own table.
+Missing hours, unknown conditions and error sources leave empty cells.
 No temperatures, humidity or precipitation probabilities appear in this box.
 Hour tooltips include the date to distinguish midnight transitions.
 The horizontal scrollbar has bottom clearance below the final icon row;
 the box does not scroll vertically.
+
+The home "Próximas horas" card and this box show night icons for every source:
+an hour whose midpoint is before sunrise or from sunset onward uses the
+configured location's sunrise and sunset clock (Sunrise-Sunset.org, applied to
+every date like the night shading). Clear and mostly clear skies become a
+moon, partly cloudy becomes a cloud and drizzle with sun becomes rain; other
+conditions are unchanged. Without solar times, day icons are kept. The home
+card waits for the solar request so icons do not change after first paint.
 
 The upcoming-days view contains only its title, back link and comparison
 table. Source names remain in the column headers, without an update-age

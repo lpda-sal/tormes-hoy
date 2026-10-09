@@ -123,10 +123,31 @@ const WMO_ICONS = [
   [[51, 53, 55, 56, 57], "🌦️"], [[61, 63, 65, 66, 67, 80, 81, 82], "🌧️"],
   [[71, 73, 75, 77, 85, 86], "🌨️"], [[95, 96, 99], "⛈️"],
 ];
+// Sun-based icons have no night form; the moon replaces them.
+const NIGHT_ICONS = new Map([["☀️", "🌙"], ["🌤️", "🌙"], ["⛅", "☁️"], ["🌦️", "🌧️"]]);
+const HOUR = 3600000;
 
-export function wmoIcon(code) {
+export function wmoIcon(code, night = false) {
   const hit = WMO_ICONS.find(([codes]) => codes.includes(code));
-  return hit ? hit[1] : "·";
+  if (!hit) return "·";
+  return night ? NIGHT_ICONS.get(hit[1]) ?? hit[1] : hit[1];
+}
+
+/** True when the hour starting at `time` (epoch ms) is before sunrise or after sunset. */
+export function isNightHour(time, day, timeZone) {
+  const sunrise = Date.parse(day?.sunrise ?? "");
+  const sunset = Date.parse(day?.sunset ?? "");
+  if (![time, sunrise, sunset].every(Number.isFinite)) return false;
+  const clock = new Intl.DateTimeFormat("en-GB", {
+    timeZone, hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  });
+  const minutes = (value) => {
+    const [hour, minute] = clock.format(value).split(":").map(Number);
+    return hour * 60 + minute;
+  };
+  // Today's sunrise/sunset clock is applied to every date, like civilNightRanges.
+  const middle = minutes(time + HOUR / 2);
+  return middle < minutes(sunrise) || middle >= minutes(sunset);
 }
 
 export function wmoText(code) {

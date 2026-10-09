@@ -78,7 +78,13 @@ package for daily icons, without changing the refresh budget. Old cached
 rows remain without this optional field until the next normal refresh.
 The web follows the official [daily pictogram meanings](https://docs.meteoblue.com/en/meteo/variables/pictograms):
 codes 1-17 and 20-25 are supported; 18/19 are unused. These are Meteoblue's
-native codes, not WMO codes, and hourly pictograms are not used as daily ones.
+native codes, not WMO codes.
+
+Hourly rows use a different official set: `pictocode` 1-35 (36/37 unused),
+with other meanings, e.g. 4 is "clear with few low clouds" and 7 is "partly
+cloudy" (daily 4 is overcast and daily 7 is showers). The web therefore reads
+hourly and daily codes with separate tables and never mixes them. Day and night
+variants share a code, so night is derived from sunrise/sunset in the web.
 
 ## CHD current readings
 

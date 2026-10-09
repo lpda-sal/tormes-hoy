@@ -1,7 +1,7 @@
 import { loadData, loadSunTimes } from "../data.js";
 import { renderChart } from "../charts.js";
 import {
-  age, civilNightRanges, esc, forecastTime, hourLabel, num, selectUvReading, statusBadge, uvChip, uvLevel, wmoIcon, wmoText,
+  age, civilNightRanges, esc, forecastTime, hourLabel, isNightHour, num, selectUvReading, statusBadge, uvChip, uvLevel, wmoIcon, wmoText,
   SOURCE_COLORS, UV_COLORS, UV_ZONES,
 } from "../format.js";
 import { t } from "../i18n.js";
@@ -52,14 +52,14 @@ function upcomingHours(summary, block) {
     - forecastTime(right.time, summary.location.timezone));
 }
 
-function restOfDayCard(block, hours) {
+function restOfDayCard(block, hours, day, timeZone) {
   const content = block?.status === "error" && !hours.length
     ? ""
     : hours.length
     ? `<div class="hours">${hours.map((h) => `
         <div class="hour">
           <div class="muted">${hourLabel(h.time)}</div>
-          <div class="icon" title="${esc(wmoText(h.weather_code))}">${wmoIcon(h.weather_code)}</div>
+          <div class="icon" title="${esc(wmoText(h.weather_code))}">${wmoIcon(h.weather_code, isNightHour(forecastTime(h.time, timeZone), day, timeZone))}</div>
           <div>${num(h.temperature)}°</div>
           <div class="muted">${num(h.precipitation_probability)}%</div>
         </div>`).join("")}</div>`
@@ -215,8 +215,10 @@ function sunTimes(summary, day) {
 
 export async function render(root) {
   const summary = await loadData("summary");
+  const dayRequest = solarDay(summary).catch(() => null);
   const weather = await loadData("weather").catch(() => null);
   const uvFile = await loadData("uv").catch(() => null);
+  const day = await dayRequest;
   const forecast = weather?.forecasts?.openmeteo;
   const block = forecast?.data?.hourly
     ? { status: forecast.status, data: forecast.data.hourly } : summary.today;
@@ -226,14 +228,13 @@ export async function render(root) {
     <div class="grid home-grid">
       ${weatherNowCard(summary)}
       ${riverCard(summary)}
-      ${restOfDayCard(block, hours)}
+      ${restOfDayCard(block, hours, day, summary.location.timezone)}
       ${rainCard(rain)}
       ${uvCard(summary, uvFile)}
     </div>
     <nav class="home-links">
       <a class="next-days-link" href="#/weather/days">${t("home.next_days")}</a>
     </nav>`;
-  const day = await solarDay(summary).catch(() => null);
   const xs = rain.rows.map((row) => forecastTime(row.time, summary.location.timezone));
   const night = civilNightRanges(xs, day, summary.location.timezone);
   miniChart(root, "#home-rain-chart", rain.rows, "precipitation_probability",

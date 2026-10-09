@@ -1,7 +1,7 @@
 import { renderChart, timeTicks } from "../charts.js";
 import { loadData, loadSunTimes } from "../data.js";
 import {
-  age, civilNightRanges, dayLabel, esc, forecastTime, num, SOURCE_COLORS, statusBadge,
+  age, civilNightRanges, dayLabel, esc, forecastTime, isNightHour, num, SOURCE_COLORS, statusBadge,
   wmoIcon, wmoText,
 } from "../format.js";
 import { t } from "../i18n.js";
@@ -20,8 +20,16 @@ const METEOBLUE_ICON_CODES = new Map([
   [14, 61], [15, 71], [16, 61], [17, 71], [20, 3],
   [21, 95], [22, 95], [23, 95], [24, 95], [25, 95],
 ]);
+// Meteoblue's hourly pictogram set differs from the daily one.
+const METEOBLUE_HOURLY_ICON_CODES = new Map([
+  [1, 0], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 2], [8, 2], [9, 2],
+  [10, 2], [11, 2], [12, 2], [13, 1], [14, 1], [15, 1], [16, 45], [17, 45],
+  [18, 45], [19, 3], [20, 3], [21, 3], [22, 3], [23, 61], [24, 71], [25, 65],
+  [26, 75], [27, 95], [28, 95], [29, 95], [30, 95], [31, 80], [32, 85],
+  [33, 61], [34, 71], [35, 71],
+]);
 
-function forecastCondition(source, day) {
+function forecastCondition(source, day, { hourly = false, night = false } = {}) {
   let code;
   let label;
   if (source === "aemet") {
@@ -41,15 +49,16 @@ function forecastCondition(source, day) {
     }
     label = sky;
   } else if (source === "meteoblue") {
-    if (!METEOBLUE_ICON_CODES.has(day.pictocode)) return null;
-    code = METEOBLUE_ICON_CODES.get(day.pictocode);
-    label = t(`meteoblue.pictocode.${day.pictocode}`);
+    const codes = hourly ? METEOBLUE_HOURLY_ICON_CODES : METEOBLUE_ICON_CODES;
+    if (!codes.has(day.pictocode)) return null;
+    code = codes.get(day.pictocode);
+    label = t(`meteoblue.${hourly ? "hourly_pictocode" : "pictocode"}.${day.pictocode}`);
   } else {
     if (!Number.isFinite(day.weather_code)) return null;
     code = day.weather_code;
     label = wmoText(code);
   }
-  const icon = wmoIcon(code);
+  const icon = wmoIcon(code, night);
   return icon === "·" ? null : { icon, label };
 }
 
@@ -113,8 +122,9 @@ function observationLabel(observation) {
     : t("weather.observation");
 }
 
-function hourlyConditions(forecasts, start, timeZone) {
+function hourlyConditions(forecasts, start, timeZone, solar) {
   const hours = Array.from({ length: 24 }, (_, index) => start + index * HOUR);
+  const nights = hours.map((time) => isNightHour(time, solar, timeZone));
   const hourFormat = new Intl.DateTimeFormat("es-ES", {
     timeZone, hour: "2-digit", minute: "2-digit", hourCycle: "h23",
   });
@@ -130,9 +140,11 @@ function hourlyConditions(forecasts, start, timeZone) {
         forecastTime(row.time, timeZone), row,
       ]),
     );
-    const cells = hours.map((time) => {
+    const cells = hours.map((time, index) => {
       const row = byTime.get(time);
-      const condition = row ? forecastCondition(key, row) : null;
+      const condition = row
+        ? forecastCondition(key, row, { hourly: true, night: nights[index] })
+        : null;
       return condition
         ? `<td><span class="icon" role="img" aria-label="${esc(condition.label)}" title="${esc(condition.label)}">${condition.icon}</span></td>`
         : `<td aria-label="${t("weather.no_data")}"></td>`;
@@ -197,7 +209,7 @@ export async function render(root) {
     <p class="chart-hint">${t("chart_hint")}</p>
     <section class="card"><h2>${t("weather.temperature_today")}</h2><div id="temp-chart"></div></section>
     <section class="card"><h2>${t("weather.rain_today")}</h2><div id="rain-chart"></div></section>
-    ${hourlyConditions(forecasts, start, timeZone)}
+    ${hourlyConditions(forecasts, start, timeZone, solar)}
     <div class="weather-sources">
       <p class="weather-sources-label">${t("weather.sources")}</p>
       <div class="legend">${sourcesStatus(forecasts, observation)}</div>

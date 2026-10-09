@@ -186,6 +186,15 @@ replace fixtures with real responses and tick it.
       limit, using the current configured local date rather than generation
       time or UTC. Tests cover stale source dates, Madrid midnight while UTC
       is still yesterday, retaining seven future dates and fully expired data.
+- Meteoblue hourly pictograms were read with the daily table, so hourly icons
+      did not match meteoblue.com (e.g. hourly 7, "partly cloudy", showed
+      showers). Hourly rows now use the official 1-35 hourly set with Spanish
+      descriptions; daily rows keep the daily set. Tests cover all 35 hourly
+      codes, unsupported values and the hour/day distinction.
+- Hourly icons showed suns at night for all sources. Home and weather hourly
+      views now use a moon (or cloud/rain variants) between sunset and sunrise,
+      from the web's solar times; without them, day icons remain. Tests cover
+      home and weather columns around sunrise/sunset and solar-API failure.
 - River detail uses the title "Río Tormes" and home-style current readings.
       Flow shares the matching summary category; level has no background. Tests
       cover colour bands, unmatched/missing categories, unavailable readings

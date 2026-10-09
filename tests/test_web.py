@@ -8,28 +8,28 @@ from pathlib import Path
 
 import pytest
 
-WEB = Path(__file__).resolve().parents[1] / "web"
+WEB = Path(__file__).resolve().parents[1] / 'web'
 
 
 def _js_files() -> list[Path]:
-    return [p for p in WEB.rglob("*.js") if "vendor" not in p.parts]
+    return [p for p in WEB.rglob('*.js') if 'vendor' not in p.parts]
 
 
 def test_service_worker_shell_files_exist() -> None:
-    source = (WEB / "sw.js").read_text(encoding="utf-8")
-    block = re.search(r"const SHELL = \[(.*?)\];", source, re.S)
+    source = (WEB / 'sw.js').read_text(encoding='utf-8')
+    block = re.search(r'const SHELL = \[(.*?)\];', source, re.S)
     assert block is not None
     files = re.findall(r'"([^"]+)"', block.group(1))
-    missing = [f for f in files if f != "./" and not (WEB / f).exists()]
+    missing = [f for f in files if f != './' and not (WEB / f).exists()]
     assert missing == []
 
 
 def test_every_translation_key_exists() -> None:
-    strings = json.loads((WEB / "i18n" / "es.json").read_text("utf-8"))
+    strings = json.loads((WEB / 'i18n' / 'es.json').read_text('utf-8'))
 
     def has(key: str) -> bool:
         node: object = strings
-        for part in key.split("."):
+        for part in key.split('.'):
             if not isinstance(node, dict) or part not in node:
                 return False
             node = node[part]
@@ -38,33 +38,33 @@ def test_every_translation_key_exists() -> None:
     keys = {
         key
         for path in _js_files()
-        for key in re.findall(r'\bt\("([\w.]+)"', path.read_text("utf-8"))
+        for key in re.findall(r'\bt\("([\w.]+)"', path.read_text('utf-8'))
     }
-    assert keys, "no t() calls found"
+    assert keys, 'no t() calls found'
     assert sorted(k for k in keys if not has(k)) == []
 
 
 def test_chartjs_is_only_used_by_the_wrapper() -> None:
     users = [
-        p.name for p in _js_files() if "window.Chart" in p.read_text("utf-8")
+        p.name for p in _js_files() if 'window.Chart' in p.read_text('utf-8')
     ]
-    assert users == ["charts.js"]
+    assert users == ['charts.js']
 
 
 def test_weather_chart_heights_are_scoped() -> None:
-    styles = (WEB / "styles.css").read_text(encoding="utf-8")
+    styles = (WEB / 'styles.css').read_text(encoding='utf-8')
     assert re.search(
-        r"#temp-chart \.chart-canvas,\s*"
-        r"#rain-chart \.chart-canvas\s*\{\s*height: 10rem;\s*\}",
+        r'#temp-chart \.chart-canvas,\s*'
+        r'#rain-chart \.chart-canvas\s*\{\s*height: 10rem;\s*\}',
         styles,
     )
-    assert re.search(r"(?m)^\.chart-canvas\s*\{[^}]*height: 15rem;", styles)
+    assert re.search(r'(?m)^\.chart-canvas\s*\{[^}]*height: 15rem;', styles)
 
 
 def test_home_and_weather_views_render() -> None:
-    node = shutil.which("node")
+    node = shutil.which('node')
     if node is None:
-        pytest.skip("Node is required to execute the web rendering checks")
+        pytest.skip('Node is required to execute the web rendering checks')
     script = r"""
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -250,6 +250,10 @@ assert.ok(root.innerHTML.includes(strings.home.rain_hours));
 assert.ok(root.innerHTML.includes('class="card wide uv-card"'));
 assert.ok(root.innerHTML.includes('class="uv-summary" href="#/uv"'));
 assert.equal((root.innerHTML.match(/class="hour"/g) ?? []).length, 24);
+const homeHourIcons = [...root.innerHTML.matchAll(
+    /<div class="icon" title="[^"]*">([^<]*)<\/div>/g)].map(match => match[1]);
+assert.equal(homeHourIcons.join(''),
+    '☀️'.repeat(8) + '🌙'.repeat(12) + '☀️'.repeat(4));
 assert.ok(root.innerHTML.includes('flow-chip safe'));
 assert.ok(root.innerHTML.includes('class="muted flow-status"'));
 assert.ok(root.innerHTML.includes('style="background:#3ea72d;color:#111"'));
@@ -407,6 +411,15 @@ assert.equal(solarCalls, 1);
 clearDataCache();
 await render(root);
 assert.equal(solarCalls, 1);
+savedSolar = null;
+solarFailure = true;
+clearDataCache();
+await render(root);
+assert.ok(!root.innerHTML.includes('🌙'));
+assert.equal((root.innerHTML.match(/class="hour"/g) ?? []).length, 24);
+solarFailure = false;
+savedSolar = null;
+clearDataCache();
 summary.next_days.data[0].date = '2026-10-07';
 summary.today.data = [];
 weather.forecasts.openmeteo.data.hourly = [];
@@ -660,6 +673,41 @@ await renderWeather(root);
 assert.ok(hourlyRows()[2][0].includes('🌤️'));
 weather.forecasts.meteoblue.status = 'ok';
 await renderWeather(root);
+const nightRows = hourlyRows();
+for (const index of [10, 15, 21]) {
+    assert.ok(nightRows[0][index].includes('🌙'), index);
+    assert.ok(nightRows[1][index].includes('☁️'), index);
+    assert.ok(nightRows[2][index].includes('🌙'), index);
+}
+for (const index of [9, 22, 23]) {
+    assert.ok(nightRows[0][index].includes('☀️'), index);
+    assert.ok(nightRows[2][index].includes('🌤️'), index);
+}
+const hourlyPictograms = {
+    1: '☀️', 2: '🌤️', 3: '🌤️', 4: '🌤️', 5: '🌤️', 6: '🌤️', 7: '⛅',
+    8: '⛅', 9: '⛅', 10: '⛅', 11: '⛅', 12: '⛅', 13: '🌤️', 14: '🌤️',
+    15: '🌤️', 16: '🌫️', 17: '🌫️', 18: '🌫️', 19: '☁️', 20: '☁️',
+    21: '☁️', 22: '☁️', 23: '🌧️', 24: '🌨️', 25: '🌧️', 26: '🌨️',
+    27: '⛈️', 28: '⛈️', 29: '⛈️', 30: '⛈️', 31: '🌧️', 32: '🌨️',
+    33: '🌧️', 34: '🌨️', 35: '🌨️',
+};
+const meteoblueHour = weather.forecasts.meteoblue.data.hourly[0];
+for (const [code, icon] of Object.entries(hourlyPictograms)) {
+    meteoblueHour.pictocode = Number(code);
+    await renderWeather(root);
+    assert.ok(hourlyRows()[2][0].includes(icon), code);
+    assert.ok(hourlyRows()[2][0].includes(
+        `aria-label="${strings.meteoblue.hourly_pictocode[code]}"`), code);
+}
+assert.deepEqual(Object.keys(strings.meteoblue.hourly_pictocode)
+    .map(Number), Object.keys(hourlyPictograms).map(Number));
+for (const unsupported of [0, 36, 37, 999, '4', null]) {
+    meteoblueHour.pictocode = unsupported;
+    await renderWeather(root);
+    assert.equal(hourlyRows()[2][0], '', unsupported);
+}
+meteoblueHour.pictocode = 2;
+await renderWeather(root);
 assert.ok(!root.innerHTML.includes('id="humidity-chart"'));
 assert.ok(root.innerHTML.includes(
     '<p class="weather-sources-label">Fuentes:</p>'));
@@ -734,7 +782,7 @@ for (const key of ['aemet', 'openmeteo', 'meteoblue']) {
         '2026-10-09T00:00', '2026-10-09T22:00', '2026-10-09T23:00',
     ].map(time => ({time, temperature: 19, humidity: 60,
         precipitation_probability: 30, weather_code: 3,
-        sky: strings.aemet.sky.overcast, pictocode: 4}));
+        sky: strings.aemet.sky.overcast, pictocode: 22}));
 }
 await renderWeather(root);
 const lateCharts = chartSpecs.slice(-2);
@@ -1120,12 +1168,12 @@ assert.ok(root.innerHTML.includes(strings.weather.no_data));
 assert.ok(!root.innerHTML.includes('class="river-current"'));
 """
     result = subprocess.run(
-        [node, "--experimental-default-type=module", "--input-type=module"],
+        [node, '--experimental-default-type=module', '--input-type=module'],
         input=script,
         text=True,
         capture_output=True,
         cwd=WEB.parent,
-        env={"TZ": "UTC"},
+        env={'TZ': 'UTC'},
         check=False,
     )
     assert result.returncode == 0, result.stderr
