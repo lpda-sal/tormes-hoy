@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-09T16:39:20+02:00",
+ "generated_at": "2026-10-09T17:35:32+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,7 +19,7 @@
   "station": "EA087"
  },
  "current": {
-  "status": "ok",
+  "status": "stale",
   "source": {
    "name": "chd",
    "label": "CHD (SAIH Duero)",
@@ -27,7 +27,7 @@
    "kind": "provisional"
   },
   "fetched_at": "2026-10-09T16:39:20+02:00",
-  "error": null,
+  "error": "GET https://www.saihduero.es/risr/EA087 failed: The read operation timed out",
   "data": {
    "time": "2026-10-09T16:00:00+02:00",
    "level_m": 1.32,
