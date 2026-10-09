@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-09T18:35:55+02:00",
+ "generated_at": "2026-10-09T19:33:12+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
   "station": "EA087"
  },
  "current": {
-  "status": "stale",
+  "status": "ok",
   "source": {
    "name": "chd",
    "label": "CHD (SAIH Duero)",
    "attribution": "Confederación Hidrográfica del Duero",
    "kind": "provisional"
   },
-  "fetched_at": "2026-10-09T16:39:20+02:00",
-  "error": "GET https://www.saihduero.es/risr/EA087 failed: The read operation timed out",
+  "fetched_at": "2026-10-09T19:33:12+02:00",
+  "error": null,
   "data": {
-   "time": "2026-10-09T16:00:00+02:00",
+   "time": "2026-10-09T18:00:00+02:00",
    "level_m": 1.32,
-   "flow_m3s": 6.38,
+   "flow_m3s": 6.42,
    "yesterday_flow_m3s": 7.15
   }
  },
@@ -55,6 +55,11 @@
    "time": "2026-10-09T16:00:00+02:00",
    "level_m": 1.32,
    "flow_m3s": 6.38
+  },
+  {
+   "time": "2026-10-09T18:00:00+02:00",
+   "level_m": 1.32,
+   "flow_m3s": 6.42
   }
  ]
 }
