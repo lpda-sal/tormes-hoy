@@ -63,6 +63,11 @@ replace fixtures with real responses and tick it.
 - `ruff format`, `ruff check`, `mypy --strict`: clean.
 - `pytest`: all tests pass (parsers, UV, river history, yearbook stats,
   collection isolation, Meteoblue cadence, site build).
+- River category tests derive boundary inputs from configured thresholds,
+      so collector and site tests remain valid when production limits change.
+      Invalid-threshold tests modify parsed TOML values rather than matching
+      literal settings, covering equal, inverted, zero, negative and nonfinite
+      caution limits without changing the production configuration.
 - Web views rendered with a representative dataset in headless Chromium with an
   emulated touchscreen: tapping a chart shows the tooltip with every
   value at that point; no console errors. Also checked with every source

@@ -125,18 +125,27 @@ def test_location_change_refreshes_weather(
     ("flow", "expected"),
     [
         (0, "safe"),
-        (9.99, "safe"),
-        (10, "caution"),
-        (11.99, "caution"),
-        (12, "danger"),
+        ("below_caution", "safe"),
+        ("caution", "caution"),
+        ("below_danger", "caution"),
+        ("danger", "danger"),
         (None, None),
         (float("nan"), None),
         (-1, None),
     ],
 )
 def test_river_flow_status(
-    config: Config, flow: float | None, expected: str | None
+    config: Config, flow: float | str | None, expected: str | None
 ) -> None:
+    if isinstance(flow, str):
+        caution = config.river.flow_caution_m3s
+        danger = config.river.flow_danger_m3s
+        flow = {
+            "below_caution": caution * 0.999,
+            "caution": caution,
+            "below_danger": caution + (danger - caution) * 0.999,
+            "danger": danger,
+        }[flow]
     assert _flow_status(flow, config.river) == expected
 
 

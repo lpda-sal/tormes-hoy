@@ -1,3 +1,5 @@
+import json
+import tomllib
 from pathlib import Path
 
 import pytest
@@ -25,14 +27,32 @@ def test_weather_station_is_salamanca_city() -> None:
     assert load_config().aemet.station_idema == "2870X"
 
 
-@pytest.mark.parametrize("caution", ["12.0", "-1.0", "nan", "inf"])
+@pytest.mark.parametrize(
+    "caution", ["equal", "above", "0.0", "-1.0", "nan", "inf"]
+)
 def test_invalid_flow_thresholds_fail(tmp_path: Path, caution: str) -> None:
     source = Path(__file__).parents[1] / "tormes_hoy/config/config.toml"
+    raw = tomllib.loads(source.read_text(encoding="utf-8"))
+    danger = raw["river"]["flow_danger_m3s"]
+    raw["river"]["flow_caution_m3s"] = float(
+        {"equal": danger, "above": danger + 1}.get(caution, caution)
+    )
     path = tmp_path / "config.toml"
     path.write_text(
-        source.read_text().replace(
-            "flow_caution_m3s = 10.0", f"flow_caution_m3s = {caution}"
-        )
+        "\n\n".join(
+            f"[{section}]\n"
+            + "\n".join(
+                f"{key} = "
+                + (
+                    repr(value)
+                    if isinstance(value, float)
+                    else json.dumps(value)
+                )
+                for key, value in fields.items()
+            )
+            for section, fields in raw.items()
+        ),
+        encoding="utf-8",
     )
     with pytest.raises(ValueError, match="thresholds"):
         load_config(path)

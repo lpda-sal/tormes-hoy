@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from tormes_hoy.site.builder import _build_site
+from tormes_hoy.utils.config import load_config
 
 
 def test_build_site_copies_web_and_data(tmp_path: Path) -> None:
@@ -21,18 +22,18 @@ def test_build_site_copies_web_and_data(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     ("flow", "has_status", "published", "expected"),
     [
-        (6.52, False, None, "safe"),
-        (10.0, False, None, "caution"),
-        (12.0, False, None, "danger"),
+        ("safe", False, None, "safe"),
+        ("caution", False, None, "caution"),
+        ("danger", False, None, "danger"),
         (None, False, None, None),
         (-1.0, False, None, None),
-        (6.52, True, "danger", "danger"),
-        (6.52, True, None, None),
+        ("safe", True, "danger", "danger"),
+        ("safe", True, None, None),
     ],
 )
 def test_build_site_completes_only_missing_flow_status(
     tmp_path: Path,
-    flow: float | None,
+    flow: float | str | None,
     has_status: bool,
     published: str | None,
     expected: str | None,
@@ -46,6 +47,13 @@ def test_build_site_completes_only_missing_flow_status(
         project / "tormes_hoy" / "config" / "config.toml",
         config_dir / "config.toml",
     )
+    if isinstance(flow, str):
+        config = load_config(config_dir / "config.toml")
+        flow = {
+            "safe": config.river.flow_caution_m3s / 2,
+            "caution": config.river.flow_caution_m3s,
+            "danger": config.river.flow_danger_m3s,
+        }[flow]
     river: dict[str, object] = {"data": {"flow_m3s": flow}}
     if has_status:
         river["flow_status"] = published
