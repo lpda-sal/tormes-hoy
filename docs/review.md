@@ -124,9 +124,11 @@ replace fixtures with real responses and tick it.
       At Pixel 8, top cards changed from 207px to 185px and upcoming hours
       from 139px to 165px. Charts remain about 206px with no page overflow.
 - The current UV reference hour appears above its category beside the chip.
-      Tests check a 15:37 UTC generation timestamp displays 17:00 in Madrid,
-      independently of the browser clock. Pixel 8 checks confirm both labels
-      fit without page overflow and retain 14px text.
+      Home and detail now choose the higher UV from the two hourly samples
+      nearest the browser clock, independent of the generation timestamp.
+      Regression tests cover both screens and the chart point, earlier/later
+      selections, exact hours, ties, Madrid timezone, midnight, zero UV,
+      invalid samples and missing data. Equal distances favour the later hour.
 - Solar detail shows a Spanish date with an initial capital, no location label,
       reversed event order and plain-text source attribution. Tests cover the
       date, omitted location, row order and removed explanatory note.

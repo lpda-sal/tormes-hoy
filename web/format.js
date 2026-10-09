@@ -34,6 +34,19 @@ export function forecastTime(value, timeZone) {
   return new Date(`${value}${offset === "GMT" ? "Z" : offset.replace("GMT", "")}`).getTime();
 }
 
+export function selectUvReading(hourly, timeZone, now = Date.now()) {
+  const distance = (reading) => Math.abs(reading.time - now);
+  const nearest = (hourly ?? [])
+    .filter((row) => Number.isFinite(row.uv) && typeof row.time === "string"
+      && Number.isFinite(new Date(row.time).getTime()))
+    .map((row) => ({ value: row.uv, time: forecastTime(row.time, timeZone) }))
+    .filter((reading) => Number.isFinite(reading.time))
+    .sort((left, right) => distance(left) - distance(right) || right.time - left.time)
+    .slice(0, 2);
+  return nearest.sort((left, right) => right.value - left.value
+    || distance(left) - distance(right) || right.time - left.time)[0] ?? null;
+}
+
 export function civilNightRanges(xs, day, timeZone) {
   if (!xs.length || !day?.civil_twilight_begin || !day?.civil_twilight_end) return [];
   const dawn = new Date(day.civil_twilight_begin);

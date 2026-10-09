@@ -62,6 +62,10 @@ older files without it show an unavailable value. The home screen uses the
 gust from the selected weather source, without mixing model and observation.
 
 UV levels: `low` < 3 ≤ `moderate` < 6 ≤ `high` < 8 ≤ `very_high` < 11 ≤ `extreme`.
+Stored UV `now` and `now_level` remain generation-time values. The web derives
+its displayed reading from `uv.json` hourly samples: select the two valid
+samples nearest the current browser time, then use the higher UV and that
+sample's timestamp. No schema or stored values change.
 River trend: `rising|falling|steady`, comparing the last reading with the one
 `trend_window_hours` earlier (flow ±3 %, else level ±1 cm).
 

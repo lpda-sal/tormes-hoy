@@ -64,7 +64,7 @@ import { render, renderSun, renderCsck } from './web/views/home.js';
 import { render as renderWeather, renderDays } from './web/views/weather.js';
 import { render as renderUv } from './web/views/uv.js';
 import { render as renderRiver } from './web/views/river.js';
-import { SOURCE_COLORS, UV_COLORS } from './web/format.js';
+import { selectUvReading, SOURCE_COLORS, UV_COLORS } from './web/format.js';
 
 let now = new Date('2026-10-08T12:00:00+02:00');
 const NativeDate = Date;
@@ -256,7 +256,7 @@ assert.deepEqual(detailPositions,
     [...detailPositions].sort((left, right) => left - right));
 assert.ok(root.innerHTML.includes('class="muted river-reading"'));
 assert.ok(root.innerHTML.includes('class="muted weather-reading"'));
-assert.ok(root.innerHTML.includes('class="muted uv-at">A las 17:00'));
+assert.ok(root.innerHTML.includes('class="muted uv-at">A las 12:00'));
 assert.ok(root.innerHTML.includes('class="muted river-trend"'));
 assert.ok(root.innerHTML.match(/flow-chip[^>]*>[^<]*m³\/s<\/span>/));
 assert.ok(!root.innerHTML.includes(strings.river.flow));
@@ -608,7 +608,7 @@ savedSolar = null;
 clearDataCache();
 await renderUv(root);
 assert.ok(root.innerHTML.includes('<h1>Índice UV '));
-assert.ok(root.innerHTML.includes('A las 17:00'));
+assert.ok(root.innerHTML.includes('A las 12:00'));
 assert.ok(root.innerHTML.includes('uv-reading-meta'));
 assert.ok(!root.innerHTML.includes('Umbral'));
 assert.ok(root.innerHTML.includes(
@@ -625,7 +625,8 @@ assert.equal(uvSpec.data.datasets[0].borderColor, '#b26a00');
 assert.equal((uvSpec.options.plugins.decorations.xRanges ?? []).length, 0);
 assert.equal(uvSpec.options.plugins.decorations.yZones.length, 5);
 assert.equal(uvSpec.options.plugins.decorations.dots[0].x,
-    new Date('2026-10-08T17:00:00+02:00').getTime());
+    new Date('2026-10-08T12:00:00+02:00').getTime());
+assert.equal(uvSpec.options.plugins.decorations.dots[0].y, 5);
 assert.equal(uvSpec.data.datasets[0].data[1].x,
     new Date('2026-10-08T12:00:00+02:00').getTime());
 assert.equal(uvSpec.options.scales.x.min,
@@ -635,6 +636,69 @@ assert.equal(uvSpec.options.scales.x.max,
 assert.equal(uvSpec.options.scales.x.ticks.callback(
     new Date(solar.civil_twilight_begin).getTime()), '08:00');
 const originalFetch = globalThis.fetch;
+const originalUvHourly = uvFile.data.hourly;
+const originalSummaryUv = summary.uv;
+const originalUvMax = uvFile.data.max;
+summary.uv = {status: 'ok', data: {
+    now: 3, max: 11, max_time: '14:00', protection: null,
+}};
+uvFile.data.max = 11;
+const nearbyUv = [
+    {time: '2026-10-08T11:00', uv: 9},
+    {time: '2026-10-08T12:00', uv: 2},
+    {time: '2026-10-08T13:00', uv: 6},
+    {time: '2026-10-08T14:00', uv: 11},
+];
+uvFile.data.hourly = nearbyUv;
+for (const [clock, value, hour] of [
+    ['12:10', 6, '13:00'], ['12:50', 6, '13:00'], ['11:40', 9, '11:00'],
+]) {
+    now = new NativeDate(`2026-10-08T${clock}:00+02:00`);
+    const expectedTime = new NativeDate(`2026-10-08T${hour}:00+02:00`)
+        .getTime();
+    assert.deepEqual(selectUvReading(nearbyUv, 'Europe/Madrid'),
+        {value, time: expectedTime});
+    await render(root);
+    assert.ok(root.innerHTML.includes(`A las ${hour}`), root.innerHTML);
+    assert.ok(root.innerHTML.includes(`>${value},0</span>`));
+    await renderUv(root);
+    assert.ok(root.innerHTML.includes(`A las ${hour}`));
+    assert.ok(root.innerHTML.includes(`>${value},0</span>`));
+    assert.equal(chartSpecs.at(-1).options.plugins.decorations.dots[0].x,
+        expectedTime);
+    assert.equal(chartSpecs.at(-1).options.plugins.decorations.dots[0].y,
+        value);
+}
+const tieRows = nearbyUv.slice(1, 3).map(row => ({...row, uv: 0}));
+const stamp = time => new NativeDate(time).getTime();
+assert.deepEqual(selectUvReading(nearbyUv, 'Europe/Madrid',
+    stamp('2026-10-08T12:00:00+02:00')),
+    {value: 6, time: stamp('2026-10-08T13:00:00+02:00')});
+assert.equal(selectUvReading([], 'Europe/Madrid'), null);
+assert.equal(selectUvReading(tieRows, 'Europe/Madrid',
+    stamp('2026-10-08T12:30:00+02:00')).time,
+    stamp('2026-10-08T13:00:00+02:00'));
+assert.equal(selectUvReading(tieRows, 'Europe/Madrid',
+    stamp('2026-10-08T12:10:00+02:00')).time,
+    stamp('2026-10-08T12:00:00+02:00'));
+const midnightRows = [
+    {time: '2026-10-08T23:00', uv: 1},
+    {time: '2026-10-09T00:00', uv: 0},
+    {time: '2026-10-09T01:00', uv: 5},
+];
+assert.deepEqual(selectUvReading(midnightRows, 'Europe/Madrid',
+    stamp('2026-10-08T23:50:00+02:00')),
+    {value: 1, time: stamp('2026-10-08T23:00:00+02:00')});
+assert.equal(selectUvReading([
+    {time: 'invalid', uv: 10}, {time: '2026-10-08T12:00', uv: null},
+], 'Europe/Madrid'), null);
+assert.deepEqual(selectUvReading([
+    {time: '2026-10-08T13:00+02:00', uv: 0},
+], 'Europe/Madrid'),
+    {value: 0, time: stamp('2026-10-08T13:00:00+02:00')});
+uvFile.data.hourly = originalUvHourly;
+uvFile.data.max = originalUvMax;
+summary.uv = originalSummaryUv;
 globalThis.fetch = async (url) => {
     if (String(url).includes('api.sunrise-sunset.org')
         && new URL(url).searchParams.get('date') === '2026-10-09') {

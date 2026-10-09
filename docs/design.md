@@ -146,9 +146,11 @@ have their own line. UV's summary stretches to the chart's height. Its title
 starts at the top left and groups with the current reading using the same
 heading spacing as current weather.
 The current UV chip has its reference hour above the category on its right.
-This is the generation timestamp's hour in the configured timezone, with
-minutes set to zero to match the collector's hourly UV selection, not the
-browser's current time. Missing values or invalid timestamps omit the label.
+Home and detail select the higher UV value among the two valid hourly
+samples nearest the browser's current time, and display that sample's time
+in the configured timezone. Equal UV values favour the nearer sample;
+equal distances favour the later timestamp. A single valid sample is used
+on its own; no valid samples leave the reading unavailable and omit its time.
 Maximum and protection remain separate
 blocks with a fixed 0.75rem gap rather than stretched spacing; protection's
 time range remains on its own line. Current weather facts use equal-spaced
@@ -174,7 +176,8 @@ view only. The home flow value uses green/yellow/red bands with provisional
 club thresholds in configuration; these are not official safety alerts.
 UV protection starts and ends at linearly interpolated threshold crossings,
 rounded outwards to the minute. UV lines are straight to match that calculation.
-The UV detail view uses the home reading's reference hour and typography.
+The UV detail view uses the same hourly selection and typography as home,
+and highlights the selected sample's value and time on its chart.
 Only its chart is framed; the estimation note and interaction hint precede it,
 and the risk legend and Open-Meteo attribution follow it. Its orange line spans
 civil dawn through civil dusk, with WHO risk bands but no protection-window

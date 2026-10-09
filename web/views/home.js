@@ -1,7 +1,7 @@
 import { loadData, loadSunTimes } from "../data.js";
 import { renderChart } from "../charts.js";
 import {
-  age, civilNightRanges, esc, forecastTime, hourLabel, num, statusBadge, uvChip, uvLevel, wmoIcon, wmoText,
+  age, civilNightRanges, esc, forecastTime, hourLabel, num, selectUvReading, statusBadge, uvChip, uvLevel, wmoIcon, wmoText,
   SOURCE_COLORS, UV_COLORS, UV_ZONES,
 } from "../format.js";
 import { t } from "../i18n.js";
@@ -71,26 +71,25 @@ function restOfDayCard(block, hours) {
     </a>`;
 }
 
-function uvCard(summary) {
+function uvCard(summary, uvFile) {
   const block = summary.uv;
   const uv = block?.data ?? {};
   const protection = uv.protection
     ? `${t("uv.protection_label")}<br>${t("uv.protection_hours", { from: uv.protection.from, to: uv.protection.to })}`
     : t("uv.protection_none");
-  const level = uvLevel(uv.now);
-  const generated = new Date(summary.generated_at ?? "");
-  const time = uv.now !== null && uv.now !== undefined
-    && Number.isFinite(generated.getTime())
-    ? `${new Intl.DateTimeFormat("es-ES", {
-      timeZone: summary.location.timezone, hour: "2-digit", hourCycle: "h23",
-    }).format(generated)}:00` : "";
+  const reading = selectUvReading(uvFile?.data?.hourly, summary.location.timezone);
+  const level = uvLevel(reading?.value);
+  const time = reading ? new Intl.DateTimeFormat("es-ES", {
+    timeZone: summary.location.timezone, hour: "2-digit", minute: "2-digit",
+    hourCycle: "h23",
+  }).format(reading.time) : "";
   return `
     <section class="card wide uv-card">
       <a class="uv-summary" href="#/uv">
       <div class="uv-current">
       <h2>${t("home.uv_now")}${statusBadge(block?.status)}</h2>
       ${block?.data ? `
-      <div class="big uv-reading">${uvChip(uv.now)} <span class="uv-reading-meta">
+      <div class="big uv-reading">${uvChip(reading?.value)} <span class="uv-reading-meta">
         ${time ? `<span class="muted uv-at">${esc(t("home.uv_at", { time }))}</span>` : ""}
         <span class="muted">${level ? t(`uv.levels.${level}`) : ""}</span>
       </span></div>` : `<p class="muted">${t("weather.no_data")}</p>`}
@@ -217,6 +216,7 @@ function sunTimes(summary, day) {
 export async function render(root) {
   const summary = await loadData("summary");
   const weather = await loadData("weather").catch(() => null);
+  const uvFile = await loadData("uv").catch(() => null);
   const forecast = weather?.forecasts?.openmeteo;
   const block = forecast?.data?.hourly
     ? { status: forecast.status, data: forecast.data.hourly } : summary.today;
@@ -228,7 +228,7 @@ export async function render(root) {
       ${riverCard(summary)}
       ${restOfDayCard(block, hours)}
       ${rainCard(rain)}
-      ${uvCard(summary)}
+      ${uvCard(summary, uvFile)}
     </div>
     <nav class="home-links">
       <a class="next-days-link" href="#/weather/days">${t("home.next_days")}</a>
@@ -242,7 +242,6 @@ export async function render(root) {
       xRanges: night, timeZone: summary.location.timezone,
     });
   try {
-    const uvFile = await loadData("uv");
     const uvDay = uvFile?.data?.date && uvFile.data.date !== day?.date
       ? await loadSunTimes(summary.location, uvFile.data.date) : day;
     const uvStart = new Date(uvDay?.civil_twilight_begin ?? "").getTime();
