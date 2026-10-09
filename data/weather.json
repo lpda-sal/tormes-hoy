@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-09T05:36:12+02:00",
+ "generated_at": "2026-10-09T06:36:29+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -13,14 +13,14 @@
   "timezone": "Europe/Madrid"
  },
  "observation": {
-  "status": "ok",
+  "status": "stale",
   "source": {
    "name": "aemet",
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
   "fetched_at": "2026-10-09T05:36:12+02:00",
-  "error": null,
+  "error": "GET https://opendata.aemet.es/opendata/api/observacion/convencional/datos/estacion/2870X failed: <urlopen error [Errno 104] Connection reset by peer>",
   "data": {
    "time": "2026-10-09T05:00:00+02:00",
    "station": "2870X",
@@ -42,7 +42,7 @@
     "label": "AEMET",
     "attribution": "© AEMET. Información elaborada por AEMET"
    },
-   "fetched_at": "2026-10-09T05:36:12+02:00",
+   "fetched_at": "2026-10-09T06:36:29+02:00",
    "error": null,
    "data": {
     "hourly": [
@@ -537,17 +537,17 @@
     "label": "Open-Meteo",
     "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
    },
-   "fetched_at": "2026-10-09T05:36:12+02:00",
+   "fetched_at": "2026-10-09T06:36:29+02:00",
    "error": null,
    "data": {
     "current": {
-     "time": "2026-10-09T05:30",
-     "temperature": 5.6,
-     "apparent_temperature": 3.3,
+     "time": "2026-10-09T06:30",
+     "temperature": 5.2,
+     "apparent_temperature": 2.9,
      "humidity": 92,
-     "weather_code": 1,
-     "wind_speed": 6.9,
-     "wind_gust": 13.7,
+     "weather_code": 0,
+     "wind_speed": 6.6,
+     "wind_gust": 11.9,
      "wind_direction": 81,
      "precipitation": 0.0,
      "uv": 0.0
@@ -1020,7 +1020,7 @@
       "temperature": 21.0,
       "humidity": 44,
       "apparent_temperature": 19.1,
-      "precipitation_probability": 0,
+      "precipitation_probability": 3,
       "precipitation": 0.0,
       "weather_code": 1,
       "wind_speed": 10.0,
@@ -2329,7 +2329,7 @@
       "temperature": 25.8,
       "humidity": 42,
       "apparent_temperature": 25.1,
-      "precipitation_probability": 1,
+      "precipitation_probability": 0,
       "precipitation": 0.0,
       "weather_code": 3,
       "wind_speed": 8.7,
@@ -2340,7 +2340,7 @@
       "temperature": 24.7,
       "humidity": 46,
       "apparent_temperature": 24.2,
-      "precipitation_probability": 1,
+      "precipitation_probability": 0,
       "precipitation": 0.0,
       "weather_code": 1,
       "wind_speed": 8.4,
@@ -2351,7 +2351,7 @@
       "temperature": 23.0,
       "humidity": 53,
       "apparent_temperature": 22.8,
-      "precipitation_probability": 1,
+      "precipitation_probability": 0,
       "precipitation": 0.0,
       "weather_code": 1,
       "wind_speed": 7.7,
@@ -2362,7 +2362,7 @@
       "temperature": 21.3,
       "humidity": 60,
       "apparent_temperature": 21.3,
-      "precipitation_probability": 2,
+      "precipitation_probability": 0,
       "precipitation": 0.0,
       "weather_code": 1,
       "wind_speed": 6.6,
@@ -2373,7 +2373,7 @@
       "temperature": 19.5,
       "humidity": 68,
       "apparent_temperature": 19.8,
-      "precipitation_probability": 2,
+      "precipitation_probability": 0,
       "precipitation": 0.0,
       "weather_code": 1,
       "wind_speed": 5.3,
@@ -2384,7 +2384,7 @@
       "temperature": 17.8,
       "humidity": 76,
       "apparent_temperature": 18.3,
-      "precipitation_probability": 2,
+      "precipitation_probability": 0,
       "precipitation": 0.0,
       "weather_code": 1,
       "wind_speed": 3.7,
@@ -2395,7 +2395,7 @@
       "temperature": 16.3,
       "humidity": 83,
       "apparent_temperature": 16.9,
-      "precipitation_probability": 2,
+      "precipitation_probability": 0,
       "precipitation": 0.0,
       "weather_code": 1,
       "wind_speed": 3.0,
@@ -2419,7 +2419,7 @@
       "weather_code": 3,
       "temperature_max": 21.2,
       "temperature_min": 6.2,
-      "precipitation_probability": 0,
+      "precipitation_probability": 3,
       "precipitation": 0.0,
       "uv_max": 5.1,
       "sunrise": "2026-10-10T08:28",
@@ -2474,7 +2474,7 @@
       "weather_code": 45,
       "temperature_max": 26.2,
       "temperature_min": 10.1,
-      "precipitation_probability": 2,
+      "precipitation_probability": 0,
       "precipitation": 0.0,
       "uv_max": 4.05,
       "sunrise": "2026-10-15T08:33",
