@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-10T15:33:35+02:00",
+ "generated_at": "2026-10-10T16:32:33+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-10T15:33:35+02:00",
+  "fetched_at": "2026-10-10T16:32:33+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-10T15:00:00+02:00",
+   "time": "2026-10-10T16:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 21.6,
-   "humidity": 43.0,
-   "wind_speed": 6.1,
-   "wind_gust": 15.8,
-   "wind_direction": 64.0,
+   "temperature": 22.0,
+   "humidity": 42.0,
+   "wind_speed": 4.3,
+   "wind_gust": 13.7,
+   "wind_direction": 152.0,
    "precipitation": 0.0,
-   "pressure": 931.6
+   "pressure": 930.9
   }
  },
  "weather_now_model": {
@@ -42,16 +42,16 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-10T15:30",
-   "temperature": 21.2,
+   "time": "2026-10-10T16:30",
+   "temperature": 21.4,
    "apparent_temperature": 19.9,
    "humidity": 42,
-   "weather_code": 2,
-   "wind_speed": 6.2,
-   "wind_gust": 15.1,
-   "wind_direction": 36,
+   "weather_code": 3,
+   "wind_speed": 6.9,
+   "wind_gust": 14.4,
+   "wind_direction": 28,
    "precipitation": 0.0,
-   "uv": 4.7
+   "uv": 3.75
   }
  },
  "today": {
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-10T15:00",
-    "temperature": 20.8,
-    "humidity": 43,
-    "apparent_temperature": 19.9,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 2,
-    "wind_speed": 6.4,
-    "uv": 5.1
-   },
    {
     "time": "2026-10-10T16:00",
     "temperature": 21.4,
@@ -173,7 +162,7 @@
   "data": {
    "date": "2026-10-10",
    "threshold": 3,
-   "now": 5.1,
+   "now": 4.6,
    "now_level": "moderate",
    "max": 5.1,
    "max_time": "15:00",
