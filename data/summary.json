@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-10T09:33:49+02:00",
+ "generated_at": "2026-10-10T10:33:57+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-10T09:33:49+02:00",
+  "fetched_at": "2026-10-10T10:33:57+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-10T09:00:00+02:00",
+   "time": "2026-10-10T10:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 5.8,
-   "humidity": 93.0,
-   "wind_speed": 2.9,
-   "wind_gust": 5.4,
-   "wind_direction": 75.0,
+   "temperature": 11.2,
+   "humidity": 71.0,
+   "wind_speed": 2.2,
+   "wind_gust": 6.5,
+   "wind_direction": 165.0,
    "precipitation": 0.0,
-   "pressure": 933.2
+   "pressure": 933.3
   }
  },
  "weather_now_model": {
@@ -42,16 +42,16 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-10T09:30",
-   "temperature": 5.4,
-   "apparent_temperature": 3.6,
-   "humidity": 90,
+   "time": "2026-10-10T10:30",
+   "temperature": 9.5,
+   "apparent_temperature": 7.9,
+   "humidity": 76,
    "weather_code": 0,
-   "wind_speed": 2.9,
-   "wind_gust": 5.8,
-   "wind_direction": 90,
+   "wind_speed": 3.1,
+   "wind_gust": 6.8,
+   "wind_direction": 69,
    "precipitation": 0.0,
-   "uv": 0.55
+   "uv": 1.6
   }
  },
  "today": {
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-10T09:00",
-    "temperature": 4.4,
-    "humidity": 93,
-    "apparent_temperature": 2.4,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 2,
-    "wind_speed": 3.3,
-    "uv": 0.05
-   },
    {
     "time": "2026-10-10T10:00",
     "temperature": 7.0,
@@ -239,7 +228,7 @@
   "data": {
    "date": "2026-10-10",
    "threshold": 3,
-   "now": 0.05,
+   "now": 0.65,
    "now_level": "low",
    "max": 5.05,
    "max_time": "15:00",
@@ -262,9 +251,9 @@
   },
   "error": null,
   "data": {
-   "time": "2026-10-10T08:00:00+02:00",
+   "time": "2026-10-10T10:00:00+02:00",
    "level_m": 1.35,
-   "flow_m3s": 8.21,
+   "flow_m3s": 8.05,
    "yesterday_flow_m3s": 6.56,
    "trend": "steady"
   }
