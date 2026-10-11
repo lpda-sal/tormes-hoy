@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-11T23:33:52+02:00",
+ "generated_at": "2026-10-12T00:33:44+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,163 +19,55 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-11T23:33:52+02:00",
+  "fetched_at": "2026-10-12T00:33:44+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-11T23:00:00+02:00",
+   "time": "2026-10-12T00:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 13.4,
-   "humidity": 94.0,
-   "wind_speed": 0.0,
-   "wind_gust": 3.2,
-   "wind_direction": 0.0,
+   "temperature": 13.0,
+   "humidity": 90.0,
+   "wind_speed": 2.2,
+   "wind_gust": 6.1,
+   "wind_direction": 317.0,
    "precipitation": 0.0,
-   "pressure": 928.9
+   "pressure": 929.1
   }
  },
  "forecasts": {
   "aemet": {
-   "status": "stale",
+   "status": "ok",
    "source": {
     "name": "aemet",
     "label": "AEMET",
     "attribution": "© AEMET. Información elaborada por AEMET"
    },
-   "fetched_at": "2026-10-11T21:32:31+02:00",
-   "error": "GET https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/horaria/37274 failed: HTTP Error 429: Too Many Requests",
+   "fetched_at": "2026-10-12T00:33:44+02:00",
+   "error": null,
    "data": {
     "hourly": [
      {
-      "time": "2026-10-11T09:00",
-      "temperature": 13.0,
-      "humidity": 71.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 3.0,
-      "sky": "Cubierto"
-     },
-     {
-      "time": "2026-10-11T10:00",
-      "temperature": 14.0,
-      "humidity": 66.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 3.0,
-      "sky": "Nuboso"
-     },
-     {
-      "time": "2026-10-11T11:00",
-      "temperature": 15.0,
-      "humidity": 61.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 3.0,
-      "sky": "Poco nuboso"
-     },
-     {
-      "time": "2026-10-11T12:00",
+      "time": "2026-10-11T21:00",
       "temperature": 18.0,
       "humidity": 53.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 6.0,
+      "wind_speed": 7.0,
       "sky": "Poco nuboso"
      },
      {
-      "time": "2026-10-11T13:00",
-      "temperature": 20.0,
-      "humidity": 46.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 6.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-10-11T14:00",
-      "temperature": 22.0,
-      "humidity": 39.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 7.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-10-11T15:00",
-      "temperature": 23.0,
-      "humidity": 38.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 7.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-10-11T16:00",
-      "temperature": 24.0,
-      "humidity": 35.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 8.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-10-11T17:00",
-      "temperature": 24.0,
-      "humidity": 34.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 8.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-10-11T18:00",
-      "temperature": 23.0,
-      "humidity": 37.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 8.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-10-11T19:00",
-      "temperature": 21.0,
-      "humidity": 40.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 8.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-10-11T20:00",
-      "temperature": 20.0,
-      "humidity": 44.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 6.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-10-11T21:00",
-      "temperature": 18.0,
-      "humidity": 50.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 6.0,
-      "sky": "Despejado"
-     },
-     {
       "time": "2026-10-11T22:00",
-      "temperature": 17.0,
-      "humidity": 58.0,
+      "temperature": 16.0,
+      "humidity": 60.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 8.0,
+      "wind_speed": 7.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-10-11T23:00",
       "temperature": 15.0,
-      "humidity": 65.0,
+      "humidity": 68.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 8.0,
@@ -184,28 +76,28 @@
      {
       "time": "2026-10-12T00:00",
       "temperature": 14.0,
-      "humidity": 70.0,
+      "humidity": 71.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 8.0,
+      "sky": "Poco nuboso"
+     },
+     {
+      "time": "2026-10-12T01:00",
+      "temperature": 13.0,
+      "humidity": 78.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 9.0,
       "sky": "Poco nuboso"
      },
      {
-      "time": "2026-10-12T01:00",
-      "temperature": 13.0,
-      "humidity": 76.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 10.0,
-      "sky": "Poco nuboso"
-     },
-     {
       "time": "2026-10-12T02:00",
       "temperature": 12.0,
-      "humidity": 96.0,
+      "humidity": 94.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 8.0,
+      "wind_speed": 9.0,
       "sky": "Nubes altas"
      },
      {
@@ -214,7 +106,7 @@
       "humidity": 100.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 8.0,
+      "wind_speed": 7.0,
       "sky": "Nubes altas"
      },
      {
@@ -224,16 +116,16 @@
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 7.0,
-      "sky": "Poco nuboso"
+      "sky": "Nubes altas"
      },
      {
       "time": "2026-10-12T05:00",
-      "temperature": 11.0,
+      "temperature": 10.0,
       "humidity": 100.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 5.0,
-      "sky": "Poco nuboso"
+      "sky": "Nubes altas"
      },
      {
       "time": "2026-10-12T06:00",
@@ -242,7 +134,7 @@
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 5.0,
-      "sky": "Poco nuboso"
+      "sky": "Nubes altas"
      },
      {
       "time": "2026-10-12T07:00",
@@ -250,8 +142,8 @@
       "humidity": 100.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 4.0,
-      "sky": "Muy nuboso"
+      "wind_speed": 5.0,
+      "sky": "Nubes altas"
      },
      {
       "time": "2026-10-12T08:00",
@@ -259,97 +151,97 @@
       "humidity": 100.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 3.0,
-      "sky": "Poco nuboso"
+      "wind_speed": 2.0,
+      "sky": "Nuboso"
      },
      {
       "time": "2026-10-12T09:00",
-      "temperature": 13.0,
-      "humidity": 89.0,
+      "temperature": 12.0,
+      "humidity": 93.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 2.0,
+      "sky": "Niebla "
+     },
+     {
+      "time": "2026-10-12T10:00",
+      "temperature": 14.0,
+      "humidity": 86.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 3.0,
+      "sky": "Nuboso"
+     },
+     {
+      "time": "2026-10-12T11:00",
+      "temperature": 16.0,
+      "humidity": 78.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 2.0,
+      "sky": "Nubes altas"
+     },
+     {
+      "time": "2026-10-12T12:00",
+      "temperature": 18.0,
+      "humidity": 68.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 4.0,
+      "sky": "Nuboso"
+     },
+     {
+      "time": "2026-10-12T13:00",
+      "temperature": 20.0,
+      "humidity": 57.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 4.0,
+      "sky": "Cubierto"
+     },
+     {
+      "time": "2026-10-12T14:00",
+      "temperature": 23.0,
+      "humidity": 46.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 1.0,
+      "sky": "Nubes altas"
+     },
+     {
+      "time": "2026-10-12T15:00",
+      "temperature": 24.0,
+      "humidity": 42.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 4.0,
       "sky": "Nubes altas"
      },
      {
-      "time": "2026-10-12T10:00",
-      "temperature": 15.0,
-      "humidity": 80.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 3.0,
-      "sky": "Cubierto"
-     },
-     {
-      "time": "2026-10-12T11:00",
-      "temperature": 17.0,
-      "humidity": 76.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 2.0,
-      "sky": "Cubierto"
-     },
-     {
-      "time": "2026-10-12T12:00",
-      "temperature": 19.0,
-      "humidity": 66.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 3.0,
-      "sky": "Cubierto"
-     },
-     {
-      "time": "2026-10-12T13:00",
-      "temperature": 21.0,
-      "humidity": 57.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 3.0,
-      "sky": "Nubes altas"
-     },
-     {
-      "time": "2026-10-12T14:00",
-      "temperature": 23.0,
-      "humidity": 48.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 3.0,
-      "sky": "Nubes altas"
-     },
-     {
-      "time": "2026-10-12T15:00",
-      "temperature": 24.0,
-      "humidity": 43.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 3.0,
-      "sky": "Nubes altas"
-     },
-     {
       "time": "2026-10-12T16:00",
       "temperature": 25.0,
-      "humidity": 39.0,
+      "humidity": 40.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 2.0,
+      "wind_speed": 6.0,
       "sky": "Poco nuboso"
      },
      {
       "time": "2026-10-12T17:00",
       "temperature": 25.0,
-      "humidity": 36.0,
+      "humidity": 38.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 1.0,
+      "wind_speed": 7.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-10-12T18:00",
       "temperature": 24.0,
-      "humidity": 38.0,
+      "humidity": 40.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 2.0,
+      "wind_speed": 6.0,
       "sky": "Despejado"
      },
      {
@@ -358,31 +250,31 @@
       "humidity": 41.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
+      "wind_speed": 6.0,
+      "sky": "Poco nuboso"
+     },
+     {
+      "time": "2026-10-12T20:00",
+      "temperature": 21.0,
+      "humidity": 44.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
       "wind_speed": 4.0,
       "sky": "Despejado"
      },
      {
-      "time": "2026-10-12T20:00",
-      "temperature": 22.0,
-      "humidity": 44.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 5.0,
-      "sky": "Despejado"
-     },
-     {
       "time": "2026-10-12T21:00",
-      "temperature": 20.0,
+      "temperature": 19.0,
       "humidity": 50.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 8.0,
+      "wind_speed": 10.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-10-12T22:00",
       "temperature": 18.0,
-      "humidity": 57.0,
+      "humidity": 58.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 7.0,
@@ -391,16 +283,16 @@
      {
       "time": "2026-10-12T23:00",
       "temperature": 16.0,
-      "humidity": 65.0,
+      "humidity": 66.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 8.0,
+      "wind_speed": 6.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-10-13T00:00",
       "temperature": 15.0,
-      "humidity": 69.0,
+      "humidity": 71.0,
       "precipitation_probability": null,
       "precipitation": 0.0,
       "wind_speed": 6.0,
@@ -409,43 +301,43 @@
      {
       "time": "2026-10-13T01:00",
       "temperature": 14.0,
-      "humidity": 73.0,
+      "humidity": 74.0,
       "precipitation_probability": null,
       "precipitation": 0.0,
-      "wind_speed": 8.0,
+      "wind_speed": 4.0,
       "sky": "Poco nuboso"
      },
      {
       "time": "2026-10-13T02:00",
       "temperature": 13.0,
-      "humidity": 77.0,
+      "humidity": 78.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 5.0,
+      "wind_speed": 7.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-10-13T03:00",
       "temperature": 13.0,
-      "humidity": 81.0,
+      "humidity": 82.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 7.0,
-      "sky": "Despejado"
+      "wind_speed": 6.0,
+      "sky": "Poco nuboso"
      },
      {
       "time": "2026-10-13T04:00",
       "temperature": 12.0,
-      "humidity": 90.0,
+      "humidity": 88.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 7.0,
+      "wind_speed": 4.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-10-13T05:00",
       "temperature": 12.0,
-      "humidity": 98.0,
+      "humidity": 94.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 5.0,
@@ -453,8 +345,8 @@
      },
      {
       "time": "2026-10-13T06:00",
-      "temperature": 12.0,
-      "humidity": 99.0,
+      "temperature": 11.0,
+      "humidity": 97.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 4.0,
@@ -468,6 +360,114 @@
       "precipitation": 0.0,
       "wind_speed": 3.0,
       "sky": "Despejado"
+     },
+     {
+      "time": "2026-10-13T08:00",
+      "temperature": 11.0,
+      "humidity": 96.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 4.0,
+      "sky": "Despejado"
+     },
+     {
+      "time": "2026-10-13T09:00",
+      "temperature": 13.0,
+      "humidity": 82.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 0.0,
+      "sky": "Despejado"
+     },
+     {
+      "time": "2026-10-13T10:00",
+      "temperature": 15.0,
+      "humidity": 72.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 4.0,
+      "sky": "Nubes altas"
+     },
+     {
+      "time": "2026-10-13T11:00",
+      "temperature": 18.0,
+      "humidity": 62.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 2.0,
+      "sky": "Poco nuboso"
+     },
+     {
+      "time": "2026-10-13T12:00",
+      "temperature": 20.0,
+      "humidity": 53.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 7.0,
+      "sky": "Despejado"
+     },
+     {
+      "time": "2026-10-13T13:00",
+      "temperature": 22.0,
+      "humidity": 44.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 6.0,
+      "sky": "Despejado"
+     },
+     {
+      "time": "2026-10-13T14:00",
+      "temperature": 25.0,
+      "humidity": 37.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 4.0,
+      "sky": "Poco nuboso"
+     },
+     {
+      "time": "2026-10-13T15:00",
+      "temperature": 25.0,
+      "humidity": 34.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 4.0,
+      "sky": "Nubes altas"
+     },
+     {
+      "time": "2026-10-13T16:00",
+      "temperature": 26.0,
+      "humidity": 32.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 5.0,
+      "sky": "Nubes altas"
+     },
+     {
+      "time": "2026-10-13T17:00",
+      "temperature": 27.0,
+      "humidity": 30.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 3.0,
+      "sky": "Nubes altas"
+     },
+     {
+      "time": "2026-10-13T18:00",
+      "temperature": 25.0,
+      "humidity": 33.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 3.0,
+      "sky": "Nubes altas"
+     },
+     {
+      "time": "2026-10-13T19:00",
+      "temperature": 24.0,
+      "humidity": 36.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 3.0,
+      "sky": "Nubes altas"
      }
     ],
     "daily": [
@@ -484,7 +484,7 @@
       "temperature_max": 26.0,
       "temperature_min": 10.0,
       "precipitation_probability": 0.0,
-      "sky": "Poco nuboso",
+      "sky": "Muy nuboso",
       "uv_max": 5.0
      },
      {
@@ -505,26 +505,26 @@
      },
      {
       "date": "2026-10-15",
-      "temperature_max": 27.0,
-      "temperature_min": 10.0,
-      "precipitation_probability": 20.0,
-      "sky": "Intervalos nubosos",
+      "temperature_max": 26.0,
+      "temperature_min": 11.0,
+      "precipitation_probability": 0.0,
+      "sky": "Poco nuboso",
       "uv_max": 4.0
      },
      {
       "date": "2026-10-16",
-      "temperature_max": 25.0,
-      "temperature_min": 11.0,
-      "precipitation_probability": 30.0,
+      "temperature_max": 26.0,
+      "temperature_min": 10.0,
+      "precipitation_probability": 20.0,
       "sky": "Intervalos nubosos",
       "uv_max": null
      },
      {
       "date": "2026-10-17",
-      "temperature_max": 16.0,
-      "temperature_min": 6.0,
-      "precipitation_probability": 40.0,
-      "sky": "Cubierto",
+      "temperature_max": 17.0,
+      "temperature_min": 4.0,
+      "precipitation_probability": 55.0,
+      "sky": "Muy nuboso con lluvia escasa",
       "uv_max": null
      }
     ]
@@ -537,286 +537,22 @@
     "label": "Open-Meteo",
     "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
    },
-   "fetched_at": "2026-10-11T23:33:52+02:00",
+   "fetched_at": "2026-10-12T00:33:44+02:00",
    "error": null,
    "data": {
     "current": {
-     "time": "2026-10-11T23:30",
-     "temperature": 15.0,
-     "apparent_temperature": 14.6,
-     "humidity": 76,
+     "time": "2026-10-12T00:30",
+     "temperature": 13.7,
+     "apparent_temperature": 13.3,
+     "humidity": 82,
      "weather_code": 1,
-     "wind_speed": 4.2,
-     "wind_gust": 7.6,
-     "wind_direction": 250,
+     "wind_speed": 4.9,
+     "wind_gust": 7.9,
+     "wind_direction": 234,
      "precipitation": 0.0,
      "uv": 0.0
     },
     "hourly": [
-     {
-      "time": "2026-10-11T00:00",
-      "temperature": 11.5,
-      "humidity": 79,
-      "apparent_temperature": 10.6,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 2,
-      "wind_speed": 2.2,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T01:00",
-      "temperature": 11.2,
-      "humidity": 78,
-      "apparent_temperature": 10.2,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 2,
-      "wind_speed": 2.5,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T02:00",
-      "temperature": 10.9,
-      "humidity": 80,
-      "apparent_temperature": 10.1,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 1,
-      "wind_speed": 1.8,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T03:00",
-      "temperature": 10.4,
-      "humidity": 81,
-      "apparent_temperature": 9.4,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 2,
-      "wind_speed": 2.4,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T04:00",
-      "temperature": 10.2,
-      "humidity": 82,
-      "apparent_temperature": 9.2,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 2,
-      "wind_speed": 2.6,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T05:00",
-      "temperature": 10.0,
-      "humidity": 84,
-      "apparent_temperature": 8.9,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 3,
-      "wind_speed": 3.1,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T06:00",
-      "temperature": 10.6,
-      "humidity": 81,
-      "apparent_temperature": 9.6,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 3,
-      "wind_speed": 2.9,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T07:00",
-      "temperature": 11.1,
-      "humidity": 79,
-      "apparent_temperature": 10.1,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 3,
-      "wind_speed": 3.1,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T08:00",
-      "temperature": 11.0,
-      "humidity": 85,
-      "apparent_temperature": 10.1,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 3,
-      "wind_speed": 3.2,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T09:00",
-      "temperature": 11.4,
-      "humidity": 84,
-      "apparent_temperature": 10.7,
-      "precipitation_probability": 0,
-      "precipitation": 0.1,
-      "weather_code": 61,
-      "wind_speed": 2.9,
-      "uv": 0.05
-     },
-     {
-      "time": "2026-10-11T10:00",
-      "temperature": 12.7,
-      "humidity": 80,
-      "apparent_temperature": 12.0,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 3,
-      "wind_speed": 3.2,
-      "uv": 0.55
-     },
-     {
-      "time": "2026-10-11T11:00",
-      "temperature": 15.3,
-      "humidity": 71,
-      "apparent_temperature": 15.0,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 2,
-      "wind_speed": 2.8,
-      "uv": 1.5
-     },
-     {
-      "time": "2026-10-11T12:00",
-      "temperature": 18.1,
-      "humidity": 60,
-      "apparent_temperature": 17.4,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 2,
-      "wind_speed": 5.4,
-      "uv": 2.6
-     },
-     {
-      "time": "2026-10-11T13:00",
-      "temperature": 19.4,
-      "humidity": 56,
-      "apparent_temperature": 18.6,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 2,
-      "wind_speed": 6.4,
-      "uv": 4.3
-     },
-     {
-      "time": "2026-10-11T14:00",
-      "temperature": 22.2,
-      "humidity": 46,
-      "apparent_temperature": 21.3,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 2,
-      "wind_speed": 7.8,
-      "uv": 4.95
-     },
-     {
-      "time": "2026-10-11T15:00",
-      "temperature": 23.3,
-      "humidity": 43,
-      "apparent_temperature": 22.7,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 1,
-      "wind_speed": 8.6,
-      "uv": 5.05
-     },
-     {
-      "time": "2026-10-11T16:00",
-      "temperature": 24.0,
-      "humidity": 42,
-      "apparent_temperature": 23.2,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 1,
-      "wind_speed": 9.0,
-      "uv": 4.55
-     },
-     {
-      "time": "2026-10-11T17:00",
-      "temperature": 24.7,
-      "humidity": 40,
-      "apparent_temperature": 23.2,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 1,
-      "wind_speed": 11.3,
-      "uv": 3.55
-     },
-     {
-      "time": "2026-10-11T18:00",
-      "temperature": 24.2,
-      "humidity": 41,
-      "apparent_temperature": 22.6,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 2,
-      "wind_speed": 11.3,
-      "uv": 2.25
-     },
-     {
-      "time": "2026-10-11T19:00",
-      "temperature": 23.5,
-      "humidity": 42,
-      "apparent_temperature": 22.1,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 2,
-      "wind_speed": 9.4,
-      "uv": 0.95
-     },
-     {
-      "time": "2026-10-11T20:00",
-      "temperature": 21.1,
-      "humidity": 49,
-      "apparent_temperature": 20.1,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 1,
-      "wind_speed": 6.6,
-      "uv": 0.15
-     },
-     {
-      "time": "2026-10-11T21:00",
-      "temperature": 19.1,
-      "humidity": 59,
-      "apparent_temperature": 18.4,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 1,
-      "wind_speed": 6.8,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T22:00",
-      "temperature": 17.3,
-      "humidity": 66,
-      "apparent_temperature": 16.8,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 0,
-      "wind_speed": 5.0,
-      "uv": 0.0
-     },
-     {
-      "time": "2026-10-11T23:00",
-      "temperature": 15.8,
-      "humidity": 72,
-      "apparent_temperature": 15.5,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "weather_code": 1,
-      "wind_speed": 4.3,
-      "uv": 0.0
-     },
      {
       "time": "2026-10-12T00:00",
       "temperature": 14.2,
@@ -2400,20 +2136,273 @@
       "weather_code": 2,
       "wind_speed": 27.3,
       "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T00:00",
+      "temperature": 7.7,
+      "humidity": 70,
+      "apparent_temperature": 2.1,
+      "precipitation_probability": 8,
+      "precipitation": 0.1,
+      "weather_code": 61,
+      "wind_speed": 26.6,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T01:00",
+      "temperature": 7.7,
+      "humidity": 73,
+      "apparent_temperature": 2.3,
+      "precipitation_probability": 7,
+      "precipitation": 0.1,
+      "weather_code": 61,
+      "wind_speed": 26.1,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T02:00",
+      "temperature": 7.8,
+      "humidity": 75,
+      "apparent_temperature": 2.6,
+      "precipitation_probability": 6,
+      "precipitation": 0.1,
+      "weather_code": 61,
+      "wind_speed": 25.7,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T03:00",
+      "temperature": 7.9,
+      "humidity": 75,
+      "apparent_temperature": 2.7,
+      "precipitation_probability": 6,
+      "precipitation": 0.1,
+      "weather_code": 3,
+      "wind_speed": 25.5,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T04:00",
+      "temperature": 8.0,
+      "humidity": 74,
+      "apparent_temperature": 2.9,
+      "precipitation_probability": 7,
+      "precipitation": 0.1,
+      "weather_code": 3,
+      "wind_speed": 25.0,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T05:00",
+      "temperature": 8.0,
+      "humidity": 73,
+      "apparent_temperature": 2.8,
+      "precipitation_probability": 8,
+      "precipitation": 0.1,
+      "weather_code": 3,
+      "wind_speed": 24.5,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T06:00",
+      "temperature": 7.5,
+      "humidity": 74,
+      "apparent_temperature": 2.5,
+      "precipitation_probability": 9,
+      "precipitation": 0.0,
+      "weather_code": 2,
+      "wind_speed": 23.4,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T07:00",
+      "temperature": 6.8,
+      "humidity": 75,
+      "apparent_temperature": 1.9,
+      "precipitation_probability": 10,
+      "precipitation": 0.0,
+      "weather_code": 2,
+      "wind_speed": 22.0,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T08:00",
+      "temperature": 6.5,
+      "humidity": 75,
+      "apparent_temperature": 1.6,
+      "precipitation_probability": 10,
+      "precipitation": 0.0,
+      "weather_code": 2,
+      "wind_speed": 21.5,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T09:00",
+      "temperature": 6.7,
+      "humidity": 72,
+      "apparent_temperature": 1.7,
+      "precipitation_probability": 10,
+      "precipitation": 0.0,
+      "weather_code": 2,
+      "wind_speed": 22.2,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T10:00",
+      "temperature": 7.3,
+      "humidity": 67,
+      "apparent_temperature": 2.0,
+      "precipitation_probability": 9,
+      "precipitation": 0.0,
+      "weather_code": 2,
+      "wind_speed": 23.5,
+      "uv": 0.65
+     },
+     {
+      "time": "2026-10-18T11:00",
+      "temperature": 8.3,
+      "humidity": 61,
+      "apparent_temperature": 2.7,
+      "precipitation_probability": 8,
+      "precipitation": 0.0,
+      "weather_code": 2,
+      "wind_speed": 24.8,
+      "uv": 1.75
+     },
+     {
+      "time": "2026-10-18T12:00",
+      "temperature": 9.8,
+      "humidity": 54,
+      "apparent_temperature": 4.0,
+      "precipitation_probability": 7,
+      "precipitation": 0.0,
+      "weather_code": 2,
+      "wind_speed": 25.6,
+      "uv": 3.0
+     },
+     {
+      "time": "2026-10-18T13:00",
+      "temperature": 11.6,
+      "humidity": 46,
+      "apparent_temperature": 5.6,
+      "precipitation_probability": 6,
+      "precipitation": 0.0,
+      "weather_code": 2,
+      "wind_speed": 26.8,
+      "uv": 3.85
+     },
+     {
+      "time": "2026-10-18T14:00",
+      "temperature": 13.1,
+      "humidity": 39,
+      "apparent_temperature": 6.8,
+      "precipitation_probability": 6,
+      "precipitation": 0.0,
+      "weather_code": 2,
+      "wind_speed": 27.5,
+      "uv": 4.3
+     },
+     {
+      "time": "2026-10-18T15:00",
+      "temperature": 14.1,
+      "humidity": 34,
+      "apparent_temperature": 8.0,
+      "precipitation_probability": 6,
+      "precipitation": 0.0,
+      "weather_code": 0,
+      "wind_speed": 27.9,
+      "uv": 4.3
+     },
+     {
+      "time": "2026-10-18T16:00",
+      "temperature": 14.8,
+      "humidity": 31,
+      "apparent_temperature": 8.5,
+      "precipitation_probability": 7,
+      "precipitation": 0.0,
+      "weather_code": 0,
+      "wind_speed": 27.7,
+      "uv": 3.85
+     },
+     {
+      "time": "2026-10-18T17:00",
+      "temperature": 14.8,
+      "humidity": 30,
+      "apparent_temperature": 8.4,
+      "precipitation_probability": 8,
+      "precipitation": 0.0,
+      "weather_code": 0,
+      "wind_speed": 26.7,
+      "uv": 2.95
+     },
+     {
+      "time": "2026-10-18T18:00",
+      "temperature": 13.7,
+      "humidity": 33,
+      "apparent_temperature": 7.6,
+      "precipitation_probability": 9,
+      "precipitation": 0.0,
+      "weather_code": 0,
+      "wind_speed": 24.5,
+      "uv": 1.9
+     },
+     {
+      "time": "2026-10-18T19:00",
+      "temperature": 11.8,
+      "humidity": 39,
+      "apparent_temperature": 6.3,
+      "precipitation_probability": 10,
+      "precipitation": 0.0,
+      "weather_code": 0,
+      "wind_speed": 21.2,
+      "uv": 0.85
+     },
+     {
+      "time": "2026-10-18T20:00",
+      "temperature": 10.1,
+      "humidity": 46,
+      "apparent_temperature": 5.0,
+      "precipitation_probability": 10,
+      "precipitation": 0.0,
+      "weather_code": 0,
+      "wind_speed": 18.7,
+      "uv": 0.05
+     },
+     {
+      "time": "2026-10-18T21:00",
+      "temperature": 8.8,
+      "humidity": 53,
+      "apparent_temperature": 4.0,
+      "precipitation_probability": 9,
+      "precipitation": 0.0,
+      "weather_code": 1,
+      "wind_speed": 17.7,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T22:00",
+      "temperature": 7.6,
+      "humidity": 62,
+      "apparent_temperature": 3.0,
+      "precipitation_probability": 8,
+      "precipitation": 0.0,
+      "weather_code": 1,
+      "wind_speed": 17.7,
+      "uv": 0.0
+     },
+     {
+      "time": "2026-10-18T23:00",
+      "temperature": 6.6,
+      "humidity": 69,
+      "apparent_temperature": 2.1,
+      "precipitation_probability": 7,
+      "precipitation": 0.0,
+      "weather_code": 1,
+      "wind_speed": 17.4,
+      "uv": 0.0
      }
     ],
     "daily": [
-     {
-      "date": "2026-10-11",
-      "weather_code": 61,
-      "temperature_max": 24.7,
-      "temperature_min": 10.0,
-      "precipitation_probability": 0,
-      "precipitation": 0.1,
-      "uv_max": 5.05,
-      "sunrise": "2026-10-11T08:29",
-      "sunset": "2026-10-11T19:48"
-     },
      {
       "date": "2026-10-12",
       "weather_code": 45,
@@ -2479,6 +2468,17 @@
       "uv_max": 4.3,
       "sunrise": "2026-10-17T08:36",
       "sunset": "2026-10-17T19:39"
+     },
+     {
+      "date": "2026-10-18",
+      "weather_code": 61,
+      "temperature_max": 14.8,
+      "temperature_min": 6.5,
+      "precipitation_probability": 10,
+      "precipitation": 0.6,
+      "uv_max": 4.3,
+      "sunrise": "2026-10-18T08:37",
+      "sunset": "2026-10-18T19:37"
      }
     ]
    }
