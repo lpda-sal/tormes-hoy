@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-12T00:33:44+02:00",
+ "generated_at": "2026-10-12T01:32:32+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -89,7 +89,7 @@
    },
    {
     "time": "2026-10-12T14:00",
-    "uv": 4.85
+    "uv": 4.9
    },
    {
     "time": "2026-10-12T15:00",
