@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-16T22:49:20+02:00",
+ "generated_at": "2026-10-16T23:47:54+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -98,10 +98,10 @@
    },
    "flow_m3s": {
     "min": 5.74,
-    "mean": 5.96,
-    "max": 6.33
+    "mean": 6.01,
+    "max": 6.61
    },
-   "n": 12
+   "n": 13
   }
  ]
 }
