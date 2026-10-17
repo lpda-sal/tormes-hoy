@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-17T18:46:20+02:00",
+ "generated_at": "2026-10-17T19:43:01+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-17T18:46:20+02:00",
+  "fetched_at": "2026-10-17T19:43:01+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-17T18:00:00+02:00",
+   "time": "2026-10-17T19:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
    "temperature": 14.0,
-   "humidity": 92.0,
-   "wind_speed": 11.5,
-   "wind_gust": 25.2,
-   "wind_direction": 71.0,
-   "precipitation": 1.7000000000000004,
-   "pressure": 929.4
+   "humidity": 93.0,
+   "wind_speed": 15.1,
+   "wind_gust": 26.3,
+   "wind_direction": 57.0,
+   "precipitation": 0.5,
+   "pressure": 929.2
   }
  },
  "weather_now_model": {
@@ -42,16 +42,16 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-17T18:45",
-   "temperature": 14.4,
-   "apparent_temperature": 11.3,
-   "humidity": 80,
+   "time": "2026-10-17T19:30",
+   "temperature": 13.7,
+   "apparent_temperature": 10.4,
+   "humidity": 79,
    "weather_code": 3,
-   "wind_speed": 23.7,
-   "wind_gust": 42.1,
-   "wind_direction": 49,
+   "wind_speed": 23.6,
+   "wind_gust": 45.0,
+   "wind_direction": 51,
    "precipitation": 0.0,
-   "uv": 0.2
+   "uv": 0.05
   }
  },
  "today": {
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-17T18:00",
-    "temperature": 14.9,
-    "humidity": 83,
-    "apparent_temperature": 12.7,
-    "precipitation_probability": 50,
-    "precipitation": 0.3,
-    "weather_code": 80,
-    "wind_speed": 19.5,
-    "uv": 0.7
-   },
    {
     "time": "2026-10-17T19:00",
     "temperature": 14.2,
@@ -140,14 +129,14 @@
   "data": {
    "date": "2026-10-17",
    "threshold": 3,
-   "now": 0.7,
+   "now": 0.25,
    "now_level": "low",
-   "max": 3.9,
-   "max_time": "15:00",
+   "max": 3.65,
+   "max_time": "14:00",
    "max_level": "moderate",
    "protection": {
     "from": "12:52",
-    "to": "16:27"
+    "to": "16:17"
    }
   }
  },
@@ -163,9 +152,9 @@
   },
   "error": null,
   "data": {
-   "time": "2026-10-17T18:00:00+02:00",
+   "time": "2026-10-17T19:00:00+02:00",
    "level_m": 1.31,
-   "flow_m3s": 6.28,
+   "flow_m3s": 6.19,
    "yesterday_flow_m3s": 5.83,
    "trend": "steady"
   }
@@ -185,7 +174,7 @@
     "temperature_min": 10.5,
     "precipitation_probability": 95,
     "precipitation": 12.3,
-    "uv_max": 3.9,
+    "uv_max": 3.65,
     "sunrise": "2026-10-17T08:36",
     "sunset": "2026-10-17T19:39"
    },
@@ -196,7 +185,7 @@
     "temperature_min": 7.3,
     "precipitation_probability": 25,
     "precipitation": 0.5,
-    "uv_max": 4.55,
+    "uv_max": 4.45,
     "sunrise": "2026-10-18T08:37",
     "sunset": "2026-10-18T19:37"
    },
@@ -207,7 +196,7 @@
     "temperature_min": 4.2,
     "precipitation_probability": 3,
     "precipitation": 0.0,
-    "uv_max": 4.45,
+    "uv_max": 4.3,
     "sunrise": "2026-10-19T08:38",
     "sunset": "2026-10-19T19:36"
    },
@@ -218,7 +207,7 @@
     "temperature_min": 5.0,
     "precipitation_probability": 0,
     "precipitation": 0.0,
-    "uv_max": 3.95,
+    "uv_max": 3.9,
     "sunrise": "2026-10-20T08:39",
     "sunset": "2026-10-20T19:34"
    },
@@ -229,7 +218,7 @@
     "temperature_min": 6.6,
     "precipitation_probability": 15,
     "precipitation": 0.0,
-    "uv_max": 4.15,
+    "uv_max": 4.35,
     "sunrise": "2026-10-21T08:40",
     "sunset": "2026-10-21T19:33"
    },
@@ -240,7 +229,7 @@
     "temperature_min": 2.1,
     "precipitation_probability": 1,
     "precipitation": 0.0,
-    "uv_max": 4.0,
+    "uv_max": 4.1,
     "sunrise": "2026-10-22T08:41",
     "sunset": "2026-10-22T19:31"
    },
@@ -251,7 +240,7 @@
     "temperature_min": 8.0,
     "precipitation_probability": 20,
     "precipitation": 0.0,
-    "uv_max": 3.75,
+    "uv_max": 4.0,
     "sunrise": "2026-10-23T08:42",
     "sunset": "2026-10-23T19:30"
    }
