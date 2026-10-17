@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-17T15:44:31+02:00",
+ "generated_at": "2026-10-17T16:44:03+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-17T15:44:31+02:00",
+  "fetched_at": "2026-10-17T16:44:03+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-17T15:00:00+02:00",
+   "time": "2026-10-17T16:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 14.4,
-   "humidity": 90.0,
-   "wind_speed": 8.3,
-   "wind_gust": 33.1,
-   "wind_direction": 352.0,
-   "precipitation": 0.1,
-   "pressure": 931.4
+   "temperature": 14.0,
+   "humidity": 92.0,
+   "wind_speed": 6.1,
+   "wind_gust": 17.3,
+   "wind_direction": 30.0,
+   "precipitation": 0.6,
+   "pressure": 931.1
   }
  },
  "forecasts": {
@@ -42,7 +42,7 @@
     "label": "AEMET",
     "attribution": "© AEMET. Información elaborada por AEMET"
    },
-   "fetched_at": "2026-10-17T15:44:31+02:00",
+   "fetched_at": "2026-10-17T16:44:03+02:00",
    "error": null,
    "data": {
     "hourly": [
@@ -537,20 +537,20 @@
     "label": "Open-Meteo",
     "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
    },
-   "fetched_at": "2026-10-17T15:44:31+02:00",
+   "fetched_at": "2026-10-17T16:44:03+02:00",
    "error": null,
    "data": {
     "current": {
-     "time": "2026-10-17T15:30",
-     "temperature": 15.0,
-     "apparent_temperature": 13.8,
-     "humidity": 86,
-     "weather_code": 61,
-     "wind_speed": 14.7,
-     "wind_gust": 26.6,
-     "wind_direction": 65,
-     "precipitation": 0.1,
-     "uv": 3.65
+     "time": "2026-10-17T16:30",
+     "temperature": 15.5,
+     "apparent_temperature": 14.1,
+     "humidity": 82,
+     "weather_code": 3,
+     "wind_speed": 14.5,
+     "wind_gust": 27.0,
+     "wind_direction": 71,
+     "precipitation": 0.0,
+     "uv": 2.5
     },
     "hourly": [
      {
