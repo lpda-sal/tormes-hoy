@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-17T12:45:05+02:00",
+ "generated_at": "2026-10-17T13:43:25+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -21,12 +21,15 @@
  "data": {
   "date": "2026-10-17",
   "threshold": 3,
-  "now": 1.85,
-  "now_level": "low",
-  "max": 2.8,
-  "max_time": "13:00",
-  "max_level": "low",
-  "protection": null,
+  "now": 3.1,
+  "now_level": "moderate",
+  "max": 3.9,
+  "max_time": "15:00",
+  "max_level": "moderate",
+  "protection": {
+   "from": "12:52",
+   "to": "16:27"
+  },
   "hourly": [
    {
     "time": "2026-10-17T00:00",
@@ -74,35 +77,35 @@
    },
    {
     "time": "2026-10-17T11:00",
-    "uv": 1.2
+    "uv": 1.25
    },
    {
     "time": "2026-10-17T12:00",
-    "uv": 1.85
+    "uv": 2.3
    },
    {
     "time": "2026-10-17T13:00",
-    "uv": 2.8
+    "uv": 3.1
    },
    {
     "time": "2026-10-17T14:00",
-    "uv": 2.7
+    "uv": 3.65
    },
    {
     "time": "2026-10-17T15:00",
-    "uv": 2.45
+    "uv": 3.9
    },
    {
     "time": "2026-10-17T16:00",
-    "uv": 2.8
+    "uv": 3.55
    },
    {
     "time": "2026-10-17T17:00",
-    "uv": 2.1
+    "uv": 2.3
    },
    {
     "time": "2026-10-17T18:00",
-    "uv": 0.6
+    "uv": 0.7
    },
    {
     "time": "2026-10-17T19:00",
