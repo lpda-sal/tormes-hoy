@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-17T11:45:57+02:00",
+ "generated_at": "2026-10-17T12:45:05+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,17 +19,17 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-17T11:45:57+02:00",
+  "fetched_at": "2026-10-17T12:45:05+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-17T11:00:00+02:00",
+   "time": "2026-10-17T12:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 14.9,
+   "temperature": 15.9,
    "humidity": 77.0,
-   "wind_speed": 14.4,
-   "wind_gust": 26.3,
-   "wind_direction": 83.0,
+   "wind_speed": 13.3,
+   "wind_gust": 22.7,
+   "wind_direction": 78.0,
    "precipitation": 0.0,
    "pressure": 932.3
   }
@@ -42,16 +42,16 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-17T11:45",
-   "temperature": 13.7,
-   "apparent_temperature": 11.9,
-   "humidity": 86,
-   "weather_code": 95,
-   "wind_speed": 15.6,
-   "wind_gust": 28.4,
-   "wind_direction": 50,
-   "precipitation": 0.4,
-   "uv": 1.95
+   "time": "2026-10-17T12:45",
+   "temperature": 14.0,
+   "apparent_temperature": 12.5,
+   "humidity": 85,
+   "weather_code": 80,
+   "wind_speed": 13.9,
+   "wind_gust": 27.7,
+   "wind_direction": 65,
+   "precipitation": 0.2,
+   "uv": 2.85
   }
  },
  "today": {
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-17T11:00",
-    "temperature": 13.3,
-    "humidity": 87,
-    "apparent_temperature": 11.5,
-    "precipitation_probability": 95,
-    "precipitation": 1.2,
-    "weather_code": 95,
-    "wind_speed": 15.3,
-    "uv": 1.2
-   },
    {
     "time": "2026-10-17T12:00",
     "temperature": 13.8,
@@ -217,7 +206,7 @@
   "data": {
    "date": "2026-10-17",
    "threshold": 3,
-   "now": 1.2,
+   "now": 1.85,
    "now_level": "low",
    "max": 2.8,
    "max_time": "13:00",
@@ -237,9 +226,9 @@
   },
   "error": null,
   "data": {
-   "time": "2026-10-17T11:00:00+02:00",
+   "time": "2026-10-17T12:00:00+02:00",
    "level_m": 1.31,
-   "flow_m3s": 6.1,
+   "flow_m3s": 6.05,
    "yesterday_flow_m3s": 5.83,
    "trend": "steady"
   }
@@ -311,7 +300,7 @@
     "date": "2026-10-22",
     "weather_code": 3,
     "temperature_max": 17.3,
-    "temperature_min": 3.0,
+    "temperature_min": 2.5,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "uv_max": 4.1,
