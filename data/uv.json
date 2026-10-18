@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-18T12:45:23+02:00",
+ "generated_at": "2026-10-18T13:43:27+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -21,13 +21,13 @@
  "data": {
   "date": "2026-10-18",
   "threshold": 3,
-  "now": 2.7,
-  "now_level": "low",
+  "now": 3.8,
+  "now_level": "moderate",
   "max": 4.5,
   "max_time": "15:00",
   "max_level": "moderate",
   "protection": {
-   "from": "12:17",
+   "from": "12:16",
    "to": "17:05"
   },
   "hourly": [
@@ -73,11 +73,11 @@
    },
    {
     "time": "2026-10-18T10:00",
-    "uv": 0.25
+    "uv": 0.3
    },
    {
     "time": "2026-10-18T11:00",
-    "uv": 0.85
+    "uv": 1.35
    },
    {
     "time": "2026-10-18T12:00",
@@ -85,11 +85,11 @@
    },
    {
     "time": "2026-10-18T13:00",
-    "uv": 3.75
+    "uv": 3.8
    },
    {
     "time": "2026-10-18T14:00",
-    "uv": 4.3
+    "uv": 4.45
    },
    {
     "time": "2026-10-18T15:00",
