@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-18T05:49:48+02:00",
+ "generated_at": "2026-10-18T06:48:37+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-18T05:49:48+02:00",
+  "fetched_at": "2026-10-18T06:48:37+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-18T05:00:00+02:00",
+   "time": "2026-10-18T06:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 8.0,
-   "humidity": 92.0,
-   "wind_speed": 9.0,
-   "wind_gust": 32.8,
-   "wind_direction": 44.0,
-   "precipitation": 1.1,
-   "pressure": 929.4
+   "temperature": 8.1,
+   "humidity": 90.0,
+   "wind_speed": 12.6,
+   "wind_gust": 25.2,
+   "wind_direction": 54.0,
+   "precipitation": 0.30000000000000004,
+   "pressure": 929.2
   }
  },
  "weather_now_model": {
@@ -42,14 +42,14 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-18T05:45",
-   "temperature": 9.1,
-   "apparent_temperature": 5.3,
-   "humidity": 77,
+   "time": "2026-10-18T06:45",
+   "temperature": 9.0,
+   "apparent_temperature": 5.0,
+   "humidity": 75,
    "weather_code": 3,
-   "wind_speed": 18.4,
-   "wind_gust": 35.6,
-   "wind_direction": 51,
+   "wind_speed": 18.3,
+   "wind_gust": 35.3,
+   "wind_direction": 54,
    "precipitation": 0.0,
    "uv": 0.0
   }
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-18T05:00",
-    "temperature": 9.2,
-    "humidity": 77,
-    "apparent_temperature": 5.4,
-    "precipitation_probability": 59,
-    "precipitation": 0.0,
-    "weather_code": 3,
-    "wind_speed": 18.4,
-    "uv": 0.0
-   },
    {
     "time": "2026-10-18T06:00",
     "temperature": 9.1,
@@ -306,9 +295,9 @@
   },
   "error": null,
   "data": {
-   "time": "2026-10-18T05:00:00+02:00",
+   "time": "2026-10-18T06:00:00+02:00",
    "level_m": 1.32,
-   "flow_m3s": 6.33,
+   "flow_m3s": 6.38,
    "yesterday_flow_m3s": 6.61,
    "trend": "steady"
   }
