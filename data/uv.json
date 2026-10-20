@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-21T00:48:09+02:00",
+ "generated_at": "2026-10-21T01:44:05+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -12,7 +12,7 @@
   "lon": -5.638355587757416,
   "timezone": "Europe/Madrid"
  },
- "status": "ok",
+ "status": "stale",
  "source": {
   "name": "openmeteo",
   "label": "Open-Meteo",
