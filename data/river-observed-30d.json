@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-20T10:53:28+02:00",
+ "generated_at": "2026-10-20T11:50:49+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -26,12 +26,12 @@
    "attribution": "Confederación Hidrográfica del Duero",
    "kind": "provisional"
   },
-  "fetched_at": "2026-10-20T10:53:28+02:00",
+  "fetched_at": "2026-10-20T11:50:49+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-20T10:00:00+02:00",
+   "time": "2026-10-20T11:00:00+02:00",
    "level_m": 1.31,
-   "flow_m3s": 6.01,
+   "flow_m3s": 6.1,
    "yesterday_flow_m3s": 5.74
   }
  },
@@ -645,6 +645,11 @@
    "time": "2026-10-20T10:00:00+02:00",
    "level_m": 1.31,
    "flow_m3s": 6.01
+  },
+  {
+   "time": "2026-10-20T11:00:00+02:00",
+   "level_m": 1.31,
+   "flow_m3s": 6.1
   }
  ]
 }
