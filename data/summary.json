@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-20T05:51:54+02:00",
+ "generated_at": "2026-10-20T06:50:22+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-20T05:51:54+02:00",
+  "fetched_at": "2026-10-20T06:50:22+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-20T05:00:00+02:00",
+   "time": "2026-10-20T06:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
    "temperature": 4.1,
    "humidity": 100.0,
-   "wind_speed": 0.0,
-   "wind_gust": 4.7,
-   "wind_direction": 0.0,
+   "wind_speed": 2.5,
+   "wind_gust": 5.4,
+   "wind_direction": 51.0,
    "precipitation": 0.0,
-   "pressure": 924.3
+   "pressure": 924.6
   }
  },
  "weather_now_model": {
@@ -42,14 +42,14 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-20T05:45",
-   "temperature": 6.3,
-   "apparent_temperature": 5.1,
-   "humidity": 97,
+   "time": "2026-10-20T06:45",
+   "temperature": 5.9,
+   "apparent_temperature": 4.7,
+   "humidity": 100,
    "weather_code": 45,
-   "wind_speed": 0.8,
-   "wind_gust": 1.4,
-   "wind_direction": 207,
+   "wind_speed": 1.1,
+   "wind_gust": 1.1,
+   "wind_direction": 252,
    "precipitation": 0.0,
    "uv": 0.0
   }
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-20T05:00",
-    "temperature": 6.6,
-    "humidity": 96,
-    "apparent_temperature": 5.4,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 45,
-    "wind_speed": 1.1,
-    "uv": 0.0
-   },
    {
     "time": "2026-10-20T06:00",
     "temperature": 6.2,
@@ -306,9 +295,9 @@
   },
   "error": null,
   "data": {
-   "time": "2026-10-20T05:00:00+02:00",
+   "time": "2026-10-20T06:00:00+02:00",
    "level_m": 1.31,
-   "flow_m3s": 6.14,
+   "flow_m3s": 6.05,
    "yesterday_flow_m3s": 5.74,
    "trend": "steady"
   }
@@ -337,7 +326,7 @@
     "weather_code": 3,
     "temperature_max": 14.5,
     "temperature_min": 6.6,
-    "precipitation_probability": 5,
+    "precipitation_probability": 3,
     "precipitation": 0.1,
     "uv_max": 4.45,
     "sunrise": "2026-10-21T08:40",
@@ -370,7 +359,7 @@
     "weather_code": 61,
     "temperature_max": 14.3,
     "temperature_min": 4.2,
-    "precipitation_probability": 0,
+    "precipitation_probability": 2,
     "precipitation": 0.0,
     "uv_max": 4.25,
     "sunrise": "2026-10-24T08:44",
@@ -381,7 +370,7 @@
     "weather_code": 3,
     "temperature_max": 18.5,
     "temperature_min": 9.3,
-    "precipitation_probability": 13,
+    "precipitation_probability": 3,
     "precipitation": 0.0,
     "uv_max": 4.05,
     "sunrise": "2026-10-25T08:45",
@@ -392,7 +381,7 @@
     "weather_code": 3,
     "temperature_max": 20.3,
     "temperature_min": 11.4,
-    "precipitation_probability": 13,
+    "precipitation_probability": 9,
     "precipitation": 0.0,
     "uv_max": 4.0,
     "sunrise": "2026-10-26T08:46",
