@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-20T17:50:57+02:00",
+ "generated_at": "2026-10-20T18:50:59+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -21,7 +21,7 @@
  "data": {
   "date": "2026-10-20",
   "threshold": 3,
-  "now": 2.6,
+  "now": 1.6,
   "now_level": "low",
   "max": 3.5,
   "max_time": "14:00",
