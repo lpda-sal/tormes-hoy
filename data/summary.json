@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-21T06:51:08+02:00",
+ "generated_at": "2026-10-21T07:49:24+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-21T06:51:08+02:00",
+  "fetched_at": "2026-10-21T07:49:24+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-21T06:00:00+02:00",
+   "time": "2026-10-21T07:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 6.6,
+   "temperature": 7.5,
    "humidity": 89.0,
-   "wind_speed": 5.4,
-   "wind_gust": 11.9,
-   "wind_direction": 225.0,
+   "wind_speed": 4.7,
+   "wind_gust": 12.2,
+   "wind_direction": 269.0,
    "precipitation": 0.0,
-   "pressure": 930.6
+   "pressure": 931.2
   }
  },
  "weather_now_model": {
@@ -42,14 +42,14 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-21T06:45",
-   "temperature": 7.1,
-   "apparent_temperature": 4.4,
+   "time": "2026-10-21T07:45",
+   "temperature": 7.5,
+   "apparent_temperature": 5.0,
    "humidity": 83,
    "weather_code": 3,
-   "wind_speed": 9.4,
-   "wind_gust": 16.2,
-   "wind_direction": 230,
+   "wind_speed": 9.1,
+   "wind_gust": 16.6,
+   "wind_direction": 236,
    "precipitation": 0.0,
    "uv": 0.0
   }
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-21T06:00",
-    "temperature": 6.7,
-    "humidity": 84,
-    "apparent_temperature": 4.1,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 2,
-    "wind_speed": 8.4,
-    "uv": 0.0
-   },
    {
     "time": "2026-10-21T07:00",
     "temperature": 7.3,
@@ -295,9 +284,9 @@
   },
   "error": null,
   "data": {
-   "time": "2026-10-21T06:00:00+02:00",
+   "time": "2026-10-21T07:00:00+02:00",
    "level_m": 1.31,
-   "flow_m3s": 6.01,
+   "flow_m3s": 6.05,
    "yesterday_flow_m3s": 6.33,
    "trend": "steady"
   }
