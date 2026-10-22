@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-22T15:58:23+02:00",
+ "generated_at": "2026-10-22T16:52:48+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,7 +19,7 @@
   "station": "EA087"
  },
  "current": {
-  "status": "ok",
+  "status": "stale",
   "source": {
    "name": "chd",
    "label": "CHD (SAIH Duero)",
@@ -27,7 +27,7 @@
    "kind": "provisional"
   },
   "fetched_at": "2026-10-22T15:58:23+02:00",
-  "error": null,
+  "error": "GET https://www.saihduero.es/risr/EA087 failed: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.saihduero.es'. (_ssl.c:1000)>",
   "data": {
    "time": "2026-10-22T15:00:00+02:00",
    "level_m": 1.3,
