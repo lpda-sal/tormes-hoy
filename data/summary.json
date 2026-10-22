@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-23T00:48:11+02:00",
+ "generated_at": "2026-10-23T01:44:54+02:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-23T00:48:11+02:00",
+  "fetched_at": "2026-10-23T01:44:54+02:00",
   "error": null,
   "data": {
-   "time": "2026-10-23T00:00:00+02:00",
+   "time": "2026-10-23T01:00:00+02:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 10.7,
-   "humidity": 69.0,
-   "wind_speed": 14.0,
-   "wind_gust": 32.0,
-   "wind_direction": 272.0,
+   "temperature": 10.0,
+   "humidity": 74.0,
+   "wind_speed": 9.7,
+   "wind_gust": 26.6,
+   "wind_direction": 265.0,
    "precipitation": 0.0,
-   "pressure": 934.8
+   "pressure": 935.0
   }
  },
  "weather_now_model": {
@@ -42,14 +42,14 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-23T00:45",
-   "temperature": 9.7,
-   "apparent_temperature": 6.0,
-   "humidity": 58,
+   "time": "2026-10-23T01:30",
+   "temperature": 9.4,
+   "apparent_temperature": 5.6,
+   "humidity": 59,
    "weather_code": 3,
-   "wind_speed": 12.6,
-   "wind_gust": 23.4,
-   "wind_direction": 243,
+   "wind_speed": 13.9,
+   "wind_gust": 26.6,
+   "wind_direction": 239,
    "precipitation": 0.0,
    "uv": 0.0
   }
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-23T00:00",
-    "temperature": 10.0,
-    "humidity": 61,
-    "apparent_temperature": 6.6,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 3,
-    "wind_speed": 11.6,
-    "uv": 0.0
-   },
    {
     "time": "2026-10-23T01:00",
     "temperature": 9.6,
@@ -425,7 +414,7 @@
     "weather_code": 3,
     "temperature_max": 17.5,
     "temperature_min": 7.2,
-    "precipitation_probability": 8,
+    "precipitation_probability": 2,
     "precipitation": 0.0,
     "uv_max": 4.15,
     "sunrise": "2026-10-27T08:47",
@@ -436,7 +425,7 @@
     "weather_code": 45,
     "temperature_max": 20.4,
     "temperature_min": 5.2,
-    "precipitation_probability": 10,
+    "precipitation_probability": 2,
     "precipitation": 0.0,
     "uv_max": 3.5,
     "sunrise": "2026-10-28T08:48",
@@ -447,7 +436,7 @@
     "weather_code": 61,
     "temperature_max": 20.7,
     "temperature_min": 11.1,
-    "precipitation_probability": 0,
+    "precipitation_probability": 2,
     "precipitation": 1.5,
     "uv_max": 3.6,
     "sunrise": "2026-10-29T08:49",
