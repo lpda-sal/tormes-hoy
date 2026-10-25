@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-25T14:46:41+01:00",
+ "generated_at": "2026-10-25T15:47:44+01:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-25T14:46:41+01:00",
+  "fetched_at": "2026-10-25T15:47:44+01:00",
   "error": null,
   "data": {
-   "time": "2026-10-25T14:00:00+01:00",
+   "time": "2026-10-25T15:00:00+01:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 18.3,
-   "humidity": 58.0,
-   "wind_speed": 14.8,
-   "wind_gust": 30.2,
-   "wind_direction": 280.0,
+   "temperature": 19.0,
+   "humidity": 55.0,
+   "wind_speed": 14.0,
+   "wind_gust": 24.5,
+   "wind_direction": 267.0,
    "precipitation": 0.0,
-   "pressure": 935.6
+   "pressure": 934.8
   }
  },
  "weather_now_model": {
@@ -42,16 +42,16 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-25T14:45",
-   "temperature": 19.1,
-   "apparent_temperature": 17.0,
-   "humidity": 52,
+   "time": "2026-10-25T15:45",
+   "temperature": 19.3,
+   "apparent_temperature": 17.2,
+   "humidity": 51,
    "weather_code": 0,
-   "wind_speed": 13.1,
-   "wind_gust": 26.3,
+   "wind_speed": 12.8,
+   "wind_gust": 24.1,
    "wind_direction": 286,
    "precipitation": 0.0,
-   "uv": 3.75
+   "uv": 2.7
   }
  },
  "today": {
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-25T14:00",
-    "temperature": 18.5,
-    "humidity": 54,
-    "apparent_temperature": 16.6,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 1,
-    "wind_speed": 14.1,
-    "uv": 4.35
-   },
    {
     "time": "2026-10-25T15:00",
     "temperature": 19.2,
@@ -184,7 +173,7 @@
   "data": {
    "date": "2026-10-25",
    "threshold": 3,
-   "now": 4.35,
+   "now": 3.85,
    "now_level": "moderate",
    "max": 4.35,
    "max_time": "14:00",
