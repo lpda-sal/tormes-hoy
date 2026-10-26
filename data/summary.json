@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-26T21:53:14+01:00",
+ "generated_at": "2026-10-26T22:50:00+01:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-26T21:53:14+01:00",
+  "fetched_at": "2026-10-26T22:50:00+01:00",
   "error": null,
   "data": {
-   "time": "2026-10-26T21:00:00+01:00",
+   "time": "2026-10-26T22:00:00+01:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 11.4,
-   "humidity": 68.0,
-   "wind_speed": 4.7,
-   "wind_gust": 9.0,
-   "wind_direction": 63.0,
+   "temperature": 9.4,
+   "humidity": 84.0,
+   "wind_speed": 3.2,
+   "wind_gust": 7.9,
+   "wind_direction": 39.0,
    "precipitation": 0.0,
-   "pressure": 930.5
+   "pressure": 930.3
   }
  },
  "weather_now_model": {
@@ -42,14 +42,14 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-26T21:45",
-   "temperature": 14.1,
-   "apparent_temperature": 11.7,
-   "humidity": 45,
+   "time": "2026-10-26T22:45",
+   "temperature": 12.4,
+   "apparent_temperature": 10.1,
+   "humidity": 50,
    "weather_code": 0,
-   "wind_speed": 4.7,
-   "wind_gust": 8.3,
-   "wind_direction": 212,
+   "wind_speed": 3.6,
+   "wind_gust": 6.1,
+   "wind_direction": 186,
    "precipitation": 0.0,
    "uv": 0.0
   }
@@ -63,36 +63,25 @@
   },
   "data": [
    {
-    "time": "2026-10-26T21:00",
-    "temperature": 15.0,
-    "humidity": 42,
-    "apparent_temperature": 12.4,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 0,
-    "wind_speed": 5.4,
-    "uv": 0.0
-   },
-   {
     "time": "2026-10-26T22:00",
-    "temperature": 13.8,
-    "humidity": 46,
-    "apparent_temperature": 11.4,
+    "temperature": 13.1,
+    "humidity": 48,
+    "apparent_temperature": 10.8,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "weather_code": 0,
-    "wind_speed": 4.5,
+    "wind_speed": 3.9,
     "uv": 0.0
    },
    {
     "time": "2026-10-26T23:00",
-    "temperature": 12.8,
+    "temperature": 12.2,
     "humidity": 51,
-    "apparent_temperature": 10.6,
+    "apparent_temperature": 9.9,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "weather_code": 0,
-    "wind_speed": 3.7,
+    "wind_speed": 3.6,
     "uv": 0.0
    }
   ]
@@ -159,8 +148,8 @@
    {
     "date": "2026-10-27",
     "weather_code": 3,
-    "temperature_max": 21.0,
-    "temperature_min": 8.4,
+    "temperature_max": 20.9,
+    "temperature_min": 8.0,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "uv_max": 4.2,
@@ -170,8 +159,8 @@
    {
     "date": "2026-10-28",
     "weather_code": 45,
-    "temperature_max": 20.4,
-    "temperature_min": 4.4,
+    "temperature_max": 20.7,
+    "temperature_min": 3.6,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "uv_max": 4.15,
@@ -181,8 +170,8 @@
    {
     "date": "2026-10-29",
     "weather_code": 3,
-    "temperature_max": 22.0,
-    "temperature_min": 2.5,
+    "temperature_max": 21.7,
+    "temperature_min": 1.7,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "uv_max": 3.75,
@@ -192,8 +181,8 @@
    {
     "date": "2026-10-30",
     "weather_code": 3,
-    "temperature_max": 21.6,
-    "temperature_min": 6.6,
+    "temperature_max": 20.8,
+    "temperature_min": 4.7,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "uv_max": 4.05,
@@ -204,7 +193,7 @@
     "date": "2026-10-31",
     "weather_code": 3,
     "temperature_max": 21.2,
-    "temperature_min": 4.3,
+    "temperature_min": 3.5,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "uv_max": 3.95,
