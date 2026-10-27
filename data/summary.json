@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-27T14:07:20+01:00",
+ "generated_at": "2026-10-27T15:09:34+01:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-27T14:07:20+01:00",
+  "fetched_at": "2026-10-27T15:09:34+01:00",
   "error": null,
   "data": {
-   "time": "2026-10-27T13:00:00+01:00",
+   "time": "2026-10-27T14:00:00+01:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 18.8,
-   "humidity": 52.0,
-   "wind_speed": 9.7,
-   "wind_gust": 16.6,
-   "wind_direction": 241.0,
+   "temperature": 19.1,
+   "humidity": 48.0,
+   "wind_speed": 11.9,
+   "wind_gust": 23.0,
+   "wind_direction": 295.0,
    "precipitation": 0.0,
-   "pressure": 932.6
+   "pressure": 932.3
   }
  },
  "weather_now_model": {
@@ -42,16 +42,16 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-27T14:00",
-   "temperature": 19.4,
-   "apparent_temperature": 17.8,
-   "humidity": 46,
+   "time": "2026-10-27T15:00",
+   "temperature": 19.9,
+   "apparent_temperature": 17.7,
+   "humidity": 41,
    "weather_code": 0,
-   "wind_speed": 8.4,
-   "wind_gust": 17.6,
-   "wind_direction": 290,
+   "wind_speed": 8.7,
+   "wind_gust": 18.0,
+   "wind_direction": 275,
    "precipitation": 0.0,
-   "uv": 4.1
+   "uv": 3.4
   }
  },
  "today": {
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-27T14:00",
-    "temperature": 19.4,
-    "humidity": 46,
-    "apparent_temperature": 17.9,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 0,
-    "wind_speed": 8.4,
-    "uv": 4.2
-   },
    {
     "time": "2026-10-27T15:00",
     "temperature": 19.9,
@@ -184,7 +173,7 @@
   "data": {
    "date": "2026-10-27",
    "threshold": 3,
-   "now": 4.2,
+   "now": 3.7,
    "now_level": "moderate",
    "max": 4.2,
    "max_time": "14:00",
