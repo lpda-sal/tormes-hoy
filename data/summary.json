@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-28T02:20:00+01:00",
+ "generated_at": "2026-10-28T03:59:58+01:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-28T02:20:00+01:00",
+  "fetched_at": "2026-10-28T03:59:58+01:00",
   "error": null,
   "data": {
-   "time": "2026-10-28T01:00:00+01:00",
+   "time": "2026-10-28T03:00:00+01:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 7.2,
-   "humidity": 93.0,
-   "wind_speed": 4.3,
-   "wind_gust": 6.8,
-   "wind_direction": 84.0,
+   "temperature": 6.1,
+   "humidity": 98.0,
+   "wind_speed": 4.0,
+   "wind_gust": 5.4,
+   "wind_direction": 98.0,
    "precipitation": 0.0,
-   "pressure": 935.1
+   "pressure": 935.3
   }
  },
  "weather_now_model": {
@@ -42,14 +42,14 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-28T02:15",
-   "temperature": 6.4,
-   "apparent_temperature": 5.0,
-   "humidity": 98,
+   "time": "2026-10-28T03:45",
+   "temperature": 6.1,
+   "apparent_temperature": 4.6,
+   "humidity": 99,
    "weather_code": 45,
-   "wind_speed": 2.8,
-   "wind_gust": 4.3,
-   "wind_direction": 140,
+   "wind_speed": 3.0,
+   "wind_gust": 5.0,
+   "wind_direction": 76,
    "precipitation": 0.0,
    "uv": 0.0
   }
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-28T02:00",
-    "temperature": 6.5,
-    "humidity": 98,
-    "apparent_temperature": 5.2,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 45,
-    "wind_speed": 2.9,
-    "uv": 0.0
-   },
    {
     "time": "2026-10-28T03:00",
     "temperature": 6.2,
