@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-10-31T16:51:40+01:00",
+ "generated_at": "2026-10-31T17:53:14+01:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-10-31T16:51:40+01:00",
+  "fetched_at": "2026-10-31T17:53:14+01:00",
   "error": null,
   "data": {
-   "time": "2026-10-31T16:00:00+01:00",
+   "time": "2026-10-31T17:00:00+01:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 21.0,
+   "temperature": 20.5,
    "humidity": 36.0,
    "wind_speed": 6.8,
-   "wind_gust": 15.8,
-   "wind_direction": 42.0,
+   "wind_gust": 14.8,
+   "wind_direction": 53.0,
    "precipitation": 0.0,
-   "pressure": 931.3
+   "pressure": 931.4
   }
  },
  "weather_now_model": {
@@ -42,16 +42,16 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-10-31T16:45",
-   "temperature": 19.9,
-   "apparent_temperature": 16.8,
-   "humidity": 33,
+   "time": "2026-10-31T17:45",
+   "temperature": 18.4,
+   "apparent_temperature": 15.6,
+   "humidity": 37,
    "weather_code": 0,
-   "wind_speed": 10.4,
-   "wind_gust": 19.4,
-   "wind_direction": 34,
+   "wind_speed": 8.7,
+   "wind_gust": 19.1,
+   "wind_direction": 38,
    "precipitation": 0.0,
-   "uv": 1.3
+   "uv": 0.35
   }
  },
  "today": {
@@ -62,17 +62,6 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": [
-   {
-    "time": "2026-10-31T16:00",
-    "temperature": 20.2,
-    "humidity": 33,
-    "apparent_temperature": 17.3,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 0,
-    "wind_speed": 9.5,
-    "uv": 2.6
-   },
    {
     "time": "2026-10-31T17:00",
     "temperature": 19.6,
@@ -162,7 +151,7 @@
   "data": {
    "date": "2026-10-31",
    "threshold": 3,
-   "now": 2.6,
+   "now": 1.45,
    "now_level": "low",
    "max": 4.0,
    "max_time": "14:00",
@@ -249,7 +238,7 @@
     "weather_code": 1,
     "temperature_max": 12.3,
     "temperature_min": -1.1,
-    "precipitation_probability": 3,
+    "precipitation_probability": 0,
     "precipitation": 0.0,
     "uv_max": 3.3,
     "sunrise": "2026-11-04T07:56",
@@ -258,9 +247,9 @@
    {
     "date": "2026-11-05",
     "weather_code": 3,
-    "temperature_max": 16.5,
+    "temperature_max": 16.0,
     "temperature_min": -4.2,
-    "precipitation_probability": 4,
+    "precipitation_probability": 3,
     "precipitation": 0.0,
     "uv_max": 3.45,
     "sunrise": "2026-11-05T07:58",
@@ -268,11 +257,11 @@
    },
    {
     "date": "2026-11-06",
-    "weather_code": 45,
-    "temperature_max": 17.2,
-    "temperature_min": 0.0,
-    "precipitation_probability": 41,
-    "precipitation": 0.0,
+    "weather_code": 61,
+    "temperature_max": 17.5,
+    "temperature_min": 2.7,
+    "precipitation_probability": 36,
+    "precipitation": 1.8,
     "uv_max": 3.45,
     "sunrise": "2026-11-06T07:59",
     "sunset": "2026-11-06T18:12"
