@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-11-03T18:15:11+01:00",
+ "generated_at": "2026-11-03T19:04:36+01:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-11-03T18:15:11+01:00",
+  "fetched_at": "2026-11-03T19:04:36+01:00",
   "error": null,
   "data": {
-   "time": "2026-11-03T17:00:00+01:00",
+   "time": "2026-11-03T18:00:00+01:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 11.3,
-   "humidity": 39.0,
-   "wind_speed": 13.3,
-   "wind_gust": 27.4,
-   "wind_direction": 54.0,
+   "temperature": 10.1,
+   "humidity": 43.0,
+   "wind_speed": 10.4,
+   "wind_gust": 25.2,
+   "wind_direction": 67.0,
    "precipitation": 0.0,
-   "pressure": 927.0
+   "pressure": 926.9
   }
  },
  "weather_now_model": {
@@ -42,16 +42,16 @@
    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
   },
   "data": {
-   "time": "2026-11-03T18:15",
-   "temperature": 9.9,
-   "apparent_temperature": 6.1,
-   "humidity": 46,
-   "weather_code": 1,
-   "wind_speed": 10.1,
-   "wind_gust": 18.4,
-   "wind_direction": 63,
+   "time": "2026-11-03T19:00",
+   "temperature": 7.7,
+   "apparent_temperature": 4.2,
+   "humidity": 55,
+   "weather_code": 0,
+   "wind_speed": 8.7,
+   "wind_gust": 15.5,
+   "wind_direction": 48,
    "precipitation": 0.0,
-   "uv": 0.05
+   "uv": 0.0
   }
  },
  "today": {
@@ -63,65 +63,54 @@
   },
   "data": [
    {
-    "time": "2026-11-03T18:00",
-    "temperature": 10.5,
-    "humidity": 44,
-    "apparent_temperature": 6.6,
-    "precipitation_probability": 0,
-    "precipitation": 0.0,
-    "weather_code": 1,
-    "wind_speed": 11.0,
-    "uv": 0.4
-   },
-   {
     "time": "2026-11-03T19:00",
-    "temperature": 7.8,
-    "humidity": 53,
-    "apparent_temperature": 4.1,
+    "temperature": 7.7,
+    "humidity": 55,
+    "apparent_temperature": 4.2,
     "precipitation_probability": 0,
     "precipitation": 0.0,
-    "weather_code": 1,
-    "wind_speed": 10.2,
+    "weather_code": 0,
+    "wind_speed": 8.7,
     "uv": 0.0
    },
    {
     "time": "2026-11-03T20:00",
-    "temperature": 6.7,
+    "temperature": 6.6,
     "humidity": 63,
-    "apparent_temperature": 2.4,
+    "apparent_temperature": 2.6,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "weather_code": 0,
-    "wind_speed": 14.9,
+    "wind_speed": 13.1,
     "uv": 0.0
    },
    {
     "time": "2026-11-03T21:00",
-    "temperature": 5.7,
-    "humidity": 66,
-    "apparent_temperature": 1.5,
+    "temperature": 5.8,
+    "humidity": 68,
+    "apparent_temperature": 1.6,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "weather_code": 0,
-    "wind_speed": 14.7,
+    "wind_speed": 14.2,
     "uv": 0.0
    },
    {
     "time": "2026-11-03T22:00",
-    "temperature": 4.3,
+    "temperature": 4.7,
     "humidity": 73,
-    "apparent_temperature": 0.4,
+    "apparent_temperature": 0.7,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "weather_code": 0,
-    "wind_speed": 12.6,
+    "wind_speed": 13.2,
     "uv": 0.0
    },
    {
     "time": "2026-11-03T23:00",
-    "temperature": 3.2,
-    "humidity": 80,
-    "apparent_temperature": -0.7,
+    "temperature": 3.6,
+    "humidity": 79,
+    "apparent_temperature": -0.2,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "weather_code": 0,
@@ -140,7 +129,7 @@
   "data": {
    "date": "2026-11-03",
    "threshold": 3,
-   "now": 0.4,
+   "now": 0.0,
    "now_level": "low",
    "max": 3.7,
    "max_time": "14:00",
@@ -181,7 +170,7 @@
    {
     "date": "2026-11-03",
     "weather_code": 2,
-    "temperature_max": 11.9,
+    "temperature_max": 12.0,
     "temperature_min": 0.7,
     "precipitation_probability": 0,
     "precipitation": 0.0,
@@ -193,7 +182,7 @@
     "date": "2026-11-04",
     "weather_code": 1,
     "temperature_max": 11.5,
-    "temperature_min": -2.7,
+    "temperature_min": -2.5,
     "precipitation_probability": 0,
     "precipitation": 0.0,
     "uv_max": 3.7,
