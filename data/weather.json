@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-11-04T07:19:46+01:00",
+ "generated_at": "2026-11-04T09:27:25+01:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -19,19 +19,19 @@
    "label": "AEMET",
    "attribution": "© AEMET. Información elaborada por AEMET"
   },
-  "fetched_at": "2026-11-04T07:19:46+01:00",
+  "fetched_at": "2026-11-04T09:27:25+01:00",
   "error": null,
   "data": {
-   "time": "2026-11-04T06:00:00+01:00",
+   "time": "2026-11-04T08:00:00+01:00",
    "station": "2870X",
    "station_name": "SALAMANCA - HUERTOS URBANOS",
-   "temperature": 0.9,
-   "humidity": 84.0,
-   "wind_speed": 5.8,
-   "wind_gust": 16.6,
-   "wind_direction": 58.0,
+   "temperature": -0.3,
+   "humidity": 85.0,
+   "wind_speed": 4.7,
+   "wind_gust": 12.6,
+   "wind_direction": 91.0,
    "precipitation": 0.0,
-   "pressure": 925.5
+   "pressure": 925.3
   }
  },
  "forecasts": {
@@ -42,80 +42,26 @@
     "label": "AEMET",
     "attribution": "© AEMET. Información elaborada por AEMET"
    },
-   "fetched_at": "2026-11-04T07:19:46+01:00",
+   "fetched_at": "2026-11-04T09:27:25+01:00",
    "error": null,
    "data": {
     "hourly": [
      {
-      "time": "2026-11-03T20:00",
-      "temperature": 7.0,
-      "humidity": 53.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 10.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-11-03T21:00",
-      "temperature": 6.0,
-      "humidity": 57.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 9.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-11-03T22:00",
-      "temperature": 4.0,
-      "humidity": 66.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 13.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-11-03T23:00",
-      "temperature": 3.0,
-      "humidity": 82.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 14.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-11-04T00:00",
-      "temperature": 2.0,
-      "humidity": 89.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 14.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-11-04T01:00",
-      "temperature": 1.0,
-      "humidity": 95.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 12.0,
-      "sky": "Despejado"
-     },
-     {
       "time": "2026-11-04T02:00",
-      "temperature": 0.0,
-      "humidity": 98.0,
+      "temperature": 1.0,
+      "humidity": 96.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 9.0,
+      "wind_speed": 8.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-04T03:00",
       "temperature": 0.0,
-      "humidity": 100.0,
+      "humidity": 99.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 9.0,
+      "wind_speed": 8.0,
       "sky": "Despejado"
      },
      {
@@ -124,12 +70,12 @@
       "humidity": 100.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 10.0,
+      "wind_speed": 8.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-04T05:00",
-      "temperature": -1.0,
+      "temperature": -2.0,
       "humidity": 100.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
@@ -142,16 +88,16 @@
       "humidity": 100.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 8.0,
+      "wind_speed": 9.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-04T07:00",
-      "temperature": -2.0,
+      "temperature": -3.0,
       "humidity": 100.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 7.0,
+      "wind_speed": 8.0,
       "sky": "Despejado"
      },
      {
@@ -165,7 +111,7 @@
      },
      {
       "time": "2026-11-04T09:00",
-      "temperature": 0.0,
+      "temperature": -1.0,
       "humidity": 97.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
@@ -183,35 +129,35 @@
      },
      {
       "time": "2026-11-04T11:00",
-      "temperature": 5.0,
-      "humidity": 67.0,
+      "temperature": 4.0,
+      "humidity": 68.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 10.0,
+      "sky": "Despejado"
+     },
+     {
+      "time": "2026-11-04T12:00",
+      "temperature": 7.0,
+      "humidity": 55.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 11.0,
       "sky": "Despejado"
      },
      {
-      "time": "2026-11-04T12:00",
-      "temperature": 7.0,
-      "humidity": 54.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 12.0,
-      "sky": "Despejado"
-     },
-     {
       "time": "2026-11-04T13:00",
-      "temperature": 9.0,
+      "temperature": 10.0,
       "humidity": 45.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 12.0,
+      "wind_speed": 11.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-04T14:00",
-      "temperature": 10.0,
-      "humidity": 40.0,
+      "temperature": 11.0,
+      "humidity": 41.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 10.0,
@@ -219,8 +165,8 @@
      },
      {
       "time": "2026-11-04T15:00",
-      "temperature": 11.0,
-      "humidity": 36.0,
+      "temperature": 12.0,
+      "humidity": 37.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 9.0,
@@ -228,8 +174,8 @@
      },
      {
       "time": "2026-11-04T16:00",
-      "temperature": 12.0,
-      "humidity": 32.0,
+      "temperature": 13.0,
+      "humidity": 33.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 9.0,
@@ -247,28 +193,28 @@
      {
       "time": "2026-11-04T18:00",
       "temperature": 9.0,
-      "humidity": 38.0,
+      "humidity": 39.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 5.0,
+      "wind_speed": 6.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-04T19:00",
-      "temperature": 7.0,
+      "temperature": 8.0,
       "humidity": 43.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 6.0,
+      "wind_speed": 4.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-04T20:00",
       "temperature": 6.0,
-      "humidity": 47.0,
+      "humidity": 48.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 6.0,
+      "wind_speed": 5.0,
       "sky": "Despejado"
      },
      {
@@ -277,7 +223,7 @@
       "humidity": 52.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 4.0,
+      "wind_speed": 3.0,
       "sky": "Despejado"
      },
      {
@@ -286,7 +232,7 @@
       "humidity": 59.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 4.0,
+      "wind_speed": 5.0,
       "sky": "Despejado"
      },
      {
@@ -300,9 +246,9 @@
      },
      {
       "time": "2026-11-05T00:00",
-      "temperature": 1.0,
-      "humidity": 64.0,
-      "precipitation_probability": null,
+      "temperature": 2.0,
+      "humidity": 65.0,
+      "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 4.0,
       "sky": "Despejado"
@@ -310,34 +256,34 @@
      {
       "time": "2026-11-05T01:00",
       "temperature": 1.0,
-      "humidity": 66.0,
+      "humidity": 68.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 4.0,
+      "wind_speed": 3.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-05T02:00",
       "temperature": 0.0,
-      "humidity": 68.0,
+      "humidity": 71.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 4.0,
+      "wind_speed": 3.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-05T03:00",
       "temperature": 0.0,
-      "humidity": 70.0,
+      "humidity": 73.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 2.0,
+      "wind_speed": 3.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-05T04:00",
       "temperature": -1.0,
-      "humidity": 73.0,
+      "humidity": 75.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 3.0,
@@ -346,7 +292,7 @@
      {
       "time": "2026-11-05T05:00",
       "temperature": -1.0,
-      "humidity": 76.0,
+      "humidity": 78.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 2.0,
@@ -355,23 +301,14 @@
      {
       "time": "2026-11-05T06:00",
       "temperature": -2.0,
-      "humidity": 79.0,
+      "humidity": 81.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 2.0,
+      "wind_speed": 4.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-05T07:00",
-      "temperature": -2.0,
-      "humidity": 83.0,
-      "precipitation_probability": 0.0,
-      "precipitation": 0.0,
-      "wind_speed": 3.0,
-      "sky": "Despejado"
-     },
-     {
-      "time": "2026-11-05T08:00",
       "temperature": -2.0,
       "humidity": 85.0,
       "precipitation_probability": 0.0,
@@ -380,9 +317,18 @@
       "sky": "Despejado"
      },
      {
+      "time": "2026-11-05T08:00",
+      "temperature": 0.0,
+      "humidity": 87.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 3.0,
+      "sky": "Despejado"
+     },
+     {
       "time": "2026-11-05T09:00",
-      "temperature": 1.0,
-      "humidity": 66.0,
+      "temperature": 3.0,
+      "humidity": 67.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 3.0,
@@ -391,7 +337,7 @@
      {
       "time": "2026-11-05T10:00",
       "temperature": 5.0,
-      "humidity": 51.0,
+      "humidity": 53.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 3.0,
@@ -400,19 +346,19 @@
      {
       "time": "2026-11-05T11:00",
       "temperature": 8.0,
-      "humidity": 43.0,
+      "humidity": 44.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 3.0,
+      "wind_speed": 2.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-05T12:00",
-      "temperature": 10.0,
-      "humidity": 36.0,
+      "temperature": 11.0,
+      "humidity": 38.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 1.0,
+      "wind_speed": 5.0,
       "sky": "Despejado"
      },
      {
@@ -421,16 +367,16 @@
       "humidity": 32.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 6.0,
+      "wind_speed": 11.0,
       "sky": "Despejado"
      },
      {
       "time": "2026-11-05T14:00",
-      "temperature": 13.0,
-      "humidity": 30.0,
+      "temperature": 14.0,
+      "humidity": 29.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 11.0,
+      "wind_speed": 13.0,
       "sky": "Despejado"
      },
      {
@@ -439,22 +385,22 @@
       "humidity": 27.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 11.0,
-      "sky": "Despejado"
+      "wind_speed": 13.0,
+      "sky": "Poco nuboso"
      },
      {
       "time": "2026-11-05T16:00",
       "temperature": 15.0,
-      "humidity": 25.0,
+      "humidity": 24.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
-      "wind_speed": 12.0,
-      "sky": "Despejado"
+      "wind_speed": 13.0,
+      "sky": "Poco nuboso"
      },
      {
       "time": "2026-11-05T17:00",
       "temperature": 13.0,
-      "humidity": 26.0,
+      "humidity": 25.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 12.0,
@@ -463,22 +409,68 @@
      {
       "time": "2026-11-05T18:00",
       "temperature": 11.0,
-      "humidity": 29.0,
+      "humidity": 28.0,
       "precipitation_probability": 0.0,
       "precipitation": 0.0,
       "wind_speed": 9.0,
       "sky": "Despejado"
+     },
+     {
+      "time": "2026-11-05T19:00",
+      "temperature": 10.0,
+      "humidity": 35.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 9.0,
+      "sky": "Despejado"
+     },
+     {
+      "time": "2026-11-05T20:00",
+      "temperature": 8.0,
+      "humidity": 50.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 8.0,
+      "sky": "Despejado"
+     },
+     {
+      "time": "2026-11-05T21:00",
+      "temperature": 6.0,
+      "humidity": 56.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 5.0,
+      "sky": "Despejado"
+     },
+     {
+      "time": "2026-11-05T22:00",
+      "temperature": 4.0,
+      "humidity": 65.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 6.0,
+      "sky": "Despejado"
+     },
+     {
+      "time": "2026-11-05T23:00",
+      "temperature": 3.0,
+      "humidity": 70.0,
+      "precipitation_probability": 0.0,
+      "precipitation": 0.0,
+      "wind_speed": 6.0,
+      "sky": "Despejado"
+     },
+     {
+      "time": "2026-11-06T00:00",
+      "temperature": 3.0,
+      "humidity": 74.0,
+      "precipitation_probability": null,
+      "precipitation": 0.0,
+      "wind_speed": 5.0,
+      "sky": "Despejado"
      }
     ],
     "daily": [
-     {
-      "date": "2026-11-03",
-      "temperature_max": 12.0,
-      "temperature_min": 0.0,
-      "precipitation_probability": 0.0,
-      "sky": null,
-      "uv_max": 2.0
-     },
      {
       "date": "2026-11-04",
       "temperature_max": 12.0,
@@ -499,32 +491,40 @@
       "date": "2026-11-06",
       "temperature_max": 17.0,
       "temperature_min": -2.0,
-      "precipitation_probability": 70.0,
-      "sky": "Intervalos nubosos con lluvia",
+      "precipitation_probability": 65.0,
+      "sky": "Intervalos nubosos con lluvia escasa",
       "uv_max": 3.0
      },
      {
       "date": "2026-11-07",
-      "temperature_max": 18.0,
-      "temperature_min": 6.0,
+      "temperature_max": 20.0,
+      "temperature_min": 7.0,
       "precipitation_probability": 90.0,
-      "sky": "Nuboso con lluvia",
+      "sky": "Intervalos nubosos con lluvia",
       "uv_max": 3.0
      },
      {
       "date": "2026-11-08",
-      "temperature_max": 16.0,
+      "temperature_max": 19.0,
       "temperature_min": 5.0,
-      "precipitation_probability": 80.0,
+      "precipitation_probability": 90.0,
+      "sky": "Cubierto con lluvia",
+      "uv_max": 3.0
+     },
+     {
+      "date": "2026-11-09",
+      "temperature_max": 18.0,
+      "temperature_min": 10.0,
+      "precipitation_probability": 100.0,
       "sky": "Muy nuboso con lluvia",
       "uv_max": null
      },
      {
-      "date": "2026-11-09",
-      "temperature_max": 21.0,
+      "date": "2026-11-10",
+      "temperature_max": 17.0,
       "temperature_min": 8.0,
       "precipitation_probability": 100.0,
-      "sky": "Muy nuboso con lluvia",
+      "sky": "Nuboso con lluvia",
       "uv_max": null
      }
     ]
@@ -537,20 +537,20 @@
     "label": "Open-Meteo",
     "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
    },
-   "fetched_at": "2026-11-04T07:19:46+01:00",
+   "fetched_at": "2026-11-04T09:27:25+01:00",
    "error": null,
    "data": {
     "current": {
-     "time": "2026-11-04T07:15",
-     "temperature": -2.2,
-     "apparent_temperature": -5.5,
-     "humidity": 91,
+     "time": "2026-11-04T09:15",
+     "temperature": -1.0,
+     "apparent_temperature": -4.3,
+     "humidity": 89,
      "weather_code": 0,
-     "wind_speed": 5.0,
-     "wind_gust": 8.6,
-     "wind_direction": 60,
+     "wind_speed": 6.0,
+     "wind_gust": 14.8,
+     "wind_direction": 65,
      "precipitation": 0.0,
-     "uv": 0.0
+     "uv": 0.75
     },
     "hourly": [
      {
@@ -2490,284 +2490,284 @@
     "label": "Meteoblue",
     "attribution": "© meteoblue"
    },
-   "fetched_at": "2026-11-04T02:25:11+01:00",
+   "fetched_at": "2026-11-04T09:27:25+01:00",
    "error": null,
    "data": {
     "hourly": [
      {
       "time": "2026-11-04T00:00",
-      "temperature": 3.2,
-      "humidity": 71,
+      "temperature": 1.8,
+      "humidity": 90,
       "precipitation_probability": 0,
       "precipitation": 0.0,
       "wind_speed": 10.98,
-      "pictocode": 1
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T01:00",
-      "temperature": 2.0,
-      "humidity": 76,
+      "temperature": -0.2,
+      "humidity": 99,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 10.18,
-      "pictocode": 1
+      "wind_speed": 9.69,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T02:00",
-      "temperature": 1.57,
-      "humidity": 79,
+      "temperature": -1.73,
+      "humidity": 100,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 9.37,
-      "pictocode": 1
+      "wind_speed": 9.01,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T03:00",
-      "temperature": 1.33,
-      "humidity": 78,
+      "temperature": -2.73,
+      "humidity": 100,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 9.0,
-      "pictocode": 1
+      "wind_speed": 8.07,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T04:00",
-      "temperature": 1.21,
-      "humidity": 77,
+      "temperature": -3.33,
+      "humidity": 100,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 8.67,
-      "pictocode": 1
+      "wind_speed": 7.6,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T05:00",
-      "temperature": 1.19,
-      "humidity": 77,
+      "temperature": -3.87,
+      "humidity": 100,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 8.27,
-      "pictocode": 1
+      "wind_speed": 7.33,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T06:00",
-      "temperature": 1.25,
-      "humidity": 74,
+      "temperature": -4.43,
+      "humidity": 100,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 8.01,
-      "pictocode": 1
+      "wind_speed": 7.14,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T07:00",
-      "temperature": 1.34,
-      "humidity": 72,
+      "temperature": -5.3,
+      "humidity": 100,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 7.97,
-      "pictocode": 1
+      "wind_speed": 6.8,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T08:00",
-      "temperature": 1.55,
-      "humidity": 71,
+      "temperature": -4.59,
+      "humidity": 100,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 7.92,
-      "pictocode": 4
+      "wind_speed": 6.55,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T09:00",
-      "temperature": 1.84,
-      "humidity": 75,
+      "temperature": -3.65,
+      "humidity": 100,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 7.92,
-      "pictocode": 4
+      "wind_speed": 6.45,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T10:00",
-      "temperature": 2.6,
-      "humidity": 78,
+      "temperature": -2.28,
+      "humidity": 100,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 8.13,
-      "pictocode": 4
+      "wind_speed": 7.35,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T11:00",
-      "temperature": 3.77,
-      "humidity": 77,
+      "temperature": -0.61,
+      "humidity": 100,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 8.81,
-      "pictocode": 1
+      "wind_speed": 8.2,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T12:00",
-      "temperature": 5.38,
-      "humidity": 73,
+      "temperature": 1.09,
+      "humidity": 96,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 9.33,
-      "pictocode": 1
+      "wind_speed": 8.62,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T13:00",
-      "temperature": 6.75,
-      "humidity": 65,
+      "temperature": 2.5,
+      "humidity": 84,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 9.38,
-      "pictocode": 1
+      "wind_speed": 8.66,
+      "pictocode": 13
      },
      {
       "time": "2026-11-04T14:00",
-      "temperature": 7.68,
-      "humidity": 59,
+      "temperature": 3.49,
+      "humidity": 75,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 8.47,
+      "wind_speed": 7.86,
       "pictocode": 1
      },
      {
       "time": "2026-11-04T15:00",
-      "temperature": 8.04,
-      "humidity": 55,
+      "temperature": 4.04,
+      "humidity": 70,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 6.95,
+      "wind_speed": 6.55,
       "pictocode": 1
      },
      {
       "time": "2026-11-04T16:00",
-      "temperature": 8.0,
-      "humidity": 54,
+      "temperature": 4.59,
+      "humidity": 66,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 5.62,
+      "wind_speed": 5.34,
       "pictocode": 1
      },
      {
       "time": "2026-11-04T17:00",
-      "temperature": 7.94,
-      "humidity": 54,
+      "temperature": 5.22,
+      "humidity": 62,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 5.08,
+      "wind_speed": 4.64,
       "pictocode": 1
      },
      {
       "time": "2026-11-04T18:00",
-      "temperature": 7.88,
-      "humidity": 55,
+      "temperature": 5.95,
+      "humidity": 60,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 5.03,
+      "wind_speed": 4.6,
       "pictocode": 1
      },
      {
       "time": "2026-11-04T19:00",
-      "temperature": 7.51,
+      "temperature": 6.43,
       "humidity": 61,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 4.84,
+      "wind_speed": 4.81,
       "pictocode": 1
      },
      {
       "time": "2026-11-04T20:00",
-      "temperature": 6.99,
-      "humidity": 63,
+      "temperature": 6.72,
+      "humidity": 59,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 3.89,
+      "wind_speed": 3.92,
       "pictocode": 1
      },
      {
       "time": "2026-11-04T21:00",
-      "temperature": 6.36,
-      "humidity": 65,
+      "temperature": 6.85,
+      "humidity": 58,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.86,
+      "wind_speed": 2.81,
       "pictocode": 1
      },
      {
       "time": "2026-11-04T22:00",
-      "temperature": 5.64,
-      "humidity": 67,
+      "temperature": 5.73,
+      "humidity": 62,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.11,
+      "wind_speed": 2.18,
       "pictocode": 1
      },
      {
       "time": "2026-11-04T23:00",
-      "temperature": 4.89,
-      "humidity": 67,
+      "temperature": 5.09,
+      "humidity": 63,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 1.85,
+      "wind_speed": 2.08,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T00:00",
-      "temperature": 4.17,
-      "humidity": 70,
+      "temperature": 4.47,
+      "humidity": 64,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.05,
-      "pictocode": 4
+      "wind_speed": 2.24,
+      "pictocode": 1
      },
      {
       "time": "2026-11-05T01:00",
-      "temperature": 3.83,
-      "humidity": 69,
+      "temperature": 3.99,
+      "humidity": 67,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.4,
-      "pictocode": 4
+      "wind_speed": 2.49,
+      "pictocode": 1
      },
      {
       "time": "2026-11-05T02:00",
-      "temperature": 3.59,
-      "humidity": 70,
+      "temperature": 3.65,
+      "humidity": 66,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.41,
+      "wind_speed": 2.53,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T03:00",
-      "temperature": 3.39,
-      "humidity": 68,
+      "temperature": 3.43,
+      "humidity": 65,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.32,
+      "wind_speed": 2.36,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T04:00",
-      "temperature": 3.07,
-      "humidity": 68,
+      "temperature": 3.32,
+      "humidity": 64,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.37,
+      "wind_speed": 2.27,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T05:00",
-      "temperature": 2.91,
-      "humidity": 67,
+      "temperature": 3.33,
+      "humidity": 62,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.54,
+      "wind_speed": 2.55,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T06:00",
-      "temperature": 2.77,
-      "humidity": 64,
+      "temperature": 3.33,
+      "humidity": 59,
       "precipitation_probability": 0,
       "precipitation": 0.0,
       "wind_speed": 2.66,
@@ -2775,269 +2775,269 @@
      },
      {
       "time": "2026-11-05T07:00",
-      "temperature": 2.75,
-      "humidity": 62,
+      "temperature": 3.39,
+      "humidity": 58,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.89,
+      "wind_speed": 2.81,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T08:00",
-      "temperature": 3.07,
-      "humidity": 61,
+      "temperature": 3.61,
+      "humidity": 58,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.85,
+      "wind_speed": 2.73,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T09:00",
-      "temperature": 3.75,
-      "humidity": 66,
+      "temperature": 4.29,
+      "humidity": 60,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.32,
+      "wind_speed": 2.4,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T10:00",
-      "temperature": 5.1,
-      "humidity": 67,
+      "temperature": 5.48,
+      "humidity": 62,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 1.71,
+      "wind_speed": 1.76,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T11:00",
-      "temperature": 6.67,
-      "humidity": 63,
+      "temperature": 6.84,
+      "humidity": 60,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.51,
+      "wind_speed": 2.36,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T12:00",
-      "temperature": 8.36,
-      "humidity": 59,
+      "temperature": 8.04,
+      "humidity": 57,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 4.19,
+      "wind_speed": 3.54,
       "pictocode": 1
      },
      {
       "time": "2026-11-05T13:00",
-      "temperature": 9.39,
+      "temperature": 8.77,
       "humidity": 54,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 5.71,
-      "pictocode": 1
+      "wind_speed": 5.14,
+      "pictocode": 4
      },
      {
       "time": "2026-11-05T14:00",
-      "temperature": 9.78,
+      "temperature": 9.01,
       "humidity": 50,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 7.0,
-      "pictocode": 1
+      "wind_speed": 6.59,
+      "pictocode": 4
      },
      {
       "time": "2026-11-05T15:00",
-      "temperature": 9.9,
+      "temperature": 9.16,
       "humidity": 49,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 7.83,
+      "wind_speed": 7.49,
       "pictocode": 4
      },
      {
       "time": "2026-11-05T16:00",
-      "temperature": 10.01,
+      "temperature": 9.31,
       "humidity": 49,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 8.05,
-      "pictocode": 4
+      "wind_speed": 7.82,
+      "pictocode": 7
      },
      {
       "time": "2026-11-05T17:00",
-      "temperature": 10.03,
-      "humidity": 49,
+      "temperature": 9.5,
+      "humidity": 48,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 7.33,
-      "pictocode": 4
+      "wind_speed": 7.42,
+      "pictocode": 7
      },
      {
       "time": "2026-11-05T18:00",
-      "temperature": 9.79,
+      "temperature": 9.39,
       "humidity": 50,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 5.35,
+      "wind_speed": 5.31,
       "pictocode": 4
      },
      {
       "time": "2026-11-05T19:00",
-      "temperature": 9.2,
+      "temperature": 8.98,
       "humidity": 57,
+      "precipitation_probability": 0,
+      "precipitation": 0.0,
+      "wind_speed": 3.9,
+      "pictocode": 4
+     },
+     {
+      "time": "2026-11-05T20:00",
+      "temperature": 8.35,
+      "humidity": 59,
+      "precipitation_probability": 0,
+      "precipitation": 0.0,
+      "wind_speed": 3.42,
+      "pictocode": 4
+     },
+     {
+      "time": "2026-11-05T21:00",
+      "temperature": 7.54,
+      "humidity": 61,
       "precipitation_probability": 0,
       "precipitation": 0.0,
       "wind_speed": 3.77,
       "pictocode": 4
      },
      {
-      "time": "2026-11-05T20:00",
-      "temperature": 8.45,
-      "humidity": 61,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "wind_speed": 3.5,
-      "pictocode": 1
-     },
-     {
-      "time": "2026-11-05T21:00",
-      "temperature": 7.55,
-      "humidity": 65,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "wind_speed": 3.78,
-      "pictocode": 1
-     },
-     {
       "time": "2026-11-05T22:00",
-      "temperature": 6.63,
-      "humidity": 68,
+      "temperature": 6.65,
+      "humidity": 63,
       "precipitation_probability": 0,
       "precipitation": 0.0,
       "wind_speed": 3.86,
-      "pictocode": 1
+      "pictocode": 4
      },
      {
       "time": "2026-11-05T23:00",
-      "temperature": 5.76,
-      "humidity": 69,
+      "temperature": 5.81,
+      "humidity": 65,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 3.83,
-      "pictocode": 1
+      "wind_speed": 3.77,
+      "pictocode": 4
      },
      {
       "time": "2026-11-06T00:00",
-      "temperature": 4.91,
-      "humidity": 72,
+      "temperature": 5.17,
+      "humidity": 67,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 3.83,
+      "wind_speed": 3.68,
       "pictocode": 1
      },
      {
       "time": "2026-11-06T01:00",
-      "temperature": 4.46,
+      "temperature": 4.72,
       "humidity": 70,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 3.84,
+      "wind_speed": 3.71,
       "pictocode": 1
      },
      {
       "time": "2026-11-06T02:00",
-      "temperature": 4.13,
-      "humidity": 71,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "wind_speed": 3.84,
-      "pictocode": 1
-     },
-     {
-      "time": "2026-11-06T03:00",
-      "temperature": 3.91,
-      "humidity": 69,
-      "precipitation_probability": 0,
-      "precipitation": 0.0,
-      "wind_speed": 3.85,
-      "pictocode": 4
-     },
-     {
-      "time": "2026-11-06T04:00",
-      "temperature": 3.53,
+      "temperature": 4.42,
       "humidity": 70,
       "precipitation_probability": 0,
       "precipitation": 0.0,
+      "wind_speed": 3.7,
+      "pictocode": 5
+     },
+     {
+      "time": "2026-11-06T03:00",
+      "temperature": 4.27,
+      "humidity": 69,
+      "precipitation_probability": 0,
+      "precipitation": 0.0,
       "wind_speed": 3.79,
-      "pictocode": 4
+      "pictocode": 9
+     },
+     {
+      "time": "2026-11-06T04:00",
+      "temperature": 4.21,
+      "humidity": 69,
+      "precipitation_probability": 0,
+      "precipitation": 0.0,
+      "wind_speed": 3.76,
+      "pictocode": 9
      },
      {
       "time": "2026-11-06T05:00",
-      "temperature": 3.3,
-      "humidity": 69,
+      "temperature": 4.25,
+      "humidity": 67,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 3.84,
-      "pictocode": 8
+      "wind_speed": 3.88,
+      "pictocode": 21
      },
      {
       "time": "2026-11-06T06:00",
-      "temperature": 3.14,
-      "humidity": 69,
+      "temperature": 4.26,
+      "humidity": 65,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 3.84,
-      "pictocode": 8
+      "wind_speed": 3.82,
+      "pictocode": 21
      },
      {
       "time": "2026-11-06T07:00",
-      "temperature": 3.12,
-      "humidity": 68,
+      "temperature": 4.32,
+      "humidity": 63,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 3.81,
-      "pictocode": 8
+      "wind_speed": 3.82,
+      "pictocode": 22
      },
      {
       "time": "2026-11-06T08:00",
-      "temperature": 3.46,
-      "humidity": 66,
+      "temperature": 4.53,
+      "humidity": 62,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 3.83,
-      "pictocode": 20
+      "wind_speed": 3.75,
+      "pictocode": 22
      },
      {
       "time": "2026-11-06T09:00",
-      "temperature": 4.29,
-      "humidity": 66,
+      "temperature": 5.19,
+      "humidity": 62,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 3.41,
+      "wind_speed": 3.42,
       "pictocode": 22
      },
      {
       "time": "2026-11-06T10:00",
-      "temperature": 5.74,
-      "humidity": 64,
+      "temperature": 6.36,
+      "humidity": 62,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.39,
+      "wind_speed": 2.46,
       "pictocode": 22
      },
      {
       "time": "2026-11-06T11:00",
-      "temperature": 7.47,
-      "humidity": 61,
+      "temperature": 7.8,
+      "humidity": 59,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.6,
-      "pictocode": 20
+      "wind_speed": 2.65,
+      "pictocode": 21
      },
      {
       "time": "2026-11-06T12:00",
-      "temperature": 9.43,
-      "humidity": 57,
+      "temperature": 9.2,
+      "humidity": 56,
       "precipitation_probability": 0,
       "precipitation": 0.0,
       "wind_speed": 2.76,
@@ -3045,982 +3045,982 @@
      },
      {
       "time": "2026-11-06T13:00",
-      "temperature": 10.82,
-      "humidity": 50,
+      "temperature": 10.2,
+      "humidity": 51,
       "precipitation_probability": 0,
       "precipitation": 0.0,
       "wind_speed": 2.72,
-      "pictocode": 7
+      "pictocode": 8
      },
      {
       "time": "2026-11-06T14:00",
-      "temperature": 11.57,
-      "humidity": 47,
+      "temperature": 10.74,
+      "humidity": 48,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 2.92,
+      "wind_speed": 2.87,
       "pictocode": 8
      },
      {
       "time": "2026-11-06T15:00",
-      "temperature": 11.55,
-      "humidity": 46,
+      "temperature": 10.81,
+      "humidity": 47,
       "precipitation_probability": 0,
       "precipitation": 0.0,
-      "wind_speed": 3.96,
-      "pictocode": 21
+      "wind_speed": 3.58,
+      "pictocode": 22
      },
      {
       "time": "2026-11-06T16:00",
-      "temperature": 11.49,
+      "temperature": 10.82,
       "humidity": 48,
       "precipitation_probability": 1,
       "precipitation": 0.0,
-      "wind_speed": 4.13,
+      "wind_speed": 3.77,
       "pictocode": 22
      },
      {
       "time": "2026-11-06T17:00",
-      "temperature": 11.47,
+      "temperature": 10.85,
       "humidity": 49,
-      "precipitation_probability": 2,
+      "precipitation_probability": 1,
       "precipitation": 0.0,
-      "wind_speed": 4.17,
+      "wind_speed": 3.93,
       "pictocode": 22
      },
      {
       "time": "2026-11-06T18:00",
-      "temperature": 11.58,
-      "humidity": 52,
-      "precipitation_probability": 3,
+      "temperature": 10.99,
+      "humidity": 51,
+      "precipitation_probability": 1,
       "precipitation": 0.0,
-      "wind_speed": 3.94,
+      "wind_speed": 3.44,
       "pictocode": 22
      },
      {
       "time": "2026-11-06T19:00",
-      "temperature": 11.46,
-      "humidity": 58,
-      "precipitation_probability": 4,
+      "temperature": 10.99,
+      "humidity": 56,
+      "precipitation_probability": 2,
       "precipitation": 0.0,
-      "wind_speed": 3.87,
+      "wind_speed": 3.42,
       "pictocode": 22
      },
      {
       "time": "2026-11-06T20:00",
-      "temperature": 11.22,
-      "humidity": 60,
-      "precipitation_probability": 15,
+      "temperature": 10.89,
+      "humidity": 57,
+      "precipitation_probability": 3,
       "precipitation": 0.0,
-      "wind_speed": 3.15,
+      "wind_speed": 2.98,
       "pictocode": 22
      },
      {
       "time": "2026-11-06T21:00",
-      "temperature": 10.87,
-      "humidity": 60,
-      "precipitation_probability": 22,
+      "temperature": 10.71,
+      "humidity": 58,
+      "precipitation_probability": 14,
       "precipitation": 0.0,
-      "wind_speed": 3.03,
+      "wind_speed": 3.22,
       "pictocode": 22
      },
      {
       "time": "2026-11-06T22:00",
-      "temperature": 10.54,
+      "temperature": 10.34,
       "humidity": 60,
-      "precipitation_probability": 25,
-      "precipitation": 0.11,
-      "wind_speed": 2.96,
-      "pictocode": 33
+      "precipitation_probability": 19,
+      "precipitation": 0.0,
+      "wind_speed": 3.21,
+      "pictocode": 22
      },
      {
       "time": "2026-11-06T23:00",
-      "temperature": 10.32,
-      "humidity": 58,
+      "temperature": 9.86,
+      "humidity": 60,
       "precipitation_probability": 25,
-      "precipitation": 0.14,
-      "wind_speed": 3.0,
-      "pictocode": 33
+      "precipitation": 0.0,
+      "wind_speed": 3.11,
+      "pictocode": 22
      },
      {
       "time": "2026-11-07T00:00",
-      "temperature": 10.19,
-      "humidity": 59,
-      "precipitation_probability": 25,
-      "precipitation": 0.16,
-      "wind_speed": 2.82,
+      "temperature": 9.58,
+      "humidity": 62,
+      "precipitation_probability": 27,
+      "precipitation": 0.19,
+      "wind_speed": 3.02,
       "pictocode": 33
      },
      {
       "time": "2026-11-07T01:00",
-      "temperature": 10.25,
-      "humidity": 58,
-      "precipitation_probability": 25,
-      "precipitation": 0.18,
-      "wind_speed": 2.82,
+      "temperature": 9.52,
+      "humidity": 65,
+      "precipitation_probability": 28,
+      "precipitation": 0.21,
+      "wind_speed": 3.21,
       "pictocode": 33
      },
      {
       "time": "2026-11-07T02:00",
-      "temperature": 10.27,
-      "humidity": 61,
-      "precipitation_probability": 25,
-      "precipitation": 0.18,
-      "wind_speed": 3.43,
+      "temperature": 9.61,
+      "humidity": 65,
+      "precipitation_probability": 33,
+      "precipitation": 0.21,
+      "wind_speed": 3.65,
       "pictocode": 33
      },
      {
       "time": "2026-11-07T03:00",
-      "temperature": 10.22,
-      "humidity": 62,
-      "precipitation_probability": 43,
-      "precipitation": 0.17,
-      "wind_speed": 3.46,
+      "temperature": 9.64,
+      "humidity": 68,
+      "precipitation_probability": 42,
+      "precipitation": 0.19,
+      "wind_speed": 4.05,
       "pictocode": 33
      },
      {
       "time": "2026-11-07T04:00",
-      "temperature": 10.09,
-      "humidity": 64,
-      "precipitation_probability": 43,
-      "precipitation": 0.16,
-      "wind_speed": 4.1,
+      "temperature": 9.63,
+      "humidity": 70,
+      "precipitation_probability": 44,
+      "precipitation": 0.17,
+      "wind_speed": 4.09,
       "pictocode": 33
      },
      {
       "time": "2026-11-07T05:00",
-      "temperature": 9.96,
-      "humidity": 65,
-      "precipitation_probability": 43,
+      "temperature": 9.6,
+      "humidity": 70,
+      "precipitation_probability": 44,
       "precipitation": 0.14,
-      "wind_speed": 3.89,
-      "pictocode": 33
-     },
-     {
-      "time": "2026-11-07T06:00",
-      "temperature": 9.93,
-      "humidity": 65,
-      "precipitation_probability": 37,
-      "precipitation": 0.12,
       "wind_speed": 3.88,
       "pictocode": 33
      },
      {
+      "time": "2026-11-07T06:00",
+      "temperature": 9.55,
+      "humidity": 68,
+      "precipitation_probability": 40,
+      "precipitation": 0.12,
+      "wind_speed": 3.59,
+      "pictocode": 31
+     },
+     {
       "time": "2026-11-07T07:00",
-      "temperature": 9.88,
-      "humidity": 67,
-      "precipitation_probability": 27,
+      "temperature": 9.63,
+      "humidity": 65,
+      "precipitation_probability": 41,
       "precipitation": 0.0,
-      "wind_speed": 4.02,
-      "pictocode": 22
+      "wind_speed": 3.95,
+      "pictocode": 7
      },
      {
       "time": "2026-11-07T08:00",
-      "temperature": 9.98,
-      "humidity": 67,
-      "precipitation_probability": 23,
+      "temperature": 9.91,
+      "humidity": 65,
+      "precipitation_probability": 31,
       "precipitation": 0.0,
-      "wind_speed": 4.29,
-      "pictocode": 21
+      "wind_speed": 3.96,
+      "pictocode": 7
      },
      {
       "time": "2026-11-07T09:00",
-      "temperature": 10.15,
-      "humidity": 70,
-      "precipitation_probability": 23,
+      "temperature": 10.43,
+      "humidity": 67,
+      "precipitation_probability": 25,
       "precipitation": 0.0,
-      "wind_speed": 4.11,
-      "pictocode": 18
+      "wind_speed": 4.0,
+      "pictocode": 7
      },
      {
       "time": "2026-11-07T10:00",
-      "temperature": 10.7,
-      "humidity": 73,
-      "precipitation_probability": 27,
+      "temperature": 11.14,
+      "humidity": 69,
+      "precipitation_probability": 19,
       "precipitation": 0.0,
-      "wind_speed": 4.93,
-      "pictocode": 17
-     },
-     {
-      "time": "2026-11-07T11:00",
-      "temperature": 11.29,
-      "humidity": 75,
-      "precipitation_probability": 22,
-      "precipitation": 0.0,
-      "wind_speed": 5.85,
-      "pictocode": 17
-     },
-     {
-      "time": "2026-11-07T12:00",
-      "temperature": 12.06,
-      "humidity": 78,
-      "precipitation_probability": 22,
-      "precipitation": 0.0,
-      "wind_speed": 6.27,
+      "wind_speed": 4.38,
       "pictocode": 19
      },
      {
-      "time": "2026-11-07T13:00",
-      "temperature": 12.51,
-      "humidity": 76,
-      "precipitation_probability": 21,
+      "time": "2026-11-07T11:00",
+      "temperature": 11.89,
+      "humidity": 72,
+      "precipitation_probability": 13,
       "precipitation": 0.0,
-      "wind_speed": 6.75,
-      "pictocode": 20
+      "wind_speed": 5.68,
+      "pictocode": 7
+     },
+     {
+      "time": "2026-11-07T12:00",
+      "temperature": 12.51,
+      "humidity": 75,
+      "precipitation_probability": 12,
+      "precipitation": 0.0,
+      "wind_speed": 6.7,
+      "pictocode": 7
+     },
+     {
+      "time": "2026-11-07T13:00",
+      "temperature": 12.89,
+      "humidity": 72,
+      "precipitation_probability": 12,
+      "precipitation": 0.0,
+      "wind_speed": 7.55,
+      "pictocode": 7
      },
      {
       "time": "2026-11-07T14:00",
-      "temperature": 12.79,
+      "temperature": 13.03,
       "humidity": 71,
-      "precipitation_probability": 8,
+      "precipitation_probability": 12,
       "precipitation": 0.0,
-      "wind_speed": 9.0,
-      "pictocode": 22
+      "wind_speed": 8.84,
+      "pictocode": 8
      },
      {
       "time": "2026-11-07T15:00",
-      "temperature": 12.72,
-      "humidity": 71,
-      "precipitation_probability": 9,
+      "temperature": 12.93,
+      "humidity": 73,
+      "precipitation_probability": 13,
       "precipitation": 0.0,
-      "wind_speed": 9.67,
-      "pictocode": 22
+      "wind_speed": 8.39,
+      "pictocode": 8
      },
      {
       "time": "2026-11-07T16:00",
-      "temperature": 12.69,
-      "humidity": 74,
+      "temperature": 12.88,
+      "humidity": 75,
       "precipitation_probability": 14,
       "precipitation": 0.0,
-      "wind_speed": 8.96,
-      "pictocode": 22
+      "wind_speed": 8.17,
+      "pictocode": 9
      },
      {
       "time": "2026-11-07T17:00",
-      "temperature": 12.72,
-      "humidity": 74,
-      "precipitation_probability": 23,
+      "temperature": 12.92,
+      "humidity": 75,
+      "precipitation_probability": 13,
       "precipitation": 0.0,
-      "wind_speed": 8.0,
-      "pictocode": 22
+      "wind_speed": 6.62,
+      "pictocode": 21
      },
      {
       "time": "2026-11-07T18:00",
-      "temperature": 12.88,
-      "humidity": 73,
-      "precipitation_probability": 21,
+      "temperature": 13.04,
+      "humidity": 76,
+      "precipitation_probability": 11,
       "precipitation": 0.0,
-      "wind_speed": 6.27,
-      "pictocode": 22
+      "wind_speed": 4.56,
+      "pictocode": 21
      },
      {
       "time": "2026-11-07T19:00",
-      "temperature": 12.84,
-      "humidity": 80,
-      "precipitation_probability": 16,
+      "temperature": 13.0,
+      "humidity": 82,
+      "precipitation_probability": 6,
       "precipitation": 0.0,
-      "wind_speed": 5.39,
-      "pictocode": 22
+      "wind_speed": 3.76,
+      "pictocode": 21
      },
      {
       "time": "2026-11-07T20:00",
-      "temperature": 12.52,
+      "temperature": 12.83,
       "humidity": 81,
-      "precipitation_probability": 16,
+      "precipitation_probability": 6,
       "precipitation": 0.0,
-      "wind_speed": 5.11,
-      "pictocode": 22
+      "wind_speed": 3.77,
+      "pictocode": 21
      },
      {
       "time": "2026-11-07T21:00",
-      "temperature": 12.14,
-      "humidity": 82,
-      "precipitation_probability": 17,
+      "temperature": 12.59,
+      "humidity": 80,
+      "precipitation_probability": 7,
       "precipitation": 0.0,
-      "wind_speed": 4.76,
+      "wind_speed": 4.11,
       "pictocode": 21
      },
      {
       "time": "2026-11-07T22:00",
-      "temperature": 11.84,
-      "humidity": 81,
-      "precipitation_probability": 13,
+      "temperature": 12.25,
+      "humidity": 79,
+      "precipitation_probability": 12,
       "precipitation": 0.0,
-      "wind_speed": 4.67,
+      "wind_speed": 4.37,
       "pictocode": 21
      },
      {
       "time": "2026-11-07T23:00",
-      "temperature": 11.71,
+      "temperature": 11.94,
       "humidity": 76,
-      "precipitation_probability": 13,
+      "precipitation_probability": 12,
       "precipitation": 0.0,
       "wind_speed": 4.7,
       "pictocode": 21
      },
      {
       "time": "2026-11-08T00:00",
-      "temperature": 11.49,
-      "humidity": 77,
+      "temperature": 11.66,
+      "humidity": 76,
       "precipitation_probability": 12,
       "precipitation": 0.0,
-      "wind_speed": 4.97,
-      "pictocode": 18
+      "wind_speed": 4.5,
+      "pictocode": 22
      },
      {
       "time": "2026-11-08T01:00",
-      "temperature": 11.34,
-      "humidity": 75,
-      "precipitation_probability": 17,
+      "temperature": 11.5,
+      "humidity": 76,
+      "precipitation_probability": 8,
       "precipitation": 0.0,
-      "wind_speed": 4.89,
-      "pictocode": 18
+      "wind_speed": 4.52,
+      "pictocode": 22
      },
      {
       "time": "2026-11-08T02:00",
-      "temperature": 11.22,
-      "humidity": 76,
-      "precipitation_probability": 28,
+      "temperature": 11.38,
+      "humidity": 74,
+      "precipitation_probability": 10,
       "precipitation": 0.0,
-      "wind_speed": 5.1,
-      "pictocode": 18
+      "wind_speed": 5.07,
+      "pictocode": 22
      },
      {
       "time": "2026-11-08T03:00",
-      "temperature": 11.21,
-      "humidity": 75,
-      "precipitation_probability": 25,
+      "temperature": 11.34,
+      "humidity": 74,
+      "precipitation_probability": 12,
       "precipitation": 0.0,
-      "wind_speed": 5.24,
-      "pictocode": 18
+      "wind_speed": 4.91,
+      "pictocode": 22
      },
      {
       "time": "2026-11-08T04:00",
-      "temperature": 11.18,
+      "temperature": 11.34,
       "humidity": 75,
-      "precipitation_probability": 23,
+      "precipitation_probability": 15,
       "precipitation": 0.0,
-      "wind_speed": 4.98,
-      "pictocode": 18
+      "wind_speed": 4.2,
+      "pictocode": 22
      },
      {
       "time": "2026-11-08T05:00",
-      "temperature": 11.18,
-      "humidity": 75,
+      "temperature": 11.36,
+      "humidity": 74,
       "precipitation_probability": 21,
       "precipitation": 0.0,
-      "wind_speed": 4.67,
-      "pictocode": 18
+      "wind_speed": 4.39,
+      "pictocode": 22
      },
      {
       "time": "2026-11-08T06:00",
-      "temperature": 11.11,
-      "humidity": 75,
-      "precipitation_probability": 24,
+      "temperature": 11.36,
+      "humidity": 73,
+      "precipitation_probability": 27,
       "precipitation": 0.0,
-      "wind_speed": 4.98,
+      "wind_speed": 4.85,
       "pictocode": 22
      },
      {
       "time": "2026-11-08T07:00",
-      "temperature": 11.0,
-      "humidity": 75,
-      "precipitation_probability": 35,
+      "temperature": 11.34,
+      "humidity": 72,
+      "precipitation_probability": 33,
       "precipitation": 0.0,
-      "wind_speed": 5.25,
+      "wind_speed": 4.8,
       "pictocode": 22
      },
      {
       "time": "2026-11-08T08:00",
-      "temperature": 10.86,
-      "humidity": 76,
-      "precipitation_probability": 44,
+      "temperature": 11.34,
+      "humidity": 73,
+      "precipitation_probability": 39,
       "precipitation": 0.0,
-      "wind_speed": 4.54,
+      "wind_speed": 5.01,
       "pictocode": 22
      },
      {
       "time": "2026-11-08T09:00",
-      "temperature": 10.77,
-      "humidity": 82,
-      "precipitation_probability": 52,
-      "precipitation": 0.11,
-      "wind_speed": 4.5,
-      "pictocode": 33
+      "temperature": 11.45,
+      "humidity": 77,
+      "precipitation_probability": 54,
+      "precipitation": 0.0,
+      "wind_speed": 5.64,
+      "pictocode": 22
      },
      {
       "time": "2026-11-08T10:00",
-      "temperature": 11.0,
-      "humidity": 88,
-      "precipitation_probability": 56,
-      "precipitation": 0.18,
-      "wind_speed": 5.26,
+      "temperature": 11.7,
+      "humidity": 81,
+      "precipitation_probability": 55,
+      "precipitation": 0.11,
+      "wind_speed": 6.3,
       "pictocode": 33
      },
      {
       "time": "2026-11-08T11:00",
-      "temperature": 11.48,
-      "humidity": 92,
-      "precipitation_probability": 61,
-      "precipitation": 0.27,
-      "wind_speed": 7.06,
+      "temperature": 12.07,
+      "humidity": 86,
+      "precipitation_probability": 60,
+      "precipitation": 0.15,
+      "wind_speed": 8.67,
       "pictocode": 33
      },
      {
       "time": "2026-11-08T12:00",
-      "temperature": 12.06,
-      "humidity": 95,
-      "precipitation_probability": 66,
-      "precipitation": 0.38,
-      "wind_speed": 9.68,
-      "pictocode": 33
+      "temperature": 12.43,
+      "humidity": 90,
+      "precipitation_probability": 61,
+      "precipitation": 0.19,
+      "wind_speed": 11.02,
+      "pictocode": 31
      },
      {
       "time": "2026-11-08T13:00",
-      "temperature": 12.48,
-      "humidity": 91,
-      "precipitation_probability": 53,
-      "precipitation": 0.44,
-      "wind_speed": 10.77,
+      "temperature": 12.67,
+      "humidity": 87,
+      "precipitation_probability": 56,
+      "precipitation": 0.21,
+      "wind_speed": 12.44,
       "pictocode": 33
      },
      {
       "time": "2026-11-08T14:00",
-      "temperature": 12.83,
-      "humidity": 88,
-      "precipitation_probability": 57,
-      "precipitation": 0.44,
-      "wind_speed": 12.22,
-      "pictocode": 33
+      "temperature": 12.75,
+      "humidity": 84,
+      "precipitation_probability": 55,
+      "precipitation": 0.22,
+      "wind_speed": 13.51,
+      "pictocode": 31
      },
      {
       "time": "2026-11-08T15:00",
-      "temperature": 13.14,
-      "humidity": 84,
-      "precipitation_probability": 59,
-      "precipitation": 0.4,
-      "wind_speed": 12.88,
-      "pictocode": 33
+      "temperature": 12.67,
+      "humidity": 83,
+      "precipitation_probability": 58,
+      "precipitation": 0.21,
+      "wind_speed": 13.51,
+      "pictocode": 31
      },
      {
       "time": "2026-11-08T16:00",
-      "temperature": 13.36,
-      "humidity": 83,
+      "temperature": 12.49,
+      "humidity": 84,
       "precipitation_probability": 56,
-      "precipitation": 0.36,
-      "wind_speed": 12.79,
-      "pictocode": 33
+      "precipitation": 0.21,
+      "wind_speed": 13.25,
+      "pictocode": 31
      },
      {
       "time": "2026-11-08T17:00",
-      "temperature": 13.41,
-      "humidity": 82,
-      "precipitation_probability": 49,
-      "precipitation": 0.33,
-      "wind_speed": 12.26,
-      "pictocode": 33
+      "temperature": 12.46,
+      "humidity": 83,
+      "precipitation_probability": 41,
+      "precipitation": 0.25,
+      "wind_speed": 12.25,
+      "pictocode": 31
      },
      {
       "time": "2026-11-08T18:00",
-      "temperature": 13.36,
-      "humidity": 83,
-      "precipitation_probability": 42,
-      "precipitation": 0.3,
-      "wind_speed": 10.75,
+      "temperature": 12.57,
+      "humidity": 82,
+      "precipitation_probability": 35,
+      "precipitation": 0.29,
+      "wind_speed": 10.12,
       "pictocode": 31
      },
      {
       "time": "2026-11-08T19:00",
-      "temperature": 13.27,
-      "humidity": 92,
-      "precipitation_probability": 36,
-      "precipitation": 0.27,
-      "wind_speed": 8.94,
+      "temperature": 12.83,
+      "humidity": 87,
+      "precipitation_probability": 29,
+      "precipitation": 0.32,
+      "wind_speed": 8.14,
       "pictocode": 31
      },
      {
       "time": "2026-11-08T20:00",
-      "temperature": 13.13,
-      "humidity": 94,
-      "precipitation_probability": 37,
-      "precipitation": 0.23,
-      "wind_speed": 8.17,
+      "temperature": 13.0,
+      "humidity": 87,
+      "precipitation_probability": 33,
+      "precipitation": 0.32,
+      "wind_speed": 7.35,
       "pictocode": 31
      },
      {
       "time": "2026-11-08T21:00",
-      "temperature": 13.0,
-      "humidity": 92,
-      "precipitation_probability": 33,
-      "precipitation": 0.2,
-      "wind_speed": 7.47,
+      "temperature": 13.07,
+      "humidity": 85,
+      "precipitation_probability": 35,
+      "precipitation": 0.3,
+      "wind_speed": 6.26,
       "pictocode": 31
      },
      {
       "time": "2026-11-08T22:00",
-      "temperature": 12.88,
-      "humidity": 90,
-      "precipitation_probability": 31,
-      "precipitation": 0.18,
-      "wind_speed": 7.34,
+      "temperature": 13.07,
+      "humidity": 84,
+      "precipitation_probability": 36,
+      "precipitation": 0.32,
+      "wind_speed": 6.64,
       "pictocode": 31
      },
      {
       "time": "2026-11-08T23:00",
-      "temperature": 12.78,
-      "humidity": 83,
-      "precipitation_probability": 32,
-      "precipitation": 0.15,
-      "wind_speed": 6.73,
+      "temperature": 12.96,
+      "humidity": 79,
+      "precipitation_probability": 40,
+      "precipitation": 0.38,
+      "wind_speed": 6.12,
       "pictocode": 31
      },
      {
       "time": "2026-11-09T00:00",
-      "temperature": 12.7,
-      "humidity": 81,
-      "precipitation_probability": 39,
-      "precipitation": 0.0,
-      "wind_speed": 5.8,
-      "pictocode": 4
-     },
-     {
-      "time": "2026-11-09T01:00",
-      "temperature": 12.6,
-      "humidity": 79,
-      "precipitation_probability": 42,
-      "precipitation": 0.0,
-      "wind_speed": 5.27,
-      "pictocode": 4
-     },
-     {
-      "time": "2026-11-09T02:00",
-      "temperature": 12.48,
-      "humidity": 81,
+      "temperature": 12.87,
+      "humidity": 78,
       "precipitation_probability": 45,
       "precipitation": 0.0,
-      "wind_speed": 5.24,
-      "pictocode": 5
-     },
-     {
-      "time": "2026-11-09T03:00",
-      "temperature": 12.31,
-      "humidity": 80,
-      "precipitation_probability": 53,
-      "precipitation": 0.0,
-      "wind_speed": 5.49,
+      "wind_speed": 6.03,
       "pictocode": 9
      },
      {
+      "time": "2026-11-09T01:00",
+      "temperature": 12.78,
+      "humidity": 79,
+      "precipitation_probability": 42,
+      "precipitation": 0.0,
+      "wind_speed": 5.72,
+      "pictocode": 9
+     },
+     {
+      "time": "2026-11-09T02:00",
+      "temperature": 12.78,
+      "humidity": 78,
+      "precipitation_probability": 40,
+      "precipitation": 0.11,
+      "wind_speed": 6.16,
+      "pictocode": 33
+     },
+     {
+      "time": "2026-11-09T03:00",
+      "temperature": 12.79,
+      "humidity": 77,
+      "precipitation_probability": 42,
+      "precipitation": 0.16,
+      "wind_speed": 6.49,
+      "pictocode": 33
+     },
+     {
       "time": "2026-11-09T04:00",
-      "temperature": 12.15,
-      "humidity": 81,
-      "precipitation_probability": 57,
-      "precipitation": 0.13,
-      "wind_speed": 5.74,
+      "temperature": 12.84,
+      "humidity": 77,
+      "precipitation_probability": 45,
+      "precipitation": 0.2,
+      "wind_speed": 6.66,
       "pictocode": 33
      },
      {
       "time": "2026-11-09T05:00",
-      "temperature": 12.13,
-      "humidity": 81,
-      "precipitation_probability": 57,
-      "precipitation": 0.17,
-      "wind_speed": 5.73,
+      "temperature": 12.86,
+      "humidity": 77,
+      "precipitation_probability": 46,
+      "precipitation": 0.24,
+      "wind_speed": 6.75,
       "pictocode": 33
      },
      {
       "time": "2026-11-09T06:00",
-      "temperature": 12.28,
-      "humidity": 81,
-      "precipitation_probability": 56,
-      "precipitation": 0.0,
-      "wind_speed": 6.09,
-      "pictocode": 22
+      "temperature": 12.84,
+      "humidity": 77,
+      "precipitation_probability": 46,
+      "precipitation": 0.28,
+      "wind_speed": 7.33,
+      "pictocode": 33
      },
      {
       "time": "2026-11-09T07:00",
-      "temperature": 12.4,
-      "humidity": 81,
-      "precipitation_probability": 58,
-      "precipitation": 0.27,
-      "wind_speed": 6.45,
+      "temperature": 12.78,
+      "humidity": 77,
+      "precipitation_probability": 51,
+      "precipitation": 0.3,
+      "wind_speed": 7.9,
       "pictocode": 33
      },
      {
       "time": "2026-11-09T08:00",
-      "temperature": 12.46,
-      "humidity": 80,
-      "precipitation_probability": 57,
+      "temperature": 12.76,
+      "humidity": 78,
+      "precipitation_probability": 48,
       "precipitation": 0.31,
-      "wind_speed": 7.43,
+      "wind_speed": 8.29,
       "pictocode": 33
      },
      {
       "time": "2026-11-09T09:00",
-      "temperature": 12.52,
-      "humidity": 84,
-      "precipitation_probability": 65,
-      "precipitation": 0.35,
-      "wind_speed": 8.32,
+      "temperature": 12.81,
+      "humidity": 82,
+      "precipitation_probability": 57,
+      "precipitation": 0.3,
+      "wind_speed": 8.9,
       "pictocode": 33
      },
      {
       "time": "2026-11-09T10:00",
-      "temperature": 12.77,
-      "humidity": 88,
-      "precipitation_probability": 69,
-      "precipitation": 0.39,
-      "wind_speed": 9.76,
+      "temperature": 12.98,
+      "humidity": 86,
+      "precipitation_probability": 58,
+      "precipitation": 0.29,
+      "wind_speed": 10.22,
       "pictocode": 33
      },
      {
       "time": "2026-11-09T11:00",
-      "temperature": 13.08,
-      "humidity": 91,
-      "precipitation_probability": 71,
-      "precipitation": 0.44,
-      "wind_speed": 12.02,
-      "pictocode": 33
+      "temperature": 13.24,
+      "humidity": 89,
+      "precipitation_probability": 56,
+      "precipitation": 0.27,
+      "wind_speed": 12.47,
+      "pictocode": 31
      },
      {
       "time": "2026-11-09T12:00",
-      "temperature": 13.44,
-      "humidity": 94,
-      "precipitation_probability": 72,
-      "precipitation": 0.48,
-      "wind_speed": 14.2,
+      "temperature": 13.52,
+      "humidity": 91,
+      "precipitation_probability": 59,
+      "precipitation": 0.25,
+      "wind_speed": 14.72,
       "pictocode": 31
      },
      {
       "time": "2026-11-09T13:00",
-      "temperature": 13.5,
-      "humidity": 91,
-      "precipitation_probability": 75,
-      "precipitation": 0.5,
-      "wind_speed": 15.53,
+      "temperature": 13.68,
+      "humidity": 87,
+      "precipitation_probability": 65,
+      "precipitation": 0.24,
+      "wind_speed": 15.81,
       "pictocode": 31
      },
      {
       "time": "2026-11-09T14:00",
-      "temperature": 13.47,
-      "humidity": 84,
-      "precipitation_probability": 74,
-      "precipitation": 0.51,
-      "wind_speed": 16.21,
-      "pictocode": 31
+      "temperature": 13.73,
+      "humidity": 82,
+      "precipitation_probability": 69,
+      "precipitation": 0.22,
+      "wind_speed": 16.86,
+      "pictocode": 33
      },
      {
       "time": "2026-11-09T15:00",
-      "temperature": 13.26,
-      "humidity": 83,
-      "precipitation_probability": 73,
-      "precipitation": 0.5,
-      "wind_speed": 15.83,
+      "temperature": 13.66,
+      "humidity": 81,
+      "precipitation_probability": 69,
+      "precipitation": 0.2,
+      "wind_speed": 16.51,
       "pictocode": 33
      },
      {
       "time": "2026-11-09T16:00",
-      "temperature": 13.15,
-      "humidity": 85,
-      "precipitation_probability": 76,
-      "precipitation": 0.48,
-      "wind_speed": 14.83,
+      "temperature": 13.5,
+      "humidity": 81,
+      "precipitation_probability": 74,
+      "precipitation": 0.18,
+      "wind_speed": 16.13,
       "pictocode": 33
      },
      {
       "time": "2026-11-09T17:00",
-      "temperature": 13.09,
-      "humidity": 85,
-      "precipitation_probability": 76,
-      "precipitation": 0.46,
-      "wind_speed": 14.7,
+      "temperature": 13.43,
+      "humidity": 81,
+      "precipitation_probability": 75,
+      "precipitation": 0.17,
+      "wind_speed": 15.79,
       "pictocode": 33
      },
      {
       "time": "2026-11-09T18:00",
-      "temperature": 13.16,
-      "humidity": 85,
-      "precipitation_probability": 73,
-      "precipitation": 0.44,
-      "wind_speed": 14.35,
-      "pictocode": 33
-     },
-     {
-      "time": "2026-11-09T19:00",
-      "temperature": 13.18,
-      "humidity": 91,
-      "precipitation_probability": 78,
-      "precipitation": 0.41,
-      "wind_speed": 14.17,
-      "pictocode": 33
-     },
-     {
-      "time": "2026-11-09T20:00",
-      "temperature": 13.16,
-      "humidity": 93,
-      "precipitation_probability": 76,
-      "precipitation": 0.38,
-      "wind_speed": 14.01,
-      "pictocode": 33
-     },
-     {
-      "time": "2026-11-09T21:00",
-      "temperature": 13.21,
-      "humidity": 91,
-      "precipitation_probability": 77,
-      "precipitation": 0.34,
-      "wind_speed": 14.18,
-      "pictocode": 33
-     },
-     {
-      "time": "2026-11-09T22:00",
-      "temperature": 13.3,
-      "humidity": 88,
-      "precipitation_probability": 75,
-      "precipitation": 0.3,
-      "wind_speed": 14.1,
-      "pictocode": 33
-     },
-     {
-      "time": "2026-11-09T23:00",
-      "temperature": 13.25,
-      "humidity": 82,
-      "precipitation_probability": 72,
-      "precipitation": 0.27,
-      "wind_speed": 13.42,
+      "temperature": 13.42,
+      "humidity": 81,
+      "precipitation_probability": 68,
+      "precipitation": 0.15,
+      "wind_speed": 14.24,
       "pictocode": 31
      },
      {
-      "time": "2026-11-10T00:00",
-      "temperature": 12.83,
-      "humidity": 83,
-      "precipitation_probability": 69,
+      "time": "2026-11-09T19:00",
+      "temperature": 13.47,
+      "humidity": 85,
+      "precipitation_probability": 73,
+      "precipitation": 0.13,
+      "wind_speed": 13.61,
+      "pictocode": 31
+     },
+     {
+      "time": "2026-11-09T20:00",
+      "temperature": 13.44,
+      "humidity": 86,
+      "precipitation_probability": 71,
+      "precipitation": 0.12,
+      "wind_speed": 13.21,
+      "pictocode": 31
+     },
+     {
+      "time": "2026-11-09T21:00",
+      "temperature": 13.32,
+      "humidity": 85,
+      "precipitation_probability": 74,
+      "precipitation": 0.1,
+      "wind_speed": 12.6,
+      "pictocode": 31
+     },
+     {
+      "time": "2026-11-09T22:00",
+      "temperature": 13.17,
+      "humidity": 85,
+      "precipitation_probability": 74,
       "precipitation": 0.0,
-      "wind_speed": 12.8,
-      "pictocode": 6
+      "wind_speed": 13.47,
+      "pictocode": 9
+     },
+     {
+      "time": "2026-11-09T23:00",
+      "temperature": 13.02,
+      "humidity": 81,
+      "precipitation_probability": 70,
+      "precipitation": 0.0,
+      "wind_speed": 14.34,
+      "pictocode": 9
+     },
+     {
+      "time": "2026-11-10T00:00",
+      "temperature": 12.88,
+      "humidity": 81,
+      "precipitation_probability": 66,
+      "precipitation": 0.0,
+      "wind_speed": 14.74,
+      "pictocode": 21
      },
      {
       "time": "2026-11-10T01:00",
-      "temperature": 12.5,
-      "humidity": 84,
-      "precipitation_probability": 66,
-      "precipitation": 0.0,
-      "wind_speed": 11.72,
-      "pictocode": 6
-     },
-     {
-      "time": "2026-11-10T02:00",
-      "temperature": 12.24,
-      "humidity": 86,
+      "temperature": 12.66,
+      "humidity": 82,
       "precipitation_probability": 63,
       "precipitation": 0.0,
-      "wind_speed": 11.5,
-      "pictocode": 12
-     },
-     {
-      "time": "2026-11-10T03:00",
-      "temperature": 12.15,
-      "humidity": 85,
-      "precipitation_probability": 60,
-      "precipitation": 0.0,
-      "wind_speed": 11.24,
-      "pictocode": 12
-     },
-     {
-      "time": "2026-11-10T04:00",
-      "temperature": 12.01,
-      "humidity": 85,
-      "precipitation_probability": 58,
-      "precipitation": 0.0,
-      "wind_speed": 11.55,
+      "wind_speed": 15.26,
       "pictocode": 22
      },
      {
+      "time": "2026-11-10T02:00",
+      "temperature": 12.37,
+      "humidity": 82,
+      "precipitation_probability": 61,
+      "precipitation": 0.0,
+      "wind_speed": 14.05,
+      "pictocode": 22
+     },
+     {
+      "time": "2026-11-10T03:00",
+      "temperature": 12.09,
+      "humidity": 84,
+      "precipitation_probability": 60,
+      "precipitation": 0.0,
+      "wind_speed": 13.47,
+      "pictocode": 9
+     },
+     {
+      "time": "2026-11-10T04:00",
+      "temperature": 11.92,
+      "humidity": 84,
+      "precipitation_probability": 59,
+      "precipitation": 0.0,
+      "wind_speed": 14.06,
+      "pictocode": 9
+     },
+     {
       "time": "2026-11-10T05:00",
-      "temperature": 11.97,
+      "temperature": 11.88,
       "humidity": 83,
-      "precipitation_probability": 54,
+      "precipitation_probability": 57,
       "precipitation": 0.1,
-      "wind_speed": 12.19,
-      "pictocode": 33
+      "wind_speed": 13.32,
+      "pictocode": 31
      },
      {
       "time": "2026-11-10T06:00",
-      "temperature": 12.0,
-      "humidity": 83,
-      "precipitation_probability": 51,
-      "precipitation": 0.8,
-      "wind_speed": 12.87,
+      "temperature": 11.95,
+      "humidity": 81,
+      "precipitation_probability": 55,
+      "precipitation": 0.12,
+      "wind_speed": 12.78,
       "pictocode": 33
      },
      {
       "time": "2026-11-10T07:00",
-      "temperature": 11.99,
-      "humidity": 82,
-      "precipitation_probability": 49,
-      "precipitation": 0.7,
-      "wind_speed": 13.6,
+      "temperature": 11.97,
+      "humidity": 80,
+      "precipitation_probability": 54,
+      "precipitation": 0.15,
+      "wind_speed": 12.08,
       "pictocode": 33
      },
      {
       "time": "2026-11-10T08:00",
-      "temperature": 11.97,
-      "humidity": 81,
-      "precipitation_probability": 48,
-      "precipitation": 0.0,
-      "wind_speed": 15.43,
-      "pictocode": 21
+      "temperature": 11.94,
+      "humidity": 80,
+      "precipitation_probability": 54,
+      "precipitation": 0.19,
+      "wind_speed": 12.88,
+      "pictocode": 33
      },
      {
       "time": "2026-11-10T09:00",
-      "temperature": 11.96,
+      "temperature": 11.85,
       "humidity": 85,
-      "precipitation_probability": 48,
-      "precipitation": 0.1,
-      "wind_speed": 17.05,
+      "precipitation_probability": 55,
+      "precipitation": 0.24,
+      "wind_speed": 13.75,
       "pictocode": 33
      },
      {
       "time": "2026-11-10T10:00",
-      "temperature": 12.03,
-      "humidity": 87,
-      "precipitation_probability": 50,
-      "precipitation": 0.7,
-      "wind_speed": 19.39,
-      "pictocode": 33
+      "temperature": 11.87,
+      "humidity": 88,
+      "precipitation_probability": 56,
+      "precipitation": 0.28,
+      "wind_speed": 15.71,
+      "pictocode": 31
      },
      {
       "time": "2026-11-10T11:00",
-      "temperature": 12.09,
-      "humidity": 87,
-      "precipitation_probability": 52,
-      "precipitation": 1.2,
-      "wind_speed": 20.62,
-      "pictocode": 33
+      "temperature": 11.99,
+      "humidity": 88,
+      "precipitation_probability": 58,
+      "precipitation": 0.32,
+      "wind_speed": 16.97,
+      "pictocode": 31
      },
      {
       "time": "2026-11-10T12:00",
-      "temperature": 12.11,
+      "temperature": 12.12,
       "humidity": 88,
-      "precipitation_probability": 55,
-      "precipitation": 2.1,
-      "wind_speed": 20.58,
-      "pictocode": 28
+      "precipitation_probability": 61,
+      "precipitation": 0.36,
+      "wind_speed": 17.6,
+      "pictocode": 31
      },
      {
       "time": "2026-11-10T13:00",
       "temperature": 12.16,
-      "humidity": 84,
-      "precipitation_probability": 59,
-      "precipitation": 1.8,
-      "wind_speed": 20.75,
-      "pictocode": 33
+      "humidity": 83,
+      "precipitation_probability": 65,
+      "precipitation": 0.0,
+      "wind_speed": 17.79,
+      "pictocode": 9
      },
      {
       "time": "2026-11-10T14:00",
-      "temperature": 12.31,
-      "humidity": 82,
-      "precipitation_probability": 63,
-      "precipitation": 1.4,
-      "wind_speed": 22.1,
-      "pictocode": 33
+      "temperature": 12.05,
+      "humidity": 87,
+      "precipitation_probability": 68,
+      "precipitation": 0.39,
+      "wind_speed": 17.67,
+      "pictocode": 31
      },
      {
       "time": "2026-11-10T15:00",
-      "temperature": 12.49,
-      "humidity": 79,
-      "precipitation_probability": 69,
-      "precipitation": 0.8,
-      "wind_speed": 21.72,
-      "pictocode": 33
+      "temperature": 11.85,
+      "humidity": 87,
+      "precipitation_probability": 72,
+      "precipitation": 0.38,
+      "wind_speed": 16.3,
+      "pictocode": 31
      },
      {
       "time": "2026-11-10T16:00",
-      "temperature": 12.53,
-      "humidity": 79,
-      "precipitation_probability": 73,
-      "precipitation": 0.2,
-      "wind_speed": 20.8,
-      "pictocode": 33
+      "temperature": 11.78,
+      "humidity": 88,
+      "precipitation_probability": 76,
+      "precipitation": 0.37,
+      "wind_speed": 15.14,
+      "pictocode": 31
      },
      {
       "time": "2026-11-10T17:00",
-      "temperature": 12.42,
-      "humidity": 80,
-      "precipitation_probability": 76,
-      "precipitation": 0.0,
-      "wind_speed": 19.58,
-      "pictocode": 22
+      "temperature": 11.85,
+      "humidity": 87,
+      "precipitation_probability": 78,
+      "precipitation": 0.35,
+      "wind_speed": 14.91,
+      "pictocode": 33
      },
      {
       "time": "2026-11-10T18:00",
-      "temperature": 12.46,
-      "humidity": 81,
+      "temperature": 12.05,
+      "humidity": 87,
       "precipitation_probability": 79,
-      "precipitation": 0.0,
-      "wind_speed": 17.93,
-      "pictocode": 22
+      "precipitation": 0.33,
+      "wind_speed": 14.32,
+      "pictocode": 33
      },
      {
       "time": "2026-11-10T19:00",
-      "temperature": 12.39,
-      "humidity": 89,
+      "temperature": 12.17,
+      "humidity": 93,
       "precipitation_probability": 79,
       "precipitation": 0.0,
-      "wind_speed": 16.51,
+      "wind_speed": 13.2,
       "pictocode": 22
      },
      {
       "time": "2026-11-10T20:00",
-      "temperature": 11.95,
-      "humidity": 92,
-      "precipitation_probability": 77,
-      "precipitation": 0.0,
-      "wind_speed": 16.07,
-      "pictocode": 22
+      "temperature": 12.18,
+      "humidity": 94,
+      "precipitation_probability": 78,
+      "precipitation": 0.27,
+      "wind_speed": 11.22,
+      "pictocode": 33
      },
      {
       "time": "2026-11-10T21:00",
-      "temperature": 11.42,
-      "humidity": 94,
-      "precipitation_probability": 73,
-      "precipitation": 0.0,
-      "wind_speed": 16.05,
-      "pictocode": 22
+      "temperature": 12.1,
+      "humidity": 95,
+      "precipitation_probability": 75,
+      "precipitation": 0.22,
+      "wind_speed": 10.67,
+      "pictocode": 33
      },
      {
       "time": "2026-11-10T22:00",
-      "temperature": 11.11,
+      "temperature": 11.94,
       "humidity": 94,
-      "precipitation_probability": 67,
-      "precipitation": 0.0,
-      "wind_speed": 16.17,
-      "pictocode": 22
+      "precipitation_probability": 71,
+      "precipitation": 0.18,
+      "wind_speed": 9.59,
+      "pictocode": 33
      },
      {
       "time": "2026-11-10T23:00",
-      "temperature": 11.15,
-      "humidity": 88,
-      "precipitation_probability": 58,
-      "precipitation": 0.0,
-      "wind_speed": 15.19,
-      "pictocode": 22
+      "temperature": 11.8,
+      "humidity": 89,
+      "precipitation_probability": 63,
+      "precipitation": 0.14,
+      "wind_speed": 9.22,
+      "pictocode": 33
      },
      {
       "time": "2026-11-11T00:00",
-      "temperature": 11.08,
-      "humidity": 87,
-      "precipitation_probability": 46,
-      "precipitation": 0.0,
-      "wind_speed": 14.27,
-      "pictocode": 22
+      "temperature": 11.71,
+      "humidity": 88,
+      "precipitation_probability": 53,
+      "precipitation": 0.8,
+      "wind_speed": 8.96,
+      "pictocode": 33
      }
     ],
     "daily": [
      {
       "date": "2026-11-04",
-      "temperature_max": 8.04,
-      "temperature_min": 1.19,
+      "temperature_max": 6.85,
+      "temperature_min": -5.3,
       "precipitation_probability": 0,
       "precipitation": 0.0,
       "uv_max": 3,
@@ -4028,57 +4028,57 @@
      },
      {
       "date": "2026-11-05",
-      "temperature_max": 10.03,
-      "temperature_min": 2.75,
+      "temperature_max": 9.5,
+      "temperature_min": 3.32,
       "precipitation_probability": 0,
       "precipitation": 0.0,
       "uv_max": 3,
-      "pictocode": 1
+      "pictocode": 2
      },
      {
       "date": "2026-11-06",
-      "temperature_max": 11.58,
-      "temperature_min": 3.12,
-      "precipitation_probability": 25,
-      "precipitation": 0.4,
+      "temperature_max": 10.99,
+      "temperature_min": 4.21,
+      "precipitation_probability": 27,
+      "precipitation": 0.19,
       "uv_max": 3,
       "pictocode": 16
      },
      {
       "date": "2026-11-07",
-      "temperature_max": 12.88,
-      "temperature_min": 9.88,
-      "precipitation_probability": 42,
-      "precipitation": 0.94,
+      "temperature_max": 13.04,
+      "temperature_min": 9.52,
+      "precipitation_probability": 39,
+      "precipitation": 1.05,
       "uv_max": 2,
       "pictocode": 16
      },
      {
       "date": "2026-11-08",
-      "temperature_max": 13.41,
-      "temperature_min": 10.77,
-      "precipitation_probability": 83,
-      "precipitation": 4.22,
+      "temperature_max": 13.07,
+      "temperature_min": 11.34,
+      "precipitation_probability": 82,
+      "precipitation": 3.48,
       "uv_max": 2,
       "pictocode": 16
      },
      {
       "date": "2026-11-09",
-      "temperature_max": 13.5,
-      "temperature_min": 12.13,
-      "precipitation_probability": 97,
-      "precipitation": 7.13,
+      "temperature_max": 13.73,
+      "temperature_min": 12.76,
+      "precipitation_probability": 93,
+      "precipitation": 4.21,
       "uv_max": 1,
-      "pictocode": 14
+      "pictocode": 16
      },
      {
       "date": "2026-11-10",
-      "temperature_max": 12.53,
-      "temperature_min": 11.08,
-      "precipitation_probability": 94,
-      "precipitation": 9.9,
+      "temperature_max": 12.66,
+      "temperature_min": 11.71,
+      "precipitation_probability": 96,
+      "precipitation": 5.17,
       "uv_max": 2,
-      "pictocode": 8
+      "pictocode": 14
      }
     ]
    }
