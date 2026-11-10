@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-11-10T03:13:11+01:00",
+ "generated_at": "2026-11-10T10:59:21+01:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -36,11 +36,6 @@
   }
  },
  "readings": [
-  {
-   "time": "2026-10-11T04:00:00+02:00",
-   "level_m": 1.35,
-   "flow_m3s": 7.94
-  },
   {
    "time": "2026-10-12T19:00:00+02:00",
    "level_m": 1.31,
