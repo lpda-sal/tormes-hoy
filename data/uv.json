@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "generated_at": "2026-11-28T04:58:12+01:00",
+ "generated_at": "2026-11-28T14:11:08+01:00",
  "app": {
   "name": "Tormes Hoy",
   "short_name": "Tormes Hoy"
@@ -12,7 +12,7 @@
   "lon": -5.638355587757416,
   "timezone": "Europe/Madrid"
  },
- "status": "stale",
+ "status": "ok",
  "source": {
   "name": "openmeteo",
   "label": "Open-Meteo",
@@ -21,9 +21,9 @@
  "data": {
   "date": "2026-11-28",
   "threshold": 3,
-  "now": 0.0,
+  "now": 2.7,
   "now_level": "low",
-  "max": 2.55,
+  "max": 2.7,
   "max_time": "13:00",
   "max_level": "low",
   "protection": null,
@@ -78,19 +78,19 @@
    },
    {
     "time": "2026-11-28T12:00",
-    "uv": 2.1
+    "uv": 2.2
    },
    {
     "time": "2026-11-28T13:00",
-    "uv": 2.55
+    "uv": 2.7
    },
    {
     "time": "2026-11-28T14:00",
-    "uv": 2.55
+    "uv": 2.7
    },
    {
     "time": "2026-11-28T15:00",
-    "uv": 2.25
+    "uv": 2.4
    },
    {
     "time": "2026-11-28T16:00",
